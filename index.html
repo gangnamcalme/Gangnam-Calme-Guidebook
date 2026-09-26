@@ -24,7 +24,7 @@ const CONFIG = {
   nameSub: "- 강남칼므",                     // 숙소 이름 뒤에 더 작게 붙는 글자. 필요 없으면 "" 로 비워 두세요
   welcome: "잘 오셨어요.\n이제 여정을 천천히.", // 첫 화면의 큰 환영 문장. \n 자리에서 줄이 바뀝니다
   tagline: "서래마을의 고요한 가족 집. 머무시는 동안 필요한 건 모두 이 페이지에 있어요.", // 한 줄 소개. 큰 환영 문장 아래에 회색으로 나옵니다
-  photo: "main.jpg",                      // 첫 화면 사진. img 폴더에 main.jpg 파일을 넣어 주세요. 사진이 없으면 사진 자리만 사라집니다 [샘플입니다. 바꿔 주세요]
+  photo: "img/main.jpg",                      // 첫 화면 사진. img 폴더에 main.jpg 파일을 넣어 주세요. 사진이 없으면 사진 자리만 사라집니다 [샘플입니다. 바꿔 주세요]
   accentColor: "#1B3D29",                     // 강조색. 버튼과 제목 색이 모두 이 색으로 바뀝니다
   backgroundColor: "#F5F1EC",                 // 바탕색. 화면 전체 배경색이 바뀝니다. 카드와 버튼 안쪽은 흰색으로 유지됩니다
   guests: 7,                                  // 최대 인원. 첫 화면 안내 줄에 나옵니다
@@ -70,7 +70,7 @@ const CONFIG = {
         "2. 겨울철 사용 시: 1) 왼쪽 위 “난방” 버튼(집 모양)을 눌러 난방 모드로 전환합니다. 2) 다이얼을 돌려 원하는 온도를 설정합니다."
       ],
       caution: "보일러 전원은 항상 켜 두어야 정상 작동합니다.",
-      photo: "boiler.jpg"
+      photo: "img/boiler.jpg"
     },
     {
       name: "인터폰",
@@ -82,7 +82,7 @@ const CONFIG = {
         "3. 열쇠모양 버튼 누르기"
       ],
       caution: "문 앞에서 초인종을 누르면 방문자를 확인하시고 직접 현관문을 열어주세요. 통화가 끝나면 화면은 자동으로 꺼집니다.",
-      photo: "intercom.jpg"
+      photo: "img/intercom.jpg"
     },
     {
       name: "에어컨 리모컨",
@@ -93,7 +93,7 @@ const CONFIG = {
         "희망온도 조절: ▲ 또는 ▼ 버튼으로 희망하는 온도를 조절합니다."
       ],
       caution: "전원을 켰을때 에어컨 오른쪽에 초록불이 들어오면 작동하는 상태이고, 불이 안들어오면 꺼진 상태입니다.",
-      photo: "aircon.jpg"
+      photo: "img/aircon.jpg"
     },
     {
       name: "음용수 안내",
@@ -104,7 +104,7 @@ const CONFIG = {
         "또는 생수를 드시는 것도 좋습니다."
       ],
       caution: "필터정수기의 물이 부족하면, 위의 뚜껑을 밀어서 여시고 탭워터(수돗물)를 채워서 드시면 됩니다.",
-      photo: "water.jpg"
+      photo: "img/water.jpg"
     },
     {
       name: "화장실 비데 사용 안내",
@@ -115,7 +115,7 @@ const CONFIG = {
         "건조: 세정 후 건조 기능입니다."
       ],
       caution: "용변을 마치신 후 일어나면 물이 자동으로 내려가니까, 변기 안에 휴지 외에 다른 물건이 들어가지 않도록 주의해주세요",
-      photo: "bidet.jpg"
+      photo: "img/bidet.jpg"
     },
     {
       name: "바디드라이어",
@@ -126,7 +126,7 @@ const CONFIG = {
         "빠르고 편리하게 몸의 물기를 말릴 수 있습니다."
       ],
       caution: "가급적 샤워기 물이 튀지 않게 해 주세요",
-      photo: "bodydryer.jpg"
+      photo: "img/bodydryer.jpg"
     },
     {
       name: "주방 수납",
@@ -137,7 +137,7 @@ const CONFIG = {
         "맨 아래 서랍에는 조리도구와 냄비 등 요리에 필요한 주방용품이 준비되어 있습니다."
       ],
       caution: "수저는 겉에서 보이지 않는 히든 서랍에 있습니다. 큰 서랍을 열면 맨 위에 작은 서랍이 있습니다.",
-      photo: "kitchen.jpg"
+      photo: "img/kitchen.jpg"
     },
     {
       name: "루프탑",
@@ -148,7 +148,7 @@ const CONFIG = {
         "안전을 위해 옥상 문 앞에 파라솔과 의자를 비치해두었습니다."
       ],
       caution: "사용 후에는 다시 접어서 제자리에 놓아주세요.",
-      photo: "rooftop.jpg"
+      photo: "img/rooftop.jpg"
     }
   ],
 
@@ -172,12 +172,12 @@ const CONFIG = {
         "파란색 봉투: 음식물쓰레기용 봉투",
         "쓰레기 봉투는 편의점에서도 구매할 수 있습니다."
       ],
-      photo: "trash1.jpg"
+      photo: "img/trash1.jpg"
     },
     {
       title: "사용 방법",
       text: ["주방 쓰레기통에 봉투를 비치하여 사용하세요."],
-      photo: "trash2.jpg"
+      photo: "img/trash2.jpg"
     },
     {
       title: "일반/음식물쓰레기 배출",
@@ -185,7 +185,7 @@ const CONFIG = {
         "봉투가 꽉 차면 빌라 현관을 나와 왼쪽 전봇대 밑에 배출해 주세요.",
         "음식물쓰레기는 전봇대 밑에 있는 주황색 뚜껑 통 안에 버려주세요."
       ],
-      photo: "trash3.jpg"
+      photo: "img/trash3.jpg"
     },
     {
       title: "분리수거 배출",
@@ -193,7 +193,7 @@ const CONFIG = {
         "빌라 현관을 나와 오른쪽으로 돌면 분리수거함이 있습니다. 분리하여 배출해 주세요.",
         "위 분리수거 봉투에 종류별로 모아두면 편리하게 분리수거할 수 있습니다! 이 봉투는 일회용이 아니므로 반복 사용해 주세요."
       ],
-      photo: "trash4.jpg"
+      photo: "img/trash4.jpg"
     }
   ],
 
@@ -226,6 +226,58 @@ const CONFIG = {
     }
   ],
 
+  /* ---------- 동네 안내 ---------- */
+  /* 지도 가운데와 숙소 핀 위치입니다. 비워 두면(null) 숙소 핀만 사라집니다 */
+  homeLat: 37.49368,                          // 숙소 위도. 지도에 숙소 핀이 찍히는 자리입니다
+  homeLng: 126.99617,                         // 숙소 경도
+
+  /* 갈래 단추입니다. key는 아래 가게의 type과 짝이 맞아야 합니다. all은 전체 보기입니다 */
+  placeTypes: [
+    { key: "all",  label: "전체" },
+    { key: "food", label: "식사" },
+    { key: "cafe", label: "카페" },
+    { key: "bar",  label: "바" },
+    { key: "see",  label: "볼거리" },
+    { key: "shop", label: "장보기" }
+  ],
+
+  /* 가게 하나가 { } 한 줄입니다. 줄을 복사해 붙이면 가게가 늘어납니다
+     name: 상호 / type: 갈래(위 key 중 하나) / walk: 거리 / hours: 영업시간 / line: 한 줄 소개
+     lat, lng: 위도와 경도. 모르면 null 로 두면 목록에만 나오고 지도 핀은 안 찍힙니다 */
+  places: [
+    { name: "홈플러스 익스프레스 서래마을점", type: "shop", walk: "걸어서 7분", hours: "08:00-23:00, 연중무휴", line: "편의점으로는 부족한 날, 저녁거리와 아침 장을 한 번에", lat: 37.49705, lng: 126.99807 },
+    { name: "초록마을 서래마을점", type: "shop", walk: "걸어서 6분", hours: "09:00-22:00, 연중무휴", line: "아이 간식이나 유기농 재료를 찾는 날", lat: 37.49619, lng: 126.99828 },
+    { name: "서래삼겹살", type: "food", walk: "걸어서 10분", hours: "11:30-23:00, 연중무휴", line: "두툼한 삼겹살에 소주 한잔, 동네 사람처럼 저녁 먹고 싶은 날", lat: 37.49790, lng: 126.99900 },
+    { name: "르 므니에 프렌치 치즈 전문점", type: "food", walk: "걸어서 9분", hours: "11:00-21:00, 연중무휴", line: "치즈 한 접시와 와인으로 집에서 조용한 저녁을 차리고 싶은 날", lat: 37.49797, lng: 126.99809 },
+    { name: "브루클린 버거 조인트 서래본점", type: "food", walk: "걸어서 8분", hours: "11:00-21:30, 연중무휴", line: "아이들이 한식 말고 햄버거를 찾는 날", lat: 37.49607, lng: 126.99973 },
+    { name: "스시고", type: "food", walk: "걸어서 11분", hours: "12:00-21:00, 브레이크 15:00-18:00, 연중무휴", line: "오마카세로 조금 특별한 한 끼를 하고 싶은 날", lat: 37.49889, lng: 126.99787 },
+    { name: "윤", type: "food", walk: "걸어서 13분", hours: "11:30-22:00, 브레이크 15:00-17:30, 연중무휴", line: "기념일이나 둘만의 저녁, 코스 요리가 어울리는 날", lat: 37.49974, lng: 126.99899 },
+    { name: "라사브어", type: "food", walk: "걸어서 8분", hours: "11:00-22:00, 브레이크 14:00-17:30, 연중무휴", line: "서래마을에 왔으니 프렌치 한 번은 먹어 보고 싶은 날", lat: 37.49704, lng: 126.99846 },
+    { name: "우참판 서래본점", type: "food", walk: "걸어서 8분", hours: "평일 오전 11:30~오후 10:00, 주말 오전 11:30~오후 9:30 (브레이크타임 오후 2:30~5:00)", line: "점심이든 저녁이든, 유명인사들도 즐겨 찾는 서래마을 한우 맛집에 가 보고 싶은 날", lat: 37.49720, lng: 126.99807 },
+    { name: "도룸", type: "food", walk: "걸어서 5분", hours: "11:30-22:00, 브레이크 15:00-18:00, 월·화 휴무", line: "가까운 곳에서 조용히 둘러앉아 먹고 싶은 날", lat: 37.49385, lng: 126.99334 },
+    { name: "봉피양 샤브 서래점", type: "food", walk: "걸어서 6분", hours: "오전 11:30~오후 9:30 (월~금 15:00-17:00 브레이크타임)", line: "평양냉면에 돼지갈비, 조용한 룸에서 가족끼리 한 끼 하고 싶은 날", lat: 37.49373, lng: 126.99200 },
+    { name: "서초면옥 본점", type: "food", walk: "걸어서 5분", hours: "10:30-21:00, 연중무휴", line: "더운 날 시원한 함흥냉면에 갈비찜 한 접시가 생각나는 날", lat: 37.49390, lng: 126.99310 },
+    { name: "카페 드리옹 서래본점", type: "cafe", walk: "걸어서 12분", hours: "09:00-22:00, 연중무휴", line: "케이크 한 조각 놓고 오래 앉아 있고 싶은 오후", lat: 37.49917, lng: 126.99823 },
+    { name: "방배목장", type: "cafe", walk: "걸어서 12분", hours: "08:30-22:00, 연중무휴", line: "아이 손 잡고 우유 아이스크림 사 먹으러 가는 날", lat: 37.49536, lng: 126.98939 },
+    { name: "서래마을 스퀘어가든 커피", type: "cafe", walk: "걸어서 9분", hours: "08:40-20:00, 매월 마지막 일요일 휴무", line: "제대로 내린 핸드드립 한 잔이 필요한 아침", lat: 37.49793, lng: 126.99685 },
+    { name: "하루하날 방배점", type: "cafe", walk: "걸어서 9분", hours: "09:00-20:00, 연중무휴", line: "따끈한 에그타르트 하나로 산책을 마무리하고 싶은 날", lat: 37.49038, lng: 126.99265 },
+    { name: "태양커피 방배", type: "cafe", walk: "걸어서 9분", hours: "10:00-19:30, 연중무휴", line: "줄을 서도 좋으니 소문난 아인슈페너를 마셔 보고 싶은 날", lat: 37.49017, lng: 126.99293 },
+    { name: "피노키오", type: "cafe", walk: "걸어서 9분", hours: "11:00-24:00, 연중무휴", line: "저녁 먹고 젤라토 한 컵 들고 걷고 싶은 밤", lat: 37.49774, lng: 126.99752 },
+    { name: "방배동 구름떡", type: "cafe", walk: "걸어서 12분", hours: "08:00-22:00", line: "아침 대신 든든한 떡 한 팩이 필요한 날", lat: 37.49163, lng: 126.98961 },
+    { name: "메종엠오 방배본점", type: "cafe", walk: "걸어서 10분", hours: "11:30-20:00, 월·화·수 휴무", line: "선물용 프랑스 과자를 예쁘게 사 가고 싶은 날", lat: 37.48929, lng: 126.99416 },
+    { name: "댄싱업하이", type: "bar", walk: "걸어서 9분", hours: "12:00-22:00, 연중무휴", line: "재즈 들으며 와인 한잔하고 싶은 밤", lat: 37.49779, lng: 126.99707 },
+    { name: "투르뒤뱅", type: "bar", walk: "걸어서 7분", hours: "14:00-01:00, 브레이크 14:05-15:00, 월요일 휴무", line: "오래된 서래마을 와인바에서 천천히 한 병 비우고 싶은 밤", lat: 37.49704, lng: 126.99779 },
+    { name: "와인포럼", type: "bar", walk: "걸어서 8분", hours: "11:30-24:00, 일요일 휴무", line: "날 좋은 날 테라스에서 와인 한잔하고 싶은 저녁", lat: 37.49779, lng: 126.99632 },
+    { name: "틈", type: "bar", walk: "걸어서 6분", hours: "18:30-02:00, 일요일 문의", line: "아이들 재우고 둘이서 조용히 한잔하고 싶은 밤", lat: 37.49625, lng: 126.99797 },
+    { name: "베스퍼", type: "bar", walk: "걸어서 11분", hours: "11:00-03:00, 연중무휴", line: "잘 만든 칵테일 한 잔으로 하루를 마무리하고 싶은 밤", lat: 37.49875, lng: 126.99785 },
+    { name: "국립중앙박물관", type: "see", walk: "차로 약 15분", hours: "10:00-18:00, 수·토 21:00까지, 월요일 휴무", line: "비 오는 날, 아이들과 하루 종일 실내에서 보내고 싶은 날", lat: 37.52385, lng: 126.98047 },
+    { name: "몽마르뜨공원", type: "see", walk: "걸어서 14분", hours: "상시 개방, 연중무휴", line: "아침 산책으로 숲길을 걷고 싶은 날", lat: 37.49648, lng: 127.00404 },
+    { name: "서리풀공원", type: "see", walk: "걸어서 14분", hours: "상시 개방, 연중무휴", line: "사람 적은 산책로를 천천히 걷고 싶은 날", lat: 37.48887, lng: 127.00254 },
+    { name: "반포한강공원", type: "see", walk: "차로 약 10분", hours: "종일 개방, 연중무휴", line: "저녁에 돗자리 펴고 달빛무지개분수를 보고 싶은 날", lat: 37.51035, lng: 126.99524 },
+    { name: "예술의전당", type: "see", walk: "차로 약 10분", hours: "10:00-19:00, 월요일 휴무", line: "공연이나 전시로 저녁을 채우고 싶은 날", lat: 37.47929, lng: 127.01286 },
+    { name: "누에다리", type: "see", walk: "걸어서 16분", hours: "24시간 개방, 연중무휴", line: "해 질 녘 불 켜진 다리 위에서 사진 한 장 남기고 싶은 날", lat: 37.49672, lng: 127.00523 }
+  ],
+
   /* ---------- 화면에 나오는 글자 ---------- */
   /* 버튼 이름과 안내 문구입니다. 말투를 바꾸고 싶으시면 여기를 고치세요 */
   text: {
@@ -240,6 +292,8 @@ const CONFIG = {
     menuContactSub: "호스트에게 바로 연락",      // 메뉴 버튼 아래 작은 설명
     menuHouse: "집 안에서",                    // 메뉴 버튼 이름: 집 안에서 화면
     menuHouseSub: "시설 사용법과 쓰레기",        // 메뉴 버튼 아래 작은 설명
+    menuNearby: "동네 안내",                   // 메뉴 버튼 이름: 동네 안내 화면
+    menuNearbySub: "식사, 카페, 바, 볼거리",     // 메뉴 버튼 아래 작은 설명
     menuFaq: "자주 묻는 질문",                  // 메뉴 버튼 이름: 자주 묻는 질문 화면
     menuFaqSub: "편의점, 식당, 병원",           // 메뉴 버튼 아래 작은 설명
     menuCheckout: "체크아웃",                  // 메뉴 버튼 이름: 체크아웃 화면
@@ -277,6 +331,12 @@ const CONFIG = {
     trashTitle: "쓰레기 버리는 법",              // 집 안에서 화면: 세 번째 제목
 
     faqHint: "질문을 누르면 답이 펼쳐집니다.",    // 자주 묻는 질문 화면: 제목 아래 안내
+
+    nearbyHint: "지도의 점을 누르면 아래 목록의 그 가게로 이동합니다.", // 동네 안내 화면: 제목 아래 안내
+    hoursLabel: "영업시간",                    // 동네 안내 화면: 영업시간 앞에 붙는 글자
+    openMapButton: "지도로 열기",               // 동네 안내 화면: 가게마다 있는 지도 버튼
+    homePin: "숙소",                           // 동네 안내 화면: 지도의 숙소 핀 이름
+    placesEmpty: "이 갈래에는 아직 가게가 없습니다.", // 동네 안내 화면: 고른 갈래에 가게가 없을 때
 
     checkoutTimeLabel: "체크아웃 시각",          // 체크아웃 화면: 시각 제목
     checkoutListTitle: "나가기 전 확인",         // 체크아웃 화면: 확인 목록 제목
@@ -355,6 +415,7 @@ function renderHome() {
     ["checkin", T.menuCheckin, T.menuCheckinSub],
     ["wifi", T.menuWifi, T.menuWifiSub],
     ["house", T.menuHouse, T.menuHouseSub],
+    ["nearby", T.menuNearby, T.menuNearbySub],
     ["faq", T.menuFaq, T.menuFaqSub],
     ["checkout", T.menuCheckout, T.menuCheckoutSub],
     ["contact", T.menuContact, T.menuContactSub]
@@ -526,6 +587,154 @@ function renderCheckout() {
     '</div>';
 }
 
+function hasCoord(p) {
+  return p && typeof p.lat === "number" && typeof p.lng === "number" && isFinite(p.lat) && isFinite(p.lng);
+}
+
+function renderNearby() {
+  const T = CONFIG.text;
+  const places = CONFIG.places || [];
+  const typeLabel = {};
+  (CONFIG.placeTypes || []).forEach(t => { typeLabel[t.key] = t.label; });
+  const chips = (CONFIG.placeTypes || []).map((t, i) =>
+    '<button class="chip' + (i === 0 ? ' on' : '') + '" type="button" data-filter="' + esc(t.key) + '" aria-pressed="' + (i === 0) + '">' + esc(t.label) + '</button>'
+  ).join("");
+  const cards = places.map((p, i) => {
+    const q = encodeURIComponent(p.name);
+    return '<div class="card place" id="place-' + i + '" data-type="' + esc(p.type) + '">' +
+      '<p class="place-type">' + esc(typeLabel[p.type] || "") + '</p>' +
+      '<p class="place-name">' + esc(p.name) + '</p>' +
+      '<p class="place-line">' + esc(p.line) + '</p>' +
+      '<p class="place-meta">' + esc(p.walk) + '</p>' +
+      '<p class="place-meta">' + esc(T.hoursLabel) + ': ' + esc(p.hours) + '</p>' +
+      '<div class="btns"><a class="btn line-btn" href="https://map.naver.com/p/search/' + q + '" target="_blank" rel="noopener">' + esc(T.openMapButton) + '</a></div>' +
+    '</div>';
+  }).join("");
+  return backButton() +
+    '<h2>' + esc(T.menuNearby) + '</h2>' +
+    '<p class="hint">' + esc(T.nearbyHint) + '</p>' +
+    '<div class="map-wrap" id="mapWrap" hidden><div id="map"></div></div>' +
+    '<div class="chips">' + chips + '</div>' +
+    '<div id="placeList">' + cards + '</div>' +
+    '<p class="hint" id="placesEmpty" hidden>' + esc(T.placesEmpty) + '</p>';
+}
+
+/* ---------- 지도 (Leaflet). 못 불러와도 목록은 그대로 보입니다 ---------- */
+const LEAFLET_JS = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";
+const LEAFLET_CSS = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
+let mapState = { tried: false, map: null, markers: [] };
+
+function loadLeaflet(done) {
+  if (window.L) { done(true); return; }
+  try {
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = LEAFLET_CSS;
+    document.head.appendChild(css);
+    const js = document.createElement("script");
+    js.src = LEAFLET_JS;
+    let finished = false;
+    const finish = ok => { if (!finished) { finished = true; done(ok && !!window.L); } };
+    js.onload = () => finish(true);
+    js.onerror = () => finish(false);
+    setTimeout(() => finish(!!window.L), 8000);
+    document.head.appendChild(js);
+  } catch (e) { done(false); }
+}
+
+function initMap() {
+  if (mapState.tried) {
+    if (mapState.map) setTimeout(() => mapState.map.invalidateSize(), 50);
+    return;
+  }
+  mapState.tried = true;
+  const withCoord = (CONFIG.places || []).map((p, i) => ({ p: p, i: i })).filter(o => hasCoord(o.p));
+  if (withCoord.length === 0) return;
+  loadLeaflet(function (ok) {
+    if (!ok) return;
+    try {
+      const wrap = document.getElementById("mapWrap");
+      wrap.hidden = false;
+      const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#1B3D29";
+      const map = L.map("map", { scrollWheelZoom: false, attributionControl: true });
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(map);
+      const pts = [];
+      withCoord.forEach(o => {
+        const m = L.circleMarker([o.p.lat, o.p.lng], {
+          radius: 8, color: "#FFFFFF", weight: 2, fillColor: accent, fillOpacity: 1
+        }).addTo(map);
+        m.bindTooltip(o.p.name, { direction: "top", offset: [0, -6] });
+        m.on("click", () => goToPlace(o.i));
+        mapState.markers.push({ marker: m, type: o.p.type });
+        pts.push([o.p.lat, o.p.lng]);
+      });
+      if (typeof CONFIG.homeLat === "number" && typeof CONFIG.homeLng === "number") {
+        L.circleMarker([CONFIG.homeLat, CONFIG.homeLng], {
+          radius: 11, color: accent, weight: 3, fillColor: "#FFFFFF", fillOpacity: 1
+        }).addTo(map).bindTooltip(CONFIG.text.homePin, { permanent: true, direction: "right", offset: [10, 0], className: "home-tip" });
+        pts.push([CONFIG.homeLat, CONFIG.homeLng]);
+      }
+      mapState.map = map;
+      fitMap(pts);
+    } catch (e) {
+      const wrap = document.getElementById("mapWrap");
+      if (wrap) wrap.hidden = true;
+    }
+  });
+}
+
+function nearHome(pts) {
+  if (typeof CONFIG.homeLat !== "number" || typeof CONFIG.homeLng !== "number") return pts;
+  const near = pts.filter(pt => Math.abs(pt[0] - CONFIG.homeLat) < 0.011 && Math.abs(pt[1] - CONFIG.homeLng) < 0.014);
+  return near.length >= 2 ? near : pts;
+}
+
+function fitMap(pts) {
+  const map = mapState.map;
+  if (!map || !pts.length) return;
+  pts = nearHome(pts);
+  if (pts.length === 1) { map.setView(pts[0], 16); return; }
+  map.fitBounds(pts, { padding: [24, 24], maxZoom: 16 });
+}
+
+function goToPlace(i) {
+  const card = document.getElementById("place-" + i);
+  if (!card) return;
+  if (card.hidden) setFilter("all");
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+  card.classList.remove("flash");
+  void card.offsetWidth;
+  card.classList.add("flash");
+}
+
+function setFilter(key) {
+  document.querySelectorAll("[data-filter]").forEach(b => {
+    const on = b.getAttribute("data-filter") === key;
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", on);
+  });
+  let shown = 0;
+  document.querySelectorAll("#placeList .place").forEach(c => {
+    const show = key === "all" || c.getAttribute("data-type") === key;
+    c.hidden = !show;
+    if (show) shown++;
+  });
+  const empty = document.getElementById("placesEmpty");
+  if (empty) empty.hidden = shown > 0;
+  if (mapState.map) {
+    const pts = [];
+    mapState.markers.forEach(o => {
+      const show = key === "all" || o.type === key;
+      if (show) { o.marker.addTo(mapState.map); const ll = o.marker.getLatLng(); pts.push([ll.lat, ll.lng]); }
+      else { o.marker.remove(); }
+    });
+    if (pts.length) fitMap(pts);
+  }
+}
+
 const CHECK_KEY = "guestapp-checkout";
 function loadChecks() {
   try { return JSON.parse(localStorage.getItem(CHECK_KEY) || "[]"); } catch (e) { return []; }
@@ -546,7 +755,7 @@ function updateChecks() {
     : T.checkoutProgress.replace("{total}", boxes.length).replace("{done}", done.length);
 }
 
-const SCREENS = ["home", "checkin", "wifi", "house", "faq", "checkout", "contact"];
+const SCREENS = ["home", "checkin", "wifi", "house", "nearby", "faq", "checkout", "contact"];
 
 function showScreen(id) {
   if (SCREENS.indexOf(id) === -1) id = "home";
@@ -555,6 +764,7 @@ function showScreen(id) {
     if (el) el.hidden = (s !== id);
   });
   window.scrollTo(0, 0);
+  if (id === "nearby") initMap();
 }
 
 function start() {
@@ -571,6 +781,7 @@ function start() {
     '<section id="screen-checkin" hidden>' + renderCheckin() + '</section>' +
     '<section id="screen-wifi" hidden>' + renderWifi() + '</section>' +
     '<section id="screen-house" hidden>' + renderHouse() + '</section>' +
+    '<section id="screen-nearby" hidden>' + renderNearby() + '</section>' +
     '<section id="screen-faq" hidden>' + renderFaq() + '</section>' +
     '<section id="screen-checkout" hidden>' + renderCheckout() + '</section>' +
     '<section id="screen-contact" hidden>' + renderContact() + '</section>';
@@ -596,6 +807,8 @@ function start() {
       }
       return;
     }
+    const fl = e.target.closest("[data-filter]");
+    if (fl) { setFilter(fl.getAttribute("data-filter")); return; }
     const cp = e.target.closest("[data-copy]");
     if (cp) {
       const kind = cp.getAttribute("data-copy");
@@ -897,6 +1110,53 @@ h3 {
   transform: rotate(45deg) translate(-1px, -1px);
 }
 .check input:checked + span { color: var(--muted); text-decoration: line-through; }
+
+.map-wrap {
+  margin: 0 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.map-wrap[hidden] { display: none; }
+#map { width: 100%; height: 260px; }
+.home-tip { font-family: var(--sans); font-weight: 600; font-size: 13px; }
+
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 0 14px;
+  -webkit-overflow-scrolling: touch;
+}
+.chip {
+  flex-shrink: 0;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.chip.on { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+
+.place[hidden] { display: none; }
+.place-type { margin: 0 0 2px; font-size: 16px; color: var(--muted); }
+.place-name { margin: 0 0 6px; font-family: var(--serif); font-weight: 700; font-size: 20px; color: var(--accent); }
+.place-line { margin: 0 0 10px; font-size: 16px; }
+.place-meta { margin: 0 0 2px; font-size: 16px; color: var(--muted); }
+.place.flash { animation: flash 1.4s ease-out; }
+@keyframes flash {
+  0% { box-shadow: 0 0 0 3px var(--accent); }
+  100% { box-shadow: var(--shadow); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .place.flash { animation: none; outline: 3px solid var(--accent); }
+}
 
 #toast {
   position: fixed;
