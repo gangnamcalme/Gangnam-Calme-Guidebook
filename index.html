@@ -76,6 +76,10 @@ const CONFIG = {
     { kr: "보일러, 전등, 에어컨을 모두 꺼주세요.", en: "Please turn off the boiler, lights and AC." },
     { kr: "호스트에게 체크아웃한다고 말씀해주세요!", en: "Please let your host know you're checking out!" }
   ],
+  checkoutReview: {                           // 체크아웃 화면 맨 아래 후기 부탁 문구. 필요 없으면 null 로 바꾸면 사라집니다
+    kr: "숙소에 만족하셨다면, 시간 되실 때 부디 별 5개와 후기 남겨주세요! 저희 숙소에게 정말 큰 격려와 개선의 힘이 됩니다.",
+    en: "If you enjoyed your stay, we'd love a 5-star review when you have a moment! It truly encourages us and helps us keep getting better."
+  },
 
   /* ---------- 집 안에서: 시설 사용법 ---------- */
   /* 칸 하나가 { } 한 덩어리입니다. 덩어리를 복사해 붙이면 칸이 늘어납니다
@@ -756,7 +760,8 @@ function renderCheckout() {
       '<ul class="checks">' + list + '</ul>' +
       '<p class="tip" id="checkProgress"></p>' +
       '<div class="btns"><button class="btn line-btn" type="button" data-go="contact">' + t(T.checkoutContact) + '</button></div>' +
-    '</div>';
+    '</div>' +
+    (CONFIG.checkoutReview ? '<div class="card review"><p class="value">' + t(CONFIG.checkoutReview) + '</p></div>' : '');
 }
 
 function hasCoord(p) {
@@ -1311,6 +1316,9 @@ h3 {
   transform: rotate(45deg) translate(-1px, -1px);
 }
 .check input:checked + span { color: var(--muted); text-decoration: line-through; }
+
+.review { background: var(--accent); border-color: var(--accent); }
+.review .value { color: #FFFFFF; }
 
 .map-wrap {
   margin: 0 0 14px;
