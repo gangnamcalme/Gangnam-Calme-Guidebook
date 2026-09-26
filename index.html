@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="ko" data-lang="kr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title></title>
+
+<script>
+/* ============================================================
+   ============================================================
+
+        여기만 고치세요
+
+        이 CONFIG 블록 안의 글자만 바꾸시면 됩니다.
+        큰따옴표 " " 안의 글자만 고치시고,
+        따옴표와 쉼표는 지우지 마세요.
+
+        { kr: "한국어", en: "English" } 처럼 생긴 곳은
+        kr 에 한국어, en 에 영어를 적습니다.
+        둘 중 하나만 고치면 다른 언어 화면에는 반영되지 않습니다.
+
+   ============================================================
+   ============================================================ */
+const CONFIG = {
+
+  /* ---------- 언어 ---------- */
+  languages: [                                // 화면 맨 위 언어 단추. 단추 이름은 각 언어로 그대로 보여 줍니다
+    { key: "kr", label: "한국어" },
+    { key: "en", label: "English" }
+  ],
+
+  /* ---------- 숙소 기본 정보 ---------- */
+  name: { kr: "Gangnam Calme", en: "Gangnam Calme" },       // 숙소 이름. 첫 화면 맨 위 왼쪽과 브라우저 탭 이름에 나옵니다
+  nameSub: { kr: "- 강남칼므", en: "" },                     // 숙소 이름 뒤에 작게 붙는 글자. 영어 화면에서는 비워 두었습니다
+  welcome: {                                                 // 첫 화면의 큰 환영 문장. \n 자리에서 줄이 바뀝니다
+    kr: "잘 오셨어요.\n이제 여정을 천천히.",
+    en: "You've arrived.\nLet the journey slow down."
+  },
+  tagline: {                                                 // 한 줄 소개. 큰 환영 문장 아래에 회색으로 나옵니다
+    kr: "서래마을의 고요한 가족 집. 머무시는 동안 필요한 건 모두 이 페이지에 있어요.",
+    en: "A quiet family home in Seorae Village. Everything you need for your stay is on this page."
+  },
+  photo: "main.jpg",                      // 첫 화면 사진. index.html 옆에 main.jpg 파일을 넣어 주세요. 사진이 없으면 사진 자리만 사라집니다 [샘플입니다. 바꿔 주세요]
+  accentColor: "#1B3D29",                     // 강조색. 버튼과 제목 색이 모두 이 색으로 바뀝니다
+  backgroundColor: "#F5F1EC",                 // 바탕색. 화면 전체 배경색이 바뀝니다. 카드와 버튼 안쪽은 흰색으로 유지됩니다
+  guests: 7,                                  // 최대 인원. 첫 화면 안내 줄에 나옵니다
+  bedrooms: 2,                                // 침실 수. 첫 화면 안내 줄에 나옵니다
+  bathrooms: 1,                               // 욕실 수. 첫 화면 안내 줄에 나옵니다
+
+  /* ---------- 체크인 ---------- */
+  address: "서울시 서초구 방배로34길 97 방배하이빌 11차 501호", // 화면에 보이는 주소. 두 언어 모두 이 글자 그대로 나옵니다. 주소 복사 버튼도 이 값을 복사합니다
+  mapQuery: "서울 서초구 방배로34길 97",       // 지도 앱에서 검색할 주소. 호수는 넣지 않는 것이 검색이 잘 됩니다
+  checkinTime: "16:00",                       // 체크인 시각. 이 값을 바꾸면 앱 전체에 반영됩니다
+  checkoutTime: "12:00",                      // 체크아웃 시각. 이 값을 바꾸면 앱 전체에 반영됩니다
+  doorGuide: {                                // 현관 여는 법. 실제 비밀번호는 절대 넣지 마세요
+    kr: "공동현관과 501호 현관 모두 비밀번호를 누르면 열립니다. 비밀번호는 체크인 당일 문자로 보내 드립니다.",
+    en: "Both the building entrance and the door of unit 501 open when you enter the passcode. We will text you the passcode on your check-in day."
+  },
+
+  /* ---------- 와이파이 ---------- */
+  wifiName: "U+Net3878_5G",                   // 와이파이 이름 (5G). 와이파이 화면에 크게 나옵니다
+  wifiName2: "U+Net3878",                     // 두 번째 와이파이 이름 (2.4G). 필요 없으면 "" 로 비워 두세요
+  wifiPassword: "C004E7#68K",                 // 와이파이 비밀번호. 비밀번호 복사 버튼도 이 값을 복사합니다
+
+  /* ---------- 호스트 연락처 ---------- */
+  /* 쓰지 않는 연락 방법은 "" 로 비워 두면 그 버튼이 사라집니다 */
+  hostName: "Amy",                            // 호스트 이름. 연락하기 화면에 나옵니다
+  phone: "010-5777-0876",                     // 전화번호. 전화 걸기 버튼을 누르면 이 번호로 전화가 걸립니다
+  kakaoId: "mihoya86",                        // 카카오톡 아이디. 버튼을 누르면 아이디가 복사되고 카카오톡이 열립니다
+  whatsapp: "821057770876",                   // WhatsApp 번호. 82로 시작하고 맨 앞 0과 하이픈은 뺍니다
+  line: "https://line.me/ti/p/fWpK6Xm7tx",    // LINE 친구 추가 링크. 버튼을 눌러 Amy님 프로필이 열리는지 꼭 확인해 주세요
+
+  /* ---------- 체크아웃 ---------- */
+  /* 나가기 전 확인 목록. { } 한 줄이 한 항목입니다 */
+  checkoutList: [
+    { kr: "보일러, 전등, 에어컨을 모두 꺼주세요.", en: "Please turn off the boiler, lights and AC." },
+    { kr: "호스트에게 체크아웃한다고 말씀해주세요!", en: "Please let your host know you're checking out!" },
+    { kr: "숙소에 만족하셨다면, 시간 되실 때 부디 별 5개와 후기 남겨주세요! 저희 숙소에게 정말 큰 격려와 개선의 힘이 됩니다.", en: "If you enjoyed your stay, we'd love a 5-star review when you have a moment! It truly encourages us and helps us keep getting better." }
+  ],
+
+  /* ---------- 집 안에서: 시설 사용법 ---------- */
+  /* 칸 하나가 { } 한 덩어리입니다. 덩어리를 복사해 붙이면 칸이 늘어납니다
+     name: 이름 / location: 위치 / usage: 사용법 (한 줄에 하나씩) / caution: 주의사항 / photo: index.html 옆에 둔 사진 파일 이름 */
+  facilities: [
+    {
+      name: { kr: "보일러", en: "Boiler" },
+      location: { kr: "온수 조절은 거실에 있고, 각 방에 방별 온도 조절기가 있습니다.", en: "The hot water control is in the living room, and each room has its own thermostat." },
+      usage: [
+        { kr: "1. 여름철 사용 시: 1) 오른쪽 가운데 “온수 전용” 버튼을 누릅니다. 2) 다이얼을 돌려 온수 온도를 45~50도로 조절합니다.", en: "1. In summer: 1) Press the “온수 전용” (hot water only) button, middle right. 2) Turn the dial to set the water to 45~50°C." },
+        { kr: "2. 겨울철 사용 시: 1) 왼쪽 위 “난방” 버튼(집 모양)을 눌러 난방 모드로 전환합니다. 2) 다이얼을 돌려 원하는 온도를 설정합니다.", en: "2. In winter: 1) Press the “난방” (heating) button with the house icon, top left, to switch to heating. 2) Turn the dial to the temperature you like." }
+      ],
+      caution: { kr: "보일러 전원은 항상 켜 두어야 정상 작동합니다.", en: "Keep the boiler power on at all times, or it won't work properly." },
+      photo: "boiler.jpg"
+    },
+    {
+      name: { kr: "인터폰", en: "Intercom" },
+      location: { kr: "거실 보일러 조절기 바로 위에 있습니다", en: "Right above the boiler control in the living room" },
+      usage: [
+        { kr: "배달이나 방문객이 1층에서 초인종을 누르면, 위 인터폰을 확인한 뒤 아래 순서대로 버튼을 누르면 1층 공동현관 문이 열립니다.", en: "When a delivery or visitor rings from the ground floor, check the intercom, then press the buttons in this order to open the building entrance." },
+        { kr: "1. 방문자 확인", en: "1. Check who it is" },
+        { kr: "2. 사람모양 버튼 누르기", en: "2. Press the person button" },
+        { kr: "3. 열쇠모양 버튼 누르기", en: "3. Press the key button" }
+      ],
+      caution: { kr: "문 앞에서 초인종을 누르면 방문자를 확인하시고 직접 현관문을 열어주세요. 통화가 끝나면 화면은 자동으로 꺼집니다.", en: "If someone rings at your front door, check who it is and open the door yourself. The screen turns off by itself after the call." },
+      photo: "intercom.jpg"
+    },
+    {
+      name: { kr: "에어컨 리모컨", en: "AC remote" },
+      location: { kr: "각 방마다 있고, 총 세개입니다.(거실, 방 2개 각 1개씩)", en: "One in each room, three in total (living room and both bedrooms)." },
+      usage: [
+        { kr: "전원: 에어컨을 켜거나 끕니다.", en: "Power (전원): turns the AC on or off." },
+        { kr: "운전선택: 냉방 → 송풍 → 제습 순서로 변경됩니다.", en: "Mode (운전선택): changes in order, cool → fan → dry." },
+        { kr: "희망온도 조절: ▲ 또는 ▼ 버튼으로 희망하는 온도를 조절합니다.", en: "Temperature (희망온도): use ▲ or ▼ to set the temperature." }
+      ],
+      caution: { kr: "전원을 켰을때 에어컨 오른쪽에 초록불이 들어오면 작동하는 상태이고, 불이 안들어오면 꺼진 상태입니다.", en: "When it's on, a green light shows on the right side of the AC. No light means it's off." },
+      photo: "aircon.jpg"
+    },
+    {
+      name: { kr: "음용수 안내", en: "Drinking water" },
+      location: { kr: "냉장고 안에 필터 정수기가 있습니다.(제로워터)", en: "There's a filter pitcher in the fridge. (ZeroWater)" },
+      usage: [
+        { kr: "탭워터도 드셔도 괜찮습니다.", en: "Tap water is fine to drink." },
+        { kr: "그냥 물을 드실 때는 냉장고 안에 제로워터 정수기 통이 있으니, 그 통에 채워서 드시는 것을 추천드립니다.", en: "For plain drinking water, we recommend the ZeroWater pitcher in the fridge." },
+        { kr: "또는 생수를 드시는 것도 좋습니다.", en: "Bottled water is good too." }
+      ],
+      caution: { kr: "필터정수기의 물이 부족하면, 위의 뚜껑을 밀어서 여시고 탭워터(수돗물)를 채워서 드시면 됩니다.", en: "If the pitcher runs low, slide open the lid on top and refill it with tap water." },
+      photo: "water.jpg"
+    },
+    {
+      name: { kr: "화장실 비데 사용 안내", en: "Bidet" },
+      location: { kr: "비데 리모콘은 변기 왼쪽 벽에 붙어 있습니다.", en: "The bidet remote is on the wall to the left of the toilet." },
+      usage: [
+        { kr: "대변 (대): 대변 시 사용합니다. 소변 (소): 소변 시 사용합니다.", en: "대: rear wash, after a bowel movement. 소: front wash, after urinating." },
+        { kr: "쾌변 세정: 대변 후 세정 기능입니다. 비데 세정: 여성 세정 기능입니다.", en: "쾌변 세정: extra wash after a bowel movement. 비데 세정: feminine wash." },
+        { kr: "건조: 세정 후 건조 기능입니다.", en: "건조: dries you after washing." }
+      ],
+      caution: { kr: "용변을 마치신 후 일어나면 물이 자동으로 내려가니까, 변기 안에 휴지 외에 다른 물건이 들어가지 않도록 주의해주세요", en: "The toilet flushes by itself when you stand up, so please keep anything other than toilet paper out of the bowl." },
+      photo: "bidet.jpg"
+    },
+    {
+      name: { kr: "바디드라이어", en: "Body dryer" },
+      location: { kr: "화장실 변기와 세면대 사이 바닥에 놓여있습니다.", en: "On the bathroom floor, between the toilet and the sink." },
+      usage: [
+        { kr: "샤워 후 바디드라이어 위에 올라서면", en: "After your shower, step onto the body dryer" },
+        { kr: "자동으로 바람이 나옵니다.", en: "and the air turns on by itself." },
+        { kr: "빠르고 편리하게 몸의 물기를 말릴 수 있습니다.", en: "A quick, easy way to dry off." }
+      ],
+      caution: { kr: "가급적 샤워기 물이 튀지 않게 해 주세요", en: "Try not to splash shower water on it." },
+      photo: "bodydryer.jpg"
+    },
+    {
+      name: { kr: "주방 수납", en: "Kitchen drawers" },
+      location: { kr: "인덕션 바로 아래 서랍", en: "The drawers right under the induction stove" },
+      usage: [
+        { kr: "수저와 커트러리는 인덕션 바로 아래 히든 서랍에 준비되어 있습니다.", en: "Spoons, chopsticks and cutlery are in the hidden drawer right under the induction stove." },
+        { kr: "가운데 서랍에는 매트, 행주, 여분의 비닐봉투, 키친타올 등 기타 용품이 준비되어 있습니다.", en: "The middle drawer has mats, dish cloths, spare plastic bags, paper towels and more." },
+        { kr: "맨 아래 서랍에는 조리도구와 냄비 등 요리에 필요한 주방용품이 준비되어 있습니다.", en: "The bottom drawer has cooking tools, pots and everything else for cooking." }
+      ],
+      caution: { kr: "수저는 겉에서 보이지 않는 히든 서랍에 있습니다. 큰 서랍을 열면 맨 위에 작은 서랍이 있습니다.", en: "The cutlery is in a hidden drawer you can't see from outside. Open the big drawer and there's a small drawer at the top." },
+      photo: "kitchen.jpg"
+    },
+    {
+      name: { kr: "루프탑", en: "Rooftop" },
+      location: { kr: "현관 밖 계단으로 한 층 위", en: "One floor up, by the stairs outside the front door" },
+      usage: [
+        { kr: "루프탑을 이용하시려면, 전자레인지 옆 선반의 윗칸에 필요한 용품들을 바구니에 담아두었습니다.", en: "Everything you need for the rooftop is in a basket on the top shelf next to the microwave." },
+        { kr: "옥상에서 여유로운 시간을 즐기실 수 있습니다.", en: "Enjoy a slow, easy time up there." },
+        { kr: "안전을 위해 옥상 문 앞에 파라솔과 의자를 비치해두었습니다.", en: "For safety, the parasol and chairs are kept by the rooftop door." }
+      ],
+      caution: { kr: "사용 후에는 다시 접어서 제자리에 놓아주세요.", en: "After use, please fold them and put them back." },
+      photo: "rooftop.jpg"
+    }
+  ],
+
+  /* ---------- 집 안에서: 꼭 지켜 주셨으면 하는 것 ---------- */
+  /* { } 한 줄이 한 항목입니다. 번호는 자동으로 붙습니다 */
+  houseRules: [
+    { kr: "변기에 휴지 외에 아무것도 넣지 말아 주세요", en: "Please don't put anything but toilet paper in the toilet." },
+    { kr: "흡연은 건물을 완전히 나가서 부탁드립니다.", en: "No smoking in the building. Please step fully outside." },
+    { kr: "외출시 에어컨, 전등이 모두 꺼졌는지 확인해 주세요", en: "When you go out, please check the AC and lights are off." },
+    { kr: "식기세척기에 들어가지 않는 물건과 와인잔은 손설거지 부탁드립니다.", en: "Please hand-wash wine glasses and anything that doesn't fit in the dishwasher." },
+    { kr: "오후 10시 이후에는 이웃을 위해 조용히 이용해주세요.", en: "Please keep noise to a minimum after 10 PM out of consideration for the neighbors." },
+    { kr: "실내에서는 신발을 벗어주세요. 한국의 주거 문화에 따라 실내에서는 신발을 신지 않습니다. 현관에 준비된 실내화를 이용해 주세요.", en: "Please remove your shoes indoors. In keeping with Korean home culture, shoes are not worn inside. Slippers are provided at the entrance for your use." }
+    { kr: "숙소에는 예약에 등록된 게스트만 출입할 수 있습니다. 등록되지 않은 방문객은 사전 승인이 필요하며, 경우에 따라 USD 100의 추가 요금이 발생할 수 있습니다.", en: "Only guests registered on the reservation may access the property. Unregistered visitors require prior approval and may incur an additional charge of USD 100." }
+    { kr: "침구의 손상이나 심한 오염이 발생할 경우 추가 비용이 청구될 수 있습니다.", en: "Additional charges may apply for damaged or heavily soiled bedding." }
+  ],
+
+  /* ---------- 집 안에서: 쓰레기 버리는 법 ---------- */
+  /* 단계 하나가 { } 한 덩어리입니다. title: 단계 이름 / text: 설명 (한 줄에 하나씩) / photo: 사진 */
+  trashSteps: [
+    {
+      title: { kr: "봉투 위치", en: "Where the bags are" },
+      text: [
+        { kr: "쓰레기 봉투는 주방 전자레인지 아래 서랍 안에 준비되어 있습니다.", en: "Trash bags are in the drawer under the microwave in the kitchen." },
+        { kr: "보라색 봉투: 일반쓰레기용 봉투", en: "Purple bag: general waste" },
+        { kr: "파란색 봉투: 음식물쓰레기용 봉투", en: "Blue bag: food waste" },
+        { kr: "쓰레기 봉투는 편의점에서도 구매할 수 있습니다.", en: "You can also buy trash bags at any convenience store." }
+      ],
+      photo: "trash1.jpg"
+    },
+    {
+      title: { kr: "사용 방법", en: "How to use" },
+      text: [
+        { kr: "주방 쓰레기통에 봉투를 비치하여 사용하세요.", en: "Put the bags in the kitchen bins and use them." }
+      ],
+      photo: "trash2.jpg"
+    },
+    {
+      title: { kr: "일반/음식물쓰레기 배출", en: "Taking out general and food waste" },
+      text: [
+        { kr: "봉투가 꽉 차면 빌라 현관을 나와 왼쪽 전봇대 밑에 배출해 주세요.", en: "When a bag is full, go out the villa entrance and leave it under the utility pole on the left." },
+        { kr: "음식물쓰레기는 전봇대 밑에 있는 주황색 뚜껑 통 안에 버려주세요.", en: "Food waste goes in the orange-lidded bin under the pole." }
+      ],
+      photo: "trash3.jpg"
+    },
+    {
+      title: { kr: "분리수거 배출", en: "Recycling" },
+      text: [
+        { kr: "빌라 현관을 나와 오른쪽으로 돌면 분리수거함이 있습니다. 분리하여 배출해 주세요.", en: "Go out the villa entrance and turn right to find the recycling bins. Please sort your recyclables." },
+        { kr: "위 분리수거 봉투에 종류별로 모아두면 편리하게 분리수거할 수 있습니다! 이 봉투는 일회용이 아니므로 반복 사용해 주세요.", en: "Sorting into the recycling bags makes it easy! They're not disposable, so please reuse them." }
+      ],
+      photo: "trash4.jpg"
+    }
+  ],
+
+  /* ---------- 자주 묻는 질문 ---------- */
+  /* 질문 하나가 { } 한 덩어리입니다. q: 질문 / a: 답 (한 문단에 한 줄씩) */
+  faq: [
+    {
+      q: { kr: "주변에 편의점이 어디있나요?", en: "Where's the nearest convenience store?" },
+      a: [
+        { kr: "CU 서래중앙점 (서울 서초구 서래로8길 8, 연중무휴 24시간). 97 방배로 34길에서 도보 4분 거리에 위치한 편의점으로, 간편식, 음료, 생필품 등을 편리하게 구매할 수 있습니다.", en: "CU Seorae Jungang (서울 서초구 서래로8길 8, open 24/7). A 4-minute walk from the house, with quick meals, drinks and daily essentials." }
+      ]
+    },
+    {
+      q: { kr: "새벽이나 밤늦게 음식을 먹을수 있는 곳이 있나요?", en: "Where can I eat late at night or very early?" },
+      a: [
+        { kr: "콩부자 방배점 (서울 서초구 방배로 42길 39, 연중무휴 24시간). 97 방배로 34길에서 도보 5분 거리에 위치한 인기 한식당으로, 부드러운 순두부찌개, 청국장, 두부보쌈이 유명하여 늦은 시간에도 든든한 한 끼를 즐길 수 있습니다.", en: "Kongbuja Bangbae (서울 서초구 방배로 42길 39, open 24/7). A popular Korean restaurant a 5-minute walk away, known for soft tofu stew, cheonggukjang and tofu bossam. A hearty meal, even late." },
+        { kr: "육전국밥 내방역점 (서울 서초구 방배로 184, 연중무휴 24시간). 97 방배로 34길에서 도보 8분 거리에 위치한 국밥 맛집으로, 진한 국물과 바삭한 육전(소고기전)이 유명하여 든든하고 맛있는 한 끼를 즐기기에 좋습니다.", en: "Yukjeon Gukbap Naebang Station (서울 서초구 방배로 184, open 24/7). An 8-minute walk away, known for rich soup and crispy yukjeon (beef pancakes). Filling and tasty." }
+      ]
+    },
+    {
+      q: { kr: "주변 약국이나 병원이 있나요?", en: "Is there a pharmacy or hospital nearby?" },
+      a: [
+        { kr: "응급실 (24시간): 가톨릭대학교 서울성모병원 (서울 서초구 반포대로 222, 24시간 연중무휴, 1588-1511, 응급실 02-2258-1511). 차로 약 10분 거리. 서초구에서 가장 가까운 대형 종합병원 응급실입니다.", en: "ER (24 hours): Seoul St. Mary's Hospital (서울 서초구 반포대로 222, open 24/7, 1588-1511, ER 02-2258-1511). About 10 minutes by car. The nearest major hospital ER." },
+        { kr: "야간진료 (평일): 이수리더스내과의원 (서울 서초구 동작대로 114, 유문빌딩 3층, 평일 08:30-20:00, 점심 13:00-14:00, 일요일 휴진, 02-599-8288). 밤 8시까지 진료하는 내과 의원. 차로 약 10~15분 거리입니다.", en: "Weeknight clinic: Isu Leaders Internal Medicine (서울 서초구 동작대로 114, 유문빌딩 3층, weekdays 08:30-20:00, lunch 13:00-14:00, closed Sundays, 02-599-8288). Internal medicine, open until 8 PM. About 10~15 minutes by car." },
+        { kr: "주말·공휴일 진료: 서초바로본365의원 (서울 서초구 동작대로 134, 2층, 토·일·공휴일 09:00-17:00, 점심 13:00-14:00, 02-535-0365). 내과·소아과 진료 가능. 차로 약 10~15분 거리입니다.", en: "Weekend and holiday clinic: Seocho Barobon 365 Clinic (서울 서초구 동작대로 134, 2층, Sat, Sun and holidays 09:00-17:00, lunch 13:00-14:00, 02-535-0365). Internal medicine and pediatrics. About 10~15 minutes by car." },
+        { kr: "약국: 서초제일약국 (서울 서초구 방배로 111, 근복빌딩, 연중무휴, 야간 조제 가능). 서래마을과 같은 방배로 라인으로, 가장 가까운 상시 운영 약국입니다.", en: "Pharmacy: Seocho Jeil Pharmacy (서울 서초구 방배로 111, 근복빌딩, open every day, fills prescriptions at night). On Bangbae-ro, same as Seorae Village. The closest pharmacy that's always open." },
+        { kr: "고속터미널약국 (서울 서초구 신반포로 194, 1층, 매일 09:00-21:00, 연중무휴). 심야는 아니지만 밤 9시까지 연중무휴로 운영됩니다.", en: "Express Bus Terminal Pharmacy (서울 서초구 신반포로 194, 1층, daily 09:00-21:00, open every day). Not overnight, but open until 9 PM every day." },
+        { kr: "약국이 모두 문을 닫은 심야에는 서울성모병원 응급실 내 약국(24시간)을 이용하시거나, CU 서래중앙점 같은 24시간 편의점에서 해열진통제·감기약·소화제 등 안전상비의약품을 구매하실 수 있습니다.", en: "If every pharmacy is closed late at night, use the 24-hour pharmacy inside the Seoul St. Mary's ER, or buy basic medicine (pain and fever relievers, cold medicine, digestive aids) at a 24-hour convenience store like CU Seorae Jungang." }
+      ]
+    }
+  ],
+
+  /* ---------- 동네 안내 ---------- */
+  /* 지도 가운데와 숙소 핀 위치입니다. 비워 두면(null) 숙소 핀만 사라집니다 */
+  homeLat: 37.49368,                          // 숙소 위도. 지도에 숙소 핀이 찍히는 자리입니다
+  homeLng: 126.99617,                         // 숙소 경도
+
+  /* 갈래 단추입니다. key는 아래 가게의 type과 짝이 맞아야 합니다. all은 전체 보기입니다 */
+  placeTypes: [
+    { key: "all",  label: { kr: "전체", en: "All" } },
+    { key: "food", label: { kr: "식사", en: "Food" } },
+    { key: "cafe", label: { kr: "카페", en: "Cafés" } },
+    { key: "bar",  label: { kr: "바", en: "Bars" } },
+    { key: "see",  label: { kr: "볼거리", en: "Sights" } },
+    { key: "shop", label: { kr: "장보기", en: "Groceries" } }
+  ],
+
+  /* 가게 하나가 { } 한 덩어리입니다. 덩어리를 복사해 붙이면 가게가 늘어납니다
+     name: 상호 (kr 이름으로 지도를 검색합니다) / type: 갈래(위 key 중 하나) / walk: 거리 / hours: 영업시간 / line: 한 줄 소개
+     lat, lng: 위도와 경도. 모르면 null 로 두면 목록에만 나오고 지도 핀은 안 찍힙니다 */
+  places: [
+    { name: { kr: "홈플러스 익스프레스 서래마을점", en: "Homeplus Express Seorae Village" }, type: "shop",
+      walk: { kr: "걸어서 7분", en: "7 min walk" }, hours: { kr: "08:00-23:00, 연중무휴", en: "08:00-23:00, open every day" },
+      line: { kr: "편의점으로는 부족한 날, 저녁거리와 아침 장을 한 번에", en: "When the convenience store isn't enough: dinner and breakfast groceries in one trip" },
+      lat: 37.49705, lng: 126.99807 },
+    { name: { kr: "초록마을 서래마을점", en: "Chorokmaeul Seorae Village" }, type: "shop",
+      walk: { kr: "걸어서 6분", en: "6 min walk" }, hours: { kr: "09:00-22:00, 연중무휴", en: "09:00-22:00, open every day" },
+      line: { kr: "아이 간식이나 유기농 재료를 찾는 날", en: "For kids' snacks or organic groceries" },
+      lat: 37.49619, lng: 126.99828 },
+    { name: { kr: "서래삼겹살", en: "Seorae Samgyeopsal" }, type: "food",
+      walk: { kr: "걸어서 10분", en: "10 min walk" }, hours: { kr: "11:30-23:00, 연중무휴", en: "11:30-23:00, open every day" },
+      line: { kr: "두툼한 삼겹살에 소주 한잔, 동네 사람처럼 저녁 먹고 싶은 날", en: "Thick-cut pork belly and a soju, dinner like a local" },
+      lat: 37.49790, lng: 126.99900 },
+    { name: { kr: "르 므니에 프렌치 치즈 전문점", en: "Le Meunier French Cheese Shop" }, type: "food",
+      walk: { kr: "걸어서 9분", en: "9 min walk" }, hours: { kr: "11:00-21:00, 연중무휴", en: "11:00-21:00, open every day" },
+      line: { kr: "치즈 한 접시와 와인으로 집에서 조용한 저녁을 차리고 싶은 날", en: "Pick up cheese and wine for a quiet night in" },
+      lat: 37.49797, lng: 126.99809 },
+    { name: { kr: "브루클린 버거 조인트 서래본점", en: "Brooklyn The Burger Joint Seorae" }, type: "food",
+      walk: { kr: "걸어서 8분", en: "8 min walk" }, hours: { kr: "11:00-21:30, 연중무휴", en: "11:00-21:30, open every day" },
+      line: { kr: "아이들이 한식 말고 햄버거를 찾는 날", en: "When the kids want burgers, not Korean food" },
+      lat: 37.49607, lng: 126.99973 },
+    { name: { kr: "스시고", en: "Sushi Go" }, type: "food",
+      walk: { kr: "걸어서 11분", en: "11 min walk" }, hours: { kr: "12:00-21:00, 브레이크 15:00-18:00, 연중무휴", en: "12:00-21:00, break 15:00-18:00, open every day" },
+      line: { kr: "오마카세로 조금 특별한 한 끼를 하고 싶은 날", en: "When you want a special omakase meal" },
+      lat: 37.49889, lng: 126.99787 },
+    { name: { kr: "윤", en: "Yoon" }, type: "food",
+      walk: { kr: "걸어서 13분", en: "13 min walk" }, hours: { kr: "11:30-22:00, 브레이크 15:00-17:30, 연중무휴", en: "11:30-22:00, break 15:00-17:30, open every day" },
+      line: { kr: "기념일이나 둘만의 저녁, 코스 요리가 어울리는 날", en: "An anniversary or dinner for two, a course-menu kind of night" },
+      lat: 37.49974, lng: 126.99899 },
+    { name: { kr: "라사브어", en: "La Saveur" }, type: "food",
+      walk: { kr: "걸어서 8분", en: "8 min walk" }, hours: { kr: "11:00-22:00, 브레이크 14:00-17:30, 연중무휴", en: "11:00-22:00, break 14:00-17:30, open every day" },
+      line: { kr: "서래마을에 왔으니 프렌치 한 번은 먹어 보고 싶은 날", en: "You're in Seorae Village, so try French at least once" },
+      lat: 37.49704, lng: 126.99846 },
+    { name: { kr: "우참판 서래본점", en: "Woochampan Seorae" }, type: "food",
+      walk: { kr: "걸어서 8분", en: "8 min walk" }, hours: { kr: "평일 오전 11:30~오후 10:00, 주말 오전 11:30~오후 9:30 (브레이크타임 오후 2:30~5:00)", en: "Weekdays 11:30 AM~10:00 PM, weekends 11:30 AM~9:30 PM (break 2:30~5:00 PM)" },
+      line: { kr: "점심이든 저녁이든, 유명인사들도 즐겨 찾는 서래마을 한우 맛집에 가 보고 싶은 날", en: "Lunch or dinner, the Seorae Village hanwoo beef spot even celebrities love" },
+      lat: 37.49720, lng: 126.99807 },
+    { name: { kr: "도룸", en: "Doroom" }, type: "food",
+      walk: { kr: "걸어서 5분", en: "5 min walk" }, hours: { kr: "11:30-22:00, 브레이크 15:00-18:00, 월·화 휴무", en: "11:30-22:00, break 15:00-18:00, closed Mon & Tue" },
+      line: { kr: "가까운 곳에서 조용히 둘러앉아 먹고 싶은 날", en: "A quiet meal together, just around the corner" },
+      lat: 37.49385, lng: 126.99334 },
+    { name: { kr: "봉피양 샤브 서래점", en: "Bongpiyang Shabu Seorae" }, type: "food",
+      walk: { kr: "걸어서 6분", en: "6 min walk" }, hours: { kr: "오전 11:30~오후 9:30 (월~금 15:00-17:00 브레이크타임)", en: "11:30 AM~9:30 PM (break 15:00-17:00, Mon~Fri)" },
+      line: { kr: "평양냉면에 돼지갈비, 조용한 룸에서 가족끼리 한 끼 하고 싶은 날", en: "Pyongyang cold noodles and pork galbi, a family meal in a quiet private room" },
+      lat: 37.49373, lng: 126.99200 },
+    { name: { kr: "서초면옥 본점", en: "Seocho Myeonok" }, type: "food",
+      walk: { kr: "걸어서 5분", en: "5 min walk" }, hours: { kr: "10:30-21:00, 연중무휴", en: "10:30-21:00, open every day" },
+      line: { kr: "더운 날 시원한 함흥냉면에 갈비찜 한 접시가 생각나는 날", en: "Cold Hamheung noodles and braised short ribs on a hot day" },
+      lat: 37.49390, lng: 126.99310 },
+    { name: { kr: "카페 드리옹 서래본점", en: "Cafe de Lyon Seorae" }, type: "cafe",
+      walk: { kr: "걸어서 12분", en: "12 min walk" }, hours: { kr: "09:00-22:00, 연중무휴", en: "09:00-22:00, open every day" },
+      line: { kr: "케이크 한 조각 놓고 오래 앉아 있고 싶은 오후", en: "A slice of cake and a long, slow afternoon" },
+      lat: 37.49917, lng: 126.99823 },
+    { name: { kr: "방배목장", en: "Bangbae Mokjang" }, type: "cafe",
+      walk: { kr: "걸어서 12분", en: "12 min walk" }, hours: { kr: "08:30-22:00, 연중무휴", en: "08:30-22:00, open every day" },
+      line: { kr: "아이 손 잡고 우유 아이스크림 사 먹으러 가는 날", en: "Walk the kids over for milk ice cream" },
+      lat: 37.49536, lng: 126.98939 },
+    { name: { kr: "서래마을 스퀘어가든 커피", en: "Square Garden Coffee" }, type: "cafe",
+      walk: { kr: "걸어서 9분", en: "9 min walk" }, hours: { kr: "08:40-20:00, 매월 마지막 일요일 휴무", en: "08:40-20:00, closed the last Sunday of each month" },
+      line: { kr: "제대로 내린 핸드드립 한 잔이 필요한 아침", en: "When your morning needs a proper hand-drip coffee" },
+      lat: 37.49793, lng: 126.99685 },
+    { name: { kr: "하루하날 방배점", en: "Haruhanal Bangbae" }, type: "cafe",
+      walk: { kr: "걸어서 9분", en: "9 min walk" }, hours: { kr: "09:00-20:00, 연중무휴", en: "09:00-20:00, open every day" },
+      line: { kr: "따끈한 에그타르트 하나로 산책을 마무리하고 싶은 날", en: "End your walk with a warm egg tart" },
+      lat: 37.49038, lng: 126.99265 },
+    { name: { kr: "태양커피 방배", en: "Taeyang Coffee Bangbae" }, type: "cafe",
+      walk: { kr: "걸어서 9분", en: "9 min walk" }, hours: { kr: "10:00-19:30, 연중무휴", en: "10:00-19:30, open every day" },
+      line: { kr: "줄을 서도 좋으니 소문난 아인슈페너를 마셔 보고 싶은 날", en: "Worth the line for their famous einspänner" },
+      lat: 37.49017, lng: 126.99293 },
+    { name: { kr: "피노키오", en: "Pinocchio" }, type: "cafe",
+      walk: { kr: "걸어서 9분", en: "9 min walk" }, hours: { kr: "11:00-24:00, 연중무휴", en: "11:00-24:00, open every day" },
+      line: { kr: "저녁 먹고 젤라토 한 컵 들고 걷고 싶은 밤", en: "A cup of gelato for an after-dinner stroll" },
+      lat: 37.49774, lng: 126.99752 },
+    { name: { kr: "방배동 구름떡", en: "Bangbae-dong Gureumtteok" }, type: "cafe",
+      walk: { kr: "걸어서 12분", en: "12 min walk" }, hours: { kr: "08:00-22:00", en: "08:00-22:00" },
+      line: { kr: "아침 대신 든든한 떡 한 팩이 필요한 날", en: "A filling pack of rice cakes instead of breakfast" },
+      lat: 37.49163, lng: 126.98961 },
+    { name: { kr: "메종엠오 방배본점", en: "Maison M'O Bangbae" }, type: "cafe",
+      walk: { kr: "걸어서 10분", en: "10 min walk" }, hours: { kr: "11:30-20:00, 월·화·수 휴무", en: "11:30-20:00, closed Mon, Tue & Wed" },
+      line: { kr: "선물용 프랑스 과자를 예쁘게 사 가고 싶은 날", en: "Pretty French pastries to bring as a gift" },
+      lat: 37.48929, lng: 126.99416 },
+    { name: { kr: "댄싱업하이", en: "Dancing Up High" }, type: "bar",
+      walk: { kr: "걸어서 9분", en: "9 min walk" }, hours: { kr: "12:00-22:00, 연중무휴", en: "12:00-22:00, open every day" },
+      line: { kr: "재즈 들으며 와인 한잔하고 싶은 밤", en: "Jazz and a glass of wine" },
+      lat: 37.49779, lng: 126.99707 },
+    { name: { kr: "투르뒤뱅", en: "Tour du Vin" }, type: "bar",
+      walk: { kr: "걸어서 7분", en: "7 min walk" }, hours: { kr: "14:00-01:00, 브레이크 14:05-15:00, 월요일 휴무", en: "14:00-01:00, break 14:05-15:00, closed Mon" },
+      line: { kr: "오래된 서래마을 와인바에서 천천히 한 병 비우고 싶은 밤", en: "Take your time over a bottle at an old Seorae wine bar" },
+      lat: 37.49704, lng: 126.99779 },
+    { name: { kr: "와인포럼", en: "Wine Forum" }, type: "bar",
+      walk: { kr: "걸어서 8분", en: "8 min walk" }, hours: { kr: "11:30-24:00, 일요일 휴무", en: "11:30-24:00, closed Sun" },
+      line: { kr: "날 좋은 날 테라스에서 와인 한잔하고 싶은 저녁", en: "Wine on the terrace on a nice evening" },
+      lat: 37.49779, lng: 126.99632 },
+    { name: { kr: "틈", en: "TEUM" }, type: "bar",
+      walk: { kr: "걸어서 6분", en: "6 min walk" }, hours: { kr: "18:30-02:00, 일요일 문의", en: "18:30-02:00, call ahead on Sundays" },
+      line: { kr: "아이들 재우고 둘이서 조용히 한잔하고 싶은 밤", en: "A quiet drink for two after the kids are asleep" },
+      lat: 37.49625, lng: 126.99797 },
+    { name: { kr: "베스퍼", en: "Vesper" }, type: "bar",
+      walk: { kr: "걸어서 11분", en: "11 min walk" }, hours: { kr: "11:00-03:00, 연중무휴", en: "11:00-03:00, open every day" },
+      line: { kr: "잘 만든 칵테일 한 잔으로 하루를 마무리하고 싶은 밤", en: "A well-made cocktail to end the day" },
+      lat: 37.49875, lng: 126.99785 },
+    { name: { kr: "국립중앙박물관", en: "National Museum of Korea" }, type: "see",
+      walk: { kr: "차로 약 15분", en: "About 15 min by car" }, hours: { kr: "10:00-18:00, 수·토 21:00까지, 월요일 휴무", en: "10:00-18:00, until 21:00 on Wed & Sat, closed Mon" },
+      line: { kr: "비 오는 날, 아이들과 하루 종일 실내에서 보내고 싶은 날", en: "Rainy day? Spend it indoors with the kids" },
+      lat: 37.52385, lng: 126.98047 },
+    { name: { kr: "몽마르뜨공원", en: "Montmartre Park" }, type: "see",
+      walk: { kr: "걸어서 14분", en: "14 min walk" }, hours: { kr: "상시 개방, 연중무휴", en: "Always open" },
+      line: { kr: "아침 산책으로 숲길을 걷고 싶은 날", en: "A morning walk on forest trails" },
+      lat: 37.49648, lng: 127.00404 },
+    { name: { kr: "서리풀공원", en: "Seoripul Park" }, type: "see",
+      walk: { kr: "걸어서 14분", en: "14 min walk" }, hours: { kr: "상시 개방, 연중무휴", en: "Always open" },
+      line: { kr: "사람 적은 산책로를 천천히 걷고 싶은 날", en: "A slow walk on a quiet trail" },
+      lat: 37.48887, lng: 127.00254 },
+    { name: { kr: "반포한강공원", en: "Banpo Hangang Park" }, type: "see",
+      walk: { kr: "차로 약 10분", en: "About 10 min by car" }, hours: { kr: "종일 개방, 연중무휴", en: "Open all day, every day" },
+      line: { kr: "저녁에 돗자리 펴고 달빛무지개분수를 보고 싶은 날", en: "Spread a mat in the evening and watch the Moonlight Rainbow Fountain" },
+      lat: 37.51035, lng: 126.99524 },
+    { name: { kr: "예술의전당", en: "Seoul Arts Center" }, type: "see",
+      walk: { kr: "차로 약 10분", en: "About 10 min by car" }, hours: { kr: "10:00-19:00, 월요일 휴무", en: "10:00-19:00, closed Mon" },
+      line: { kr: "공연이나 전시로 저녁을 채우고 싶은 날", en: "Fill your evening with a show or an exhibition" },
+      lat: 37.47929, lng: 127.01286 },
+    { name: { kr: "누에다리", en: "Nuedari Bridge" }, type: "see",
+      walk: { kr: "걸어서 16분", en: "16 min walk" }, hours: { kr: "24시간 개방, 연중무휴", en: "Open 24 hours" },
+      line: { kr: "해 질 녘 불 켜진 다리 위에서 사진 한 장 남기고 싶은 날", en: "A photo on the lit-up bridge at sunset" },
+      lat: 37.49672, lng: 127.00523 }
+  ],
+
+  /* ---------- 화면에 나오는 글자 ---------- */
+  /* 버튼 이름과 안내 문구입니다. 말투를 바꾸고 싶으시면 여기를 고치세요 */
+  text: {
+    roomsLine: { kr: "최대 {guests}명 / 침실 {bedrooms}개 / 욕실 {bathrooms}개", en: "Up to {guests} guests / {bedrooms} bedrooms / {bathrooms} bathroom" }, // 첫 화면 안내 줄. {guests} 같은 자리에는 위 숫자가 자동으로 들어갑니다
+    timeLine: { kr: "체크인 {checkin} / 체크아웃 {checkout}", en: "Check-in {checkin} / Check-out {checkout}" }, // 첫 화면 시간 안내 줄
+
+    menuCheckin: { kr: "체크인", en: "Check-in" },                              // 메뉴 버튼 이름: 체크인 화면
+    menuCheckinSub: { kr: "주소와 들어오는 법", en: "Address and how to get in" }, // 메뉴 버튼 아래 작은 설명
+    menuWifi: { kr: "와이파이", en: "Wi-Fi" },                                  // 메뉴 버튼 이름: 와이파이 화면
+    menuWifiSub: { kr: "이름과 비밀번호", en: "Network and password" },           // 메뉴 버튼 아래 작은 설명
+    menuHouse: { kr: "집 안에서", en: "In the house" },                          // 메뉴 버튼 이름: 집 안에서 화면
+    menuHouseSub: { kr: "시설 사용법과 쓰레기", en: "How things work, and trash" }, // 메뉴 버튼 아래 작은 설명
+    menuNearby: { kr: "동네 안내", en: "Neighborhood" },                         // 메뉴 버튼 이름: 동네 안내 화면
+    menuNearbySub: { kr: "식사, 카페, 바, 볼거리", en: "Food, cafés, bars, sights" }, // 메뉴 버튼 아래 작은 설명
+    menuFaq: { kr: "자주 묻는 질문", en: "FAQ" },                                // 메뉴 버튼 이름: 자주 묻는 질문 화면
+    menuFaqSub: { kr: "편의점, 식당, 병원", en: "Stores, late food, clinics" },    // 메뉴 버튼 아래 작은 설명
+    menuCheckout: { kr: "체크아웃", en: "Check-out" },                           // 메뉴 버튼 이름: 체크아웃 화면
+    menuCheckoutSub: { kr: "시각과 나가기 전 확인", en: "Time and a quick checklist" }, // 메뉴 버튼 아래 작은 설명
+    menuContact: { kr: "연락하기", en: "Contact" },                              // 메뉴 버튼 이름: 연락하기 화면
+    menuContactSub: { kr: "호스트에게 바로 연락", en: "Reach your host" },          // 메뉴 버튼 아래 작은 설명
+
+    back: { kr: "메뉴로 돌아가기", en: "Back to menu" },                          // 모든 화면 위쪽의 돌아가기 버튼
+
+    addressLabel: { kr: "주소", en: "Address" },                                 // 체크인 화면: 주소 제목
+    checkinLabel: { kr: "체크인", en: "Check-in" },                              // 체크인 화면: 체크인 시각 제목
+    checkoutLabel: { kr: "체크아웃", en: "Check-out" },                          // 체크인 화면: 체크아웃 시각 제목
+    doorLabel: { kr: "들어오는 법", en: "Getting in" },                           // 체크인 화면: 현관 안내 제목
+    openNaver: { kr: "네이버 지도로 열기", en: "Open in Naver Map" },              // 체크인 화면: 네이버 지도 버튼
+    openKakaoMap: { kr: "카카오맵으로 열기", en: "Open in Kakao Map" },            // 체크인 화면: 카카오맵 버튼
+    naverTip: { kr: "", en: "Naver Map works best in Korea. You can switch it to English in the app settings." }, // 지도 버튼 아래 작은 안내. 영어 화면에서만 보입니다
+    copyAddress: { kr: "주소 복사", en: "Copy address" },                        // 체크인 화면: 주소 복사 버튼
+
+    wifiNameLabel: { kr: "와이파이 이름", en: "Network" },                        // 와이파이 화면: 이름 제목
+    wifiName2Label: { kr: "2.4G 이름", en: "2.4G network" },                     // 와이파이 화면: 두 번째 이름 제목
+    wifiPasswordLabel: { kr: "비밀번호", en: "Password" },                        // 와이파이 화면: 비밀번호 제목
+    wifiTip: { kr: "집 안에서는 5G가 더 빠릅니다.", en: "5G is faster inside the house." }, // 와이파이 화면: 아래 작은 안내
+    copyPassword: { kr: "비밀번호 복사", en: "Copy password" },                    // 와이파이 화면: 비밀번호 복사 버튼
+
+    contactIntro: { kr: "궁금한 점은 편하게 연락 주세요.", en: "Any questions? Just message me." }, // 연락하기 화면: 호스트 이름 아래 안내
+    callButton: { kr: "전화 걸기", en: "Call" },                                  // 연락하기 화면: 전화 버튼
+    kakaoButton: { kr: "카카오톡으로 연락하기", en: "Message on KakaoTalk" },       // 연락하기 화면: 카카오톡 버튼
+    kakaoCopied: { kr: "카카오톡 아이디가 복사되었습니다. 친구 추가에서 붙여넣어 주세요.", en: "KakaoTalk ID copied. Paste it in Add Friend." }, // 카카오톡 버튼을 눌렀을 때 나오는 알림
+    whatsappButton: { kr: "WhatsApp으로 연락하기", en: "Message on WhatsApp" },    // 연락하기 화면: WhatsApp 버튼
+    lineButton: { kr: "LINE으로 연락하기", en: "Message on LINE" },                // 연락하기 화면: LINE 버튼
+
+    facilitiesTitle: { kr: "시설 사용법", en: "How things work" },                 // 집 안에서 화면: 첫 번째 제목
+    facilitiesHint: { kr: "이름을 누르면 사용법과 사진이 펼쳐집니다.", en: "Tap a name to see how it works, with a photo." }, // 집 안에서 화면: 첫 번째 제목 아래 안내
+    locationLabel: { kr: "위치", en: "Where" },                                  // 집 안에서 화면: 위치 앞에 붙는 글자
+    usageLabel: { kr: "사용법", en: "How to use" },                               // 집 안에서 화면: 사용법 제목
+    cautionLabel: { kr: "주의사항", en: "Please note" },                          // 집 안에서 화면: 주의사항 제목
+    rulesTitle: { kr: "꼭 지켜 주셨으면 하는 것", en: "A few house rules" },          // 집 안에서 화면: 두 번째 제목
+    trashTitle: { kr: "쓰레기 버리는 법", en: "Trash and recycling" },              // 집 안에서 화면: 세 번째 제목
+
+    faqHint: { kr: "질문을 누르면 답이 펼쳐집니다.", en: "Tap a question to see the answer." }, // 자주 묻는 질문 화면: 제목 아래 안내
+
+    nearbyHint: { kr: "지도의 점을 누르면 아래 목록의 그 가게로 이동합니다.", en: "Tap a dot on the map to jump to that place below." }, // 동네 안내 화면: 제목 아래 안내
+    hoursLabel: { kr: "영업시간", en: "Hours" },                                   // 동네 안내 화면: 영업시간 앞에 붙는 글자
+    openMapButton: { kr: "지도로 열기", en: "Open in Naver Map" },                 // 동네 안내 화면: 가게마다 있는 지도 버튼. 네이버 지도가 열립니다
+    homePin: { kr: "숙소", en: "Home" },                                          // 동네 안내 화면: 지도의 숙소 핀 이름
+    placesEmpty: { kr: "이 갈래에는 아직 가게가 없습니다.", en: "Nothing here yet." }, // 동네 안내 화면: 고른 갈래에 가게가 없을 때
+
+    checkoutTimeLabel: { kr: "체크아웃 시각", en: "Check-out time" },              // 체크아웃 화면: 시각 제목
+    checkoutListTitle: { kr: "나가기 전 확인", en: "Before you go" },               // 체크아웃 화면: 확인 목록 제목
+    checkoutProgress: { kr: "{total}개 중 {done}개 확인", en: "{done} of {total} done" }, // 체크아웃 화면: 확인 개수. {total} {done} 자리에 숫자가 들어갑니다
+    checkoutDone: { kr: "모두 확인했어요. 조심히 가세요!", en: "All done. Safe travels!" }, // 체크아웃 화면: 모두 체크했을 때
+    checkoutContact: { kr: "호스트에게 연락하기", en: "Contact your host" },         // 체크아웃 화면: 연락하기 화면으로 가는 버튼
+
+    copied: { kr: "복사되었습니다", en: "Copied" },                               // 복사 버튼을 눌렀을 때 나오는 알림
+    copyFailed: { kr: "복사가 안 되었어요. 길게 눌러 직접 복사해 주세요.", en: "Couldn't copy. Press and hold to copy it yourself." } // 복사가 안 될 때 나오는 알림
+  }
+};
+/* ============================================================
+
+        여기부터는 고치지 않으셔도 됩니다
+
+   ============================================================ */
+
+/* ---------- 언어 ---------- */
+const LANG_KEY = "guestapp-lang";
+function detectLang() {
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved === "kr" || saved === "en") return saved;
+  } catch (e) {}
+  const nav = (navigator.language || (navigator.languages && navigator.languages[0]) || "").toLowerCase();
+  return nav.indexOf("ko") === 0 ? "kr" : "en";
+}
+let LANG = detectLang();
+document.documentElement.setAttribute("data-lang", LANG);
+document.documentElement.setAttribute("lang", LANG === "kr" ? "ko" : "en");
+
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function isPair(v) {
+  return v && typeof v === "object" && ("kr" in v || "en" in v);
+}
+/* 화면용: 한국어 span 과 영어 span 을 순서대로 만듭니다 */
+function t(v, fn) {
+  if (v == null) return "";
+  const f = fn || (x => esc(x));
+  if (isPair(v)) {
+    return '<span class="kr">' + f(v.kr == null ? "" : v.kr) + '</span><span class="en">' + f(v.en == null ? "" : v.en) + '</span>';
+  }
+  return f(v);
+}
+/* 알림, 탭 이름처럼 span 을 쓸 수 없는 곳: 지금 언어의 글자만 고릅니다 */
+function pick(v) {
+  if (v == null) return "";
+  if (isPair(v)) return String(v[LANG] != null ? v[LANG] : (v.kr || v.en || ""));
+  return String(v);
+}
+function fill(tpl) {
+  return String(tpl)
+    .replace("{guests}", CONFIG.guests)
+    .replace("{bedrooms}", CONFIG.bedrooms)
+    .replace("{bathrooms}", CONFIG.bathrooms)
+    .replace("{checkin}", CONFIG.checkinTime)
+    .replace("{checkout}", CONFIG.checkoutTime);
+}
+const escFill = x => esc(fill(x));
+const escBr = x => esc(x).split("\n").join("<br>");
+
+function setTitle() {
+  const sub = pick(CONFIG.nameSub);
+  document.title = pick(CONFIG.name) + (sub ? " " + sub : "");
+}
+function setLang(key) {
+  LANG = key;
+  document.documentElement.setAttribute("data-lang", key);
+  document.documentElement.setAttribute("lang", key === "kr" ? "ko" : "en");
+  try { localStorage.setItem(LANG_KEY, key); } catch (e) {}
+  document.querySelectorAll("[data-lang-btn]").forEach(b => {
+    b.setAttribute("aria-pressed", b.getAttribute("data-lang-btn") === key);
+  });
+  setTitle();
+  updateChecks();
+}
+
+function copyText(value, message) {
+  const T = CONFIG.text;
+  const done = () => showToast(pick(message || T.copied));
+  const fallback = () => {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = value;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      ok ? done() : showToast(pick(T.copyFailed));
+    } catch (e) { showToast(pick(T.copyFailed)); }
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(value).then(done).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById("toast");
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
+}
+
+function renderLangBar() {
+  return '<div class="langbar" role="group">' +
+    (CONFIG.languages || []).map(l =>
+      '<button class="lang-btn" type="button" data-lang-btn="' + esc(l.key) + '" aria-pressed="' + (l.key === LANG) + '" lang="' + (l.key === "kr" ? "ko" : "en") + '">' + esc(l.label) + '</button>'
+    ).join("") +
+  '</div>';
+}
+
+function backButton() {
+  return '<button class="back" type="button" data-go="home">' + t(CONFIG.text.back) + '</button>';
+}
+
+function renderHome() {
+  const T = CONFIG.text;
+  const photo = CONFIG.photo
+    ? '<div class="photo" id="photoWrap"><img src="' + esc(CONFIG.photo) + '" alt="' + esc(pick(CONFIG.name)) + '" onerror="document.getElementById(\'photoWrap\').style.display=\'none\'"></div>'
+    : '';
+  const items = [
+    ["checkin", T.menuCheckin, T.menuCheckinSub],
+    ["wifi", T.menuWifi, T.menuWifiSub],
+    ["house", T.menuHouse, T.menuHouseSub],
+    ["nearby", T.menuNearby, T.menuNearbySub],
+    ["faq", T.menuFaq, T.menuFaqSub],
+    ["checkout", T.menuCheckout, T.menuCheckoutSub],
+    ["contact", T.menuContact, T.menuContactSub]
+  ];
+  return '<div class="brand">' + t(CONFIG.name) + ' <span class="name-sub">' + t(CONFIG.nameSub) + '</span></div>' +
+    photo +
+    '<header class="hero">' +
+      '<h1>' + t(CONFIG.welcome, escBr) + '</h1>' +
+      '<p class="tagline">' + t(CONFIG.tagline) + '</p>' +
+      '<p class="meta">' + t(T.roomsLine, escFill) + '<br>' + t(T.timeLine, escFill) + '</p>' +
+    '</header>' +
+    '<div class="menu">' +
+      items.map(i =>
+        '<button class="menu-btn" type="button" data-go="' + i[0] + '">' +
+          '<span class="menu-title">' + t(i[1]) + '</span>' +
+          '<span class="menu-sub">' + t(i[2]) + '</span>' +
+        '</button>'
+      ).join("") +
+    '</div>';
+}
+
+function renderCheckin() {
+  const T = CONFIG.text;
+  const q = encodeURIComponent(CONFIG.mapQuery || CONFIG.address);
+  return backButton() +
+    '<h2>' + t(T.menuCheckin) + '</h2>' +
+    '<div class="card">' +
+      '<p class="label">' + t(T.addressLabel) + '</p>' +
+      '<p class="value">' + esc(CONFIG.address) + '</p>' +
+      '<div class="btns">' +
+        '<a class="btn" href="https://map.naver.com/p/search/' + q + '" target="_blank" rel="noopener">' + t(T.openNaver) + '</a>' +
+        '<a class="btn" href="https://map.kakao.com/link/search/' + q + '" target="_blank" rel="noopener">' + t(T.openKakaoMap) + '</a>' +
+        '<button class="btn line-btn" type="button" data-copy="address">' + t(T.copyAddress) + '</button>' +
+      '</div>' +
+      '<p class="tip en">' + t(T.naverTip) + '</p>' +
+    '</div>' +
+    '<div class="card two">' +
+      '<div><p class="label">' + t(T.checkinLabel) + '</p><p class="big">' + esc(CONFIG.checkinTime) + '</p></div>' +
+      '<div><p class="label">' + t(T.checkoutLabel) + '</p><p class="big">' + esc(CONFIG.checkoutTime) + '</p></div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<p class="label">' + t(T.doorLabel) + '</p>' +
+      '<p class="value">' + t(CONFIG.doorGuide) + '</p>' +
+    '</div>';
+}
+
+function renderWifi() {
+  const T = CONFIG.text;
+  const second = CONFIG.wifiName2
+    ? '<p class="label">' + t(T.wifiName2Label) + '</p><p class="value">' + esc(CONFIG.wifiName2) + '</p>'
+    : '';
+  return backButton() +
+    '<h2>' + t(T.menuWifi) + '</h2>' +
+    '<div class="card">' +
+      '<p class="label">' + t(T.wifiNameLabel) + '</p>' +
+      '<p class="big">' + esc(CONFIG.wifiName) + '</p>' +
+      second +
+      '<p class="label">' + t(T.wifiPasswordLabel) + '</p>' +
+      '<p class="big mono">' + esc(CONFIG.wifiPassword) + '</p>' +
+      '<div class="btns">' +
+        '<button class="btn" type="button" data-copy="wifi">' + t(T.copyPassword) + '</button>' +
+      '</div>' +
+      '<p class="tip">' + t(T.wifiTip) + '</p>' +
+    '</div>';
+}
+
+function renderContact() {
+  const T = CONFIG.text;
+  let btns = "";
+  if (CONFIG.phone) {
+    btns += '<a class="btn" href="tel:' + esc(CONFIG.phone.replace(/[^0-9+]/g, "")) + '">' + t(T.callButton) + '</a>';
+  }
+  if (CONFIG.kakaoId) {
+    btns += '<button class="btn" type="button" data-copy="kakao">' + t(T.kakaoButton) + '</button>';
+  }
+  if (CONFIG.whatsapp) {
+    btns += '<a class="btn" href="https://wa.me/' + esc(CONFIG.whatsapp.replace(/[^0-9]/g, "")) + '" target="_blank" rel="noopener">' + t(T.whatsappButton) + '</a>';
+  }
+  if (CONFIG.line) {
+    btns += '<a class="btn" href="' + esc(CONFIG.line) + '" target="_blank" rel="noopener">' + t(T.lineButton) + '</a>';
+  }
+  return backButton() +
+    '<h2>' + t(T.menuContact) + '</h2>' +
+    '<div class="card">' +
+      '<p class="big">' + esc(CONFIG.hostName) + '</p>' +
+      '<p class="value">' + t(T.contactIntro) + '</p>' +
+      '<div class="btns stack">' + btns + '</div>' +
+    '</div>';
+}
+
+function photoTag(src, alt) {
+  if (!src) return "";
+  return '<img class="pic" src="' + esc(src) + '" alt="' + esc(pick(alt)) + '" loading="lazy" onerror="this.style.display=\'none\'">';
+}
+function lines(arr, cls) {
+  return (arr || []).map(v => '<p class="' + (cls || "line") + '">' + t(v) + '</p>').join("");
+}
+
+function renderHouse() {
+  const T = CONFIG.text;
+  const fac = (CONFIG.facilities || []).map(f =>
+    '<details class="acc">' +
+      '<summary>' +
+        '<span class="acc-head">' +
+          '<span class="acc-title">' + t(f.name) + '</span>' +
+          '<span class="acc-sub">' + t(T.locationLabel) + ': ' + t(f.location) + '</span>' +
+        '</span>' +
+        '<span class="acc-mark" aria-hidden="true"></span>' +
+      '</summary>' +
+      '<div class="acc-body">' +
+        '<p class="label">' + t(T.usageLabel) + '</p>' +
+        lines(f.usage) +
+        (f.caution ? '<div class="caution"><p class="label">' + t(T.cautionLabel) + '</p><p class="line">' + t(f.caution) + '</p></div>' : '') +
+        photoTag(f.photo, f.name) +
+      '</div>' +
+    '</details>'
+  ).join("");
+  const rules = '<ol class="rules">' + (CONFIG.houseRules || []).map(r => '<li>' + t(r) + '</li>').join("") + '</ol>';
+  const trash = (CONFIG.trashSteps || []).map((st, i) =>
+    '<div class="card step">' +
+      '<p class="step-title"><span class="step-no">' + (i + 1) + '</span>' + t(st.title) + '</p>' +
+      lines(st.text) +
+      photoTag(st.photo, st.title) +
+    '</div>'
+  ).join("");
+  return backButton() +
+    '<h2>' + t(T.menuHouse) + '</h2>' +
+    '<h3>' + t(T.facilitiesTitle) + '</h3>' +
+    '<p class="hint">' + t(T.facilitiesHint) + '</p>' +
+    '<div class="acc-list">' + fac + '</div>' +
+    '<h3>' + t(T.rulesTitle) + '</h3>' +
+    '<div class="card">' + rules + '</div>' +
+    '<h3>' + t(T.trashTitle) + '</h3>' +
+    trash;
+}
+
+function renderFaq() {
+  const T = CONFIG.text;
+  const items = (CONFIG.faq || []).map(f =>
+    '<details class="acc">' +
+      '<summary>' +
+        '<span class="acc-head"><span class="acc-title">' + t(f.q) + '</span></span>' +
+        '<span class="acc-mark" aria-hidden="true"></span>' +
+      '</summary>' +
+      '<div class="acc-body">' + lines(f.a, "line para") + '</div>' +
+    '</details>'
+  ).join("");
+  return backButton() +
+    '<h2>' + t(T.menuFaq) + '</h2>' +
+    '<p class="hint">' + t(T.faqHint) + '</p>' +
+    '<div class="acc-list">' + items + '</div>';
+}
+
+function renderCheckout() {
+  const T = CONFIG.text;
+  const list = (CONFIG.checkoutList || []).map((c, i) =>
+    '<li><label class="check"><input type="checkbox" data-check="' + i + '"><span>' + t(c) + '</span></label></li>'
+  ).join("");
+  return backButton() +
+    '<h2>' + t(T.menuCheckout) + '</h2>' +
+    '<div class="card">' +
+      '<p class="label">' + t(T.checkoutTimeLabel) + '</p>' +
+      '<p class="big">' + esc(CONFIG.checkoutTime) + '</p>' +
+    '</div>' +
+    '<div class="card">' +
+      '<p class="label">' + t(T.checkoutListTitle) + '</p>' +
+      '<ul class="checks">' + list + '</ul>' +
+      '<p class="tip" id="checkProgress"></p>' +
+      '<div class="btns"><button class="btn line-btn" type="button" data-go="contact">' + t(T.checkoutContact) + '</button></div>' +
+    '</div>' +
+    (CONFIG.checkoutReview ? '<div class="card review"><p class="value">' + t(CONFIG.checkoutReview) + '</p></div>' : '');
+}
+
+function hasCoord(p) {
+  return p && typeof p.lat === "number" && typeof p.lng === "number" && isFinite(p.lat) && isFinite(p.lng);
+}
+
+function renderNearby() {
+  const T = CONFIG.text;
+  const places = CONFIG.places || [];
+  const typeLabel = {};
+  (CONFIG.placeTypes || []).forEach(x => { typeLabel[x.key] = x.label; });
+  const chips = (CONFIG.placeTypes || []).map((x, i) =>
+    '<button class="chip' + (i === 0 ? ' on' : '') + '" type="button" data-filter="' + esc(x.key) + '" aria-pressed="' + (i === 0) + '">' + t(x.label) + '</button>'
+  ).join("");
+  const cards = places.map((p, i) => {
+    const q = encodeURIComponent(isPair(p.name) ? (p.name.kr || p.name.en) : p.name);
+    return '<div class="card place" id="place-' + i + '" data-type="' + esc(p.type) + '">' +
+      '<p class="place-type">' + t(typeLabel[p.type]) + '</p>' +
+      '<p class="place-name">' + t(p.name) + '</p>' +
+      '<p class="place-line">' + t(p.line) + '</p>' +
+      '<p class="place-meta">' + t(p.walk) + '</p>' +
+      '<p class="place-meta">' + t(T.hoursLabel) + ': ' + t(p.hours) + '</p>' +
+      '<div class="btns"><a class="btn line-btn" href="https://map.naver.com/p/search/' + q + '" target="_blank" rel="noopener">' + t(T.openMapButton) + '</a></div>' +
+    '</div>';
+  }).join("");
+  return backButton() +
+    '<h2>' + t(T.menuNearby) + '</h2>' +
+    '<p class="hint">' + t(T.nearbyHint) + '</p>' +
+    '<p class="hint en">' + t(T.naverTip) + '</p>' +
+    '<div class="map-wrap" id="mapWrap" hidden><div id="map"></div></div>' +
+    '<div class="chips">' + chips + '</div>' +
+    '<div id="placeList">' + cards + '</div>' +
+    '<p class="hint" id="placesEmpty" hidden>' + t(T.placesEmpty) + '</p>';
+}
+
+/* ---------- 지도 (Leaflet). 못 불러와도 목록은 그대로 보입니다 ---------- */
+const LEAFLET_JS = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";
+const LEAFLET_CSS = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
+let mapState = { tried: false, map: null, markers: [] };
+
+function loadLeaflet(done) {
+  if (window.L) { done(true); return; }
+  try {
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = LEAFLET_CSS;
+    document.head.appendChild(css);
+    const js = document.createElement("script");
+    js.src = LEAFLET_JS;
+    let finished = false;
+    const finish = ok => { if (!finished) { finished = true; done(ok && !!window.L); } };
+    js.onload = () => finish(true);
+    js.onerror = () => finish(false);
+    setTimeout(() => finish(!!window.L), 8000);
+    document.head.appendChild(js);
+  } catch (e) { done(false); }
+}
+
+function initMap() {
+  if (mapState.tried) {
+    if (mapState.map) setTimeout(() => mapState.map.invalidateSize(), 50);
+    return;
+  }
+  mapState.tried = true;
+  const withCoord = (CONFIG.places || []).map((p, i) => ({ p: p, i: i })).filter(o => hasCoord(o.p));
+  if (withCoord.length === 0) return;
+  loadLeaflet(function (ok) {
+    if (!ok) return;
+    try {
+      const wrap = document.getElementById("mapWrap");
+      wrap.hidden = false;
+      const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#1B3D29";
+      const map = L.map("map", { scrollWheelZoom: false, attributionControl: true });
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap"
+      }).addTo(map);
+      const pts = [];
+      withCoord.forEach(o => {
+        const m = L.circleMarker([o.p.lat, o.p.lng], {
+          radius: 8, color: "#FFFFFF", weight: 2, fillColor: accent, fillOpacity: 1
+        }).addTo(map);
+        m.bindTooltip(t(o.p.name), { direction: "top", offset: [0, -6] });
+        m.on("click", () => goToPlace(o.i));
+        mapState.markers.push({ marker: m, type: o.p.type });
+        pts.push([o.p.lat, o.p.lng]);
+      });
+      if (typeof CONFIG.homeLat === "number" && typeof CONFIG.homeLng === "number") {
+        L.circleMarker([CONFIG.homeLat, CONFIG.homeLng], {
+          radius: 11, color: accent, weight: 3, fillColor: "#FFFFFF", fillOpacity: 1
+        }).addTo(map).bindTooltip(t(CONFIG.text.homePin), { permanent: true, direction: "right", offset: [10, 0], className: "home-tip" });
+        pts.push([CONFIG.homeLat, CONFIG.homeLng]);
+      }
+      mapState.map = map;
+      fitMap(pts);
+    } catch (e) {
+      const wrap = document.getElementById("mapWrap");
+      if (wrap) wrap.hidden = true;
+    }
+  });
+}
+
+function nearHome(pts) {
+  if (typeof CONFIG.homeLat !== "number" || typeof CONFIG.homeLng !== "number") return pts;
+  const near = pts.filter(pt => Math.abs(pt[0] - CONFIG.homeLat) < 0.011 && Math.abs(pt[1] - CONFIG.homeLng) < 0.014);
+  return near.length >= 2 ? near : pts;
+}
+
+function fitMap(pts) {
+  const map = mapState.map;
+  if (!map || !pts.length) return;
+  pts = nearHome(pts);
+  if (pts.length === 1) { map.setView(pts[0], 16); return; }
+  map.fitBounds(pts, { padding: [24, 24], maxZoom: 16 });
+}
+
+function goToPlace(i) {
+  const card = document.getElementById("place-" + i);
+  if (!card) return;
+  if (card.hidden) setFilter("all");
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+  card.classList.remove("flash");
+  void card.offsetWidth;
+  card.classList.add("flash");
+}
+
+function setFilter(key) {
+  document.querySelectorAll("[data-filter]").forEach(b => {
+    const on = b.getAttribute("data-filter") === key;
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", on);
+  });
+  let shown = 0;
+  document.querySelectorAll("#placeList .place").forEach(c => {
+    const show = key === "all" || c.getAttribute("data-type") === key;
+    c.hidden = !show;
+    if (show) shown++;
+  });
+  const empty = document.getElementById("placesEmpty");
+  if (empty) empty.hidden = shown > 0;
+  if (mapState.map) {
+    const pts = [];
+    mapState.markers.forEach(o => {
+      const show = key === "all" || o.type === key;
+      if (show) { o.marker.addTo(mapState.map); const ll = o.marker.getLatLng(); pts.push([ll.lat, ll.lng]); }
+      else { o.marker.remove(); }
+    });
+    if (pts.length) fitMap(pts);
+  }
+}
+
+/* ---------- 체크아웃 확인 목록 ---------- */
+const CHECK_KEY = "guestapp-checkout";
+function loadChecks() {
+  try { return JSON.parse(localStorage.getItem(CHECK_KEY) || "[]"); } catch (e) { return []; }
+}
+function saveChecks(arr) {
+  try { localStorage.setItem(CHECK_KEY, JSON.stringify(arr)); } catch (e) {}
+}
+function updateChecks() {
+  const boxes = document.querySelectorAll("[data-check]");
+  const done = [];
+  boxes.forEach(b => { if (b.checked) done.push(Number(b.getAttribute("data-check"))); });
+  saveChecks(done);
+  const T = CONFIG.text;
+  const el = document.getElementById("checkProgress");
+  if (!el) return;
+  const fillCount = s => String(s).replace("{total}", boxes.length).replace("{done}", done.length);
+  el.innerHTML = (done.length === boxes.length && boxes.length > 0)
+    ? t(T.checkoutDone)
+    : t(T.checkoutProgress, x => esc(fillCount(x)));
+}
+
+const SCREENS = ["home", "checkin", "wifi", "house", "nearby", "faq", "checkout", "contact"];
+
+function showScreen(id) {
+  if (SCREENS.indexOf(id) === -1) id = "home";
+  SCREENS.forEach(s => {
+    const el = document.getElementById("screen-" + s);
+    if (el) el.hidden = (s !== id);
+  });
+  window.scrollTo(0, 0);
+  if (id === "nearby") initMap();
+}
+
+function start() {
+  setTitle();
+  if (CONFIG.accentColor) {
+    document.documentElement.style.setProperty("--accent", CONFIG.accentColor);
+  }
+  if (CONFIG.backgroundColor) {
+    document.documentElement.style.setProperty("--page", CONFIG.backgroundColor);
+  }
+  const app = document.getElementById("app");
+  app.innerHTML =
+    renderLangBar() +
+    '<section id="screen-home">' + renderHome() + '</section>' +
+    '<section id="screen-checkin" hidden>' + renderCheckin() + '</section>' +
+    '<section id="screen-wifi" hidden>' + renderWifi() + '</section>' +
+    '<section id="screen-house" hidden>' + renderHouse() + '</section>' +
+    '<section id="screen-nearby" hidden>' + renderNearby() + '</section>' +
+    '<section id="screen-faq" hidden>' + renderFaq() + '</section>' +
+    '<section id="screen-checkout" hidden>' + renderCheckout() + '</section>' +
+    '<section id="screen-contact" hidden>' + renderContact() + '</section>';
+
+  const saved = loadChecks();
+  document.querySelectorAll("[data-check]").forEach(b => {
+    if (saved.indexOf(Number(b.getAttribute("data-check"))) !== -1) b.checked = true;
+  });
+  app.addEventListener("change", function (e) {
+    if (e.target.matches("[data-check]")) updateChecks();
+  });
+  updateChecks();
+
+  app.addEventListener("click", function (e) {
+    const lb = e.target.closest("[data-lang-btn]");
+    if (lb) { setLang(lb.getAttribute("data-lang-btn")); return; }
+    const go = e.target.closest("[data-go]");
+    if (go) {
+      const id = go.getAttribute("data-go");
+      if (id === "home") {
+        history.replaceState(null, "", location.pathname + location.search);
+        showScreen("home");
+      } else {
+        location.hash = id;
+      }
+      return;
+    }
+    const fl = e.target.closest("[data-filter]");
+    if (fl) { setFilter(fl.getAttribute("data-filter")); return; }
+    const cp = e.target.closest("[data-copy]");
+    if (cp) {
+      const kind = cp.getAttribute("data-copy");
+      if (kind === "address") copyText(CONFIG.address);
+      if (kind === "wifi") copyText(CONFIG.wifiPassword);
+      if (kind === "kakao") {
+        copyText(CONFIG.kakaoId, CONFIG.text.kakaoCopied);
+        setTimeout(function () { window.location.href = "kakaotalk://"; }, 1200);
+      }
+    }
+  });
+
+  window.addEventListener("hashchange", function () {
+    showScreen(location.hash.replace("#", "") || "home");
+  });
+  showScreen(location.hash.replace("#", "") || "home");
+}
+
+document.addEventListener("DOMContentLoaded", start);
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --accent: #1B3D29;
+  --page: #F5F1EC;
+  --card: #FFFFFF;
+  --ink: #222222;
+  --muted: #666666;
+  --line: #D9D4C7;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --serif: "Gowun Batang", "Noto Serif KR", "AppleMyungjo", "Batang", Georgia, serif;
+  --sans: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+}
+
+/* 언어: 고른 언어의 span 만 보입니다 */
+html[data-lang="kr"] .en { display: none; }
+html[data-lang="en"] .kr { display: none; }
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-text-size-adjust: 100%;
+}
+#app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 20px calc(40px + env(safe-area-inset-bottom, 0px));
+}
+section[hidden] { display: none; }
+
+.langbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: 0 0 12px;
+}
+.lang-btn {
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.lang-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+
+.brand {
+  padding: 0 0 8px;
+  font-family: var(--serif);
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+.photo {
+  margin: 12px 0 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--line);
+  aspect-ratio: 4 / 3;
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.hero {
+  padding: 32px 0 32px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+h1 {
+  margin: 0 0 18px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(34px, 9vw, 46px);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+.name-sub { font-size: 18px; letter-spacing: 0; white-space: nowrap; }
+.tagline { margin: 0; max-width: 34ch; color: var(--muted); font-size: 16px; }
+.meta { margin: 22px 0 0; color: var(--muted); font-size: 16px; }
+
+.menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.menu-btn {
+  min-height: 110px;
+  padding: 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 4px;
+}
+.menu-btn:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  min-height: 88px;
+}
+.menu-btn:active { border-color: var(--accent); }
+.menu-title { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--accent); }
+.menu-sub { font-size: 16px; color: var(--muted); }
+
+h2 { margin: 12px 0 16px; font-family: var(--serif); font-weight: 700; font-size: 24px; color: var(--accent); }
+
+.back {
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.card.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.label { margin: 0 0 2px; font-size: 16px; color: var(--muted); }
+.label ~ .label { margin-top: 14px; }
+.value { margin: 0; font-size: 16px; }
+.big { margin: 0; font-family: var(--serif); font-size: 24px; font-weight: 700; }
+.mono { font-family: var(--sans); font-size: 20px; font-weight: 600; letter-spacing: 0.02em; word-break: break-all; }
+.tip { margin: 14px 0 0; font-size: 16px; color: var(--muted); }
+
+.btns { display: grid; gap: 10px; margin-top: 16px; }
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent);
+  color: #FFFFFF;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+.btn.line-btn { background: var(--card); color: var(--accent); }
+.btn:active { opacity: 0.85; }
+
+button:focus-visible, a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+h3 {
+  margin: 32px 0 6px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ink);
+}
+.hint { margin: 0 0 14px; font-size: 16px; color: var(--muted); }
+.line { margin: 0 0 8px; font-size: 16px; }
+.line.para { margin-bottom: 14px; }
+
+.acc-list { display: grid; gap: 10px; }
+.acc {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.acc summary {
+  list-style: none;
+  cursor: pointer;
+  min-height: 56px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.acc summary::-webkit-details-marker { display: none; }
+.acc-head { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.acc-title { font-family: var(--serif); font-weight: 700; font-size: 18px; color: var(--accent); }
+.acc-sub { font-size: 16px; color: var(--muted); }
+.acc-mark { position: relative; width: 16px; height: 16px; flex-shrink: 0; }
+.acc-mark::before, .acc-mark::after {
+  content: "";
+  position: absolute;
+  left: 0; top: 7px;
+  width: 16px; height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transition: transform 0.2s;
+}
+.acc-mark::after { transform: rotate(90deg); }
+.acc[open] .acc-mark::after { transform: rotate(0deg); }
+.acc-body { padding: 0 18px 18px; }
+.acc-body .label { margin-top: 4px; }
+.caution {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--page);
+}
+.caution .line { margin: 0; }
+
+.pic {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-top: 14px;
+  border-radius: 8px;
+}
+
+.rules { margin: 0; padding-left: 22px; }
+.rules li { margin: 0 0 10px; font-size: 16px; }
+.rules li:last-child { margin-bottom: 0; }
+
+.step-title {
+  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--accent);
+}
+.step-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.checks { list-style: none; margin: 8px 0 0; padding: 0; }
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-height: 48px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+  cursor: pointer;
+}
+.check input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  flex-shrink: 0;
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  background: var(--card);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.check input:checked { background: var(--accent); }
+.check input:checked::after {
+  content: "";
+  width: 6px;
+  height: 11px;
+  border: solid #FFFFFF;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+.check input:checked + span { color: var(--muted); text-decoration: line-through; }
+
+.review { background: var(--accent); border-color: var(--accent); }
+.review .value { color: #FFFFFF; }
+
+.map-wrap {
+  margin: 0 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.map-wrap[hidden] { display: none; }
+#map { width: 100%; height: 260px; }
+.home-tip { font-family: var(--sans); font-weight: 600; font-size: 13px; }
+
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 0 14px;
+  -webkit-overflow-scrolling: touch;
+}
+.chip {
+  flex-shrink: 0;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.chip.on { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+
+.place[hidden] { display: none; }
+.place-type { margin: 0 0 2px; font-size: 16px; color: var(--muted); }
+.place-name { margin: 0 0 6px; font-family: var(--serif); font-weight: 700; font-size: 20px; color: var(--accent); }
+.place-line { margin: 0 0 10px; font-size: 16px; }
+.place-meta { margin: 0 0 2px; font-size: 16px; color: var(--muted); }
+.place.flash { animation: flash 1.4s ease-out; }
+@keyframes flash {
+  0% { box-shadow: 0 0 0 3px var(--accent); }
+  100% { box-shadow: var(--shadow); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .place.flash { animation: none; outline: 3px solid var(--accent); }
+}
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 480px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: #222222;
+  color: #FFFFFF;
+  font-size: 16px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
