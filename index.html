@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title></title>
+
+<script>
+/* ============================================================
+   ============================================================
+
+        여기만 고치세요
+
+        이 CONFIG 블록 안의 글자만 바꾸시면 됩니다.
+        큰따옴표 " " 안의 글자만 고치시고,
+        따옴표와 쉼표는 지우지 마세요.
+
+   ============================================================
+   ============================================================ */
+const CONFIG = {
+
+  /* ---------- 숙소 기본 정보 ---------- */
+  name: "Gangnam Calme",                     // 숙소 이름. 첫 화면 맨 위 왼쪽에 작게 나오고, 브라우저 탭 이름에도 나옵니다
+  nameSub: "- 강남칼므",                     // 숙소 이름 뒤에 더 작게 붙는 글자. 필요 없으면 "" 로 비워 두세요
+  welcome: "잘 오셨어요.\n이제 여정을 천천히.", // 첫 화면의 큰 환영 문장. \n 자리에서 줄이 바뀝니다
+  tagline: "서래마을의 고요한 가족 집. 머무시는 동안 필요한 건 모두 이 페이지에 있어요.", // 한 줄 소개. 큰 환영 문장 아래에 회색으로 나옵니다
+  photo: "/main.jpg",                     // 첫 화면 사진. img 폴더에 main.jpg 파일을 넣어 주세요. 사진이 없으면 사진 자리만 사라집니다 [샘플입니다. 바꿔 주세요]
+  accentColor: "#1B3D29",                     // 강조색. 버튼과 제목 색이 모두 이 색으로 바뀝니다
+  backgroundColor: "#F5F1EC",                 // 바탕색. 화면 전체 배경색이 바뀝니다. 카드와 버튼 안쪽은 흰색으로 유지됩니다
+  guests: 7,                                  // 최대 인원. 첫 화면 안내 줄에 나옵니다
+  bedrooms: 2,                                // 침실 수. 첫 화면 안내 줄에 나옵니다
+  bathrooms: 1,                               // 욕실 수. 첫 화면 안내 줄에 나옵니다
+
+  /* ---------- 체크인 ---------- */
+  address: "서울시 서초구 방배로34길 97 방배하이빌 11차 501호", // 화면에 보이는 주소. 주소 복사 버튼도 이 값을 복사합니다
+  mapQuery: "서울 서초구 방배로34길 97",       // 지도 앱에서 검색할 주소. 호수는 넣지 않는 것이 검색이 잘 됩니다
+  checkinTime: "16:00",                       // 체크인 시각. 이 값을 바꾸면 앱 전체에 반영됩니다
+  checkoutTime: "12:00",                      // 체크아웃 시각. 이 값을 바꾸면 앱 전체에 반영됩니다
+  doorGuide: "공동현관과 501호 현관 모두 비밀번호를 누르면 열립니다. 비밀번호는 체크인 당일 문자로 보내 드립니다.", // 현관 여는 법. 실제 비밀번호는 절대 넣지 마세요
+
+  /* ---------- 와이파이 ---------- */
+  wifiName: "U+Net3878_5G",                   // 와이파이 이름 (5G). 와이파이 화면에 크게 나옵니다
+  wifiName2: "U+Net3878",                     // 두 번째 와이파이 이름 (2.4G). 필요 없으면 "" 로 비워 두세요
+  wifiPassword: "C004E7#68K",                 // 와이파이 비밀번호. 비밀번호 복사 버튼도 이 값을 복사합니다
+
+  /* ---------- 호스트 연락처 ---------- */
+  /* 쓰지 않는 연락 방법은 "" 로 비워 두면 그 버튼이 사라집니다 */
+  hostName: "Amy",                            // 호스트 이름. 연락하기 화면에 나옵니다
+  phone: "010-5777-0876",                     // 전화번호. 전화 걸기 버튼을 누르면 이 번호로 전화가 걸립니다
+  kakaoId: "mihoya86",                        // 카카오톡 아이디. 버튼을 누르면 아이디가 복사되고 카카오톡이 열립니다
+  whatsapp: "821057770876",                   // WhatsApp 번호. 82로 시작하고 맨 앞 0과 하이픈은 뺍니다
+  line: "https://line.me/ti/p/fWpK6Xm7tx",    // LINE 친구 추가 링크. 버튼을 눌러 Amy님 프로필이 열리는지 꼭 확인해 주세요
+
+  /* ---------- 체크아웃 ---------- */
+  /* 나가기 전 확인 목록. 한 줄에 하나씩, 줄을 늘리거나 줄여도 됩니다 */
+  checkoutList: [
+    "보일러, 전등, 에어컨을 모두 꺼주세요.",
+    "호스트에게 체크아웃한다고 말씀해주세요!"
+  ],
+
+  /* ---------- 집 안에서: 시설 사용법 ---------- */
+  /* 칸 하나가 { } 한 덩어리입니다. 덩어리를 복사해 붙이면 칸이 늘어납니다
+     name: 이름 / location: 위치 / usage: 사용법 (한 줄에 하나씩) / caution: 주의사항 / photo: img 폴더의 사진 */
+  facilities: [
+    {
+      name: "보일러",
+      location: "온수 조절은 거실에 있고, 각 방에 방별 온도 조절기가 있습니다.",
+      usage: [
+        "1. 여름철 사용 시: 1) 오른쪽 가운데 “온수 전용” 버튼을 누릅니다. 2) 다이얼을 돌려 온수 온도를 45~50도로 조절합니다.",
+        "2. 겨울철 사용 시: 1) 왼쪽 위 “난방” 버튼(집 모양)을 눌러 난방 모드로 전환합니다. 2) 다이얼을 돌려 원하는 온도를 설정합니다."
+      ],
+      caution: "보일러 전원은 항상 켜 두어야 정상 작동합니다.",
+      photo: "/boiler.jpg"
+    },
+    {
+      name: "인터폰",
+      location: "거실 보일러 조절기 바로 위에 있습니다",
+      usage: [
+        "배달이나 방문객이 1층에서 초인종을 누르면, 위 인터폰을 확인한 뒤 아래 순서대로 버튼을 누르면 1층 공동현관 문이 열립니다.",
+        "1. 방문자 확인",
+        "2. 사람모양 버튼 누르기",
+        "3. 열쇠모양 버튼 누르기"
+      ],
+      caution: "문 앞에서 초인종을 누르면 방문자를 확인하시고 직접 현관문을 열어주세요. 통화가 끝나면 화면은 자동으로 꺼집니다.",
+      photo: "/intercom.jpg"
+    },
+    {
+      name: "에어컨 리모컨",
+      location: "각 방마다 있고, 총 세개입니다.(거실, 방 2개 각 1개씩)",
+      usage: [
+        "전원: 에어컨을 켜거나 끕니다.",
+        "운전선택: 냉방 → 송풍 → 제습 순서로 변경됩니다.",
+        "희망온도 조절: ▲ 또는 ▼ 버튼으로 희망하는 온도를 조절합니다."
+      ],
+      caution: "전원을 켰을때 에어컨 오른쪽에 초록불이 들어오면 작동하는 상태이고, 불이 안들어오면 꺼진 상태입니다.",
+      photo: "/aircon.jpg"
+    },
+    {
+      name: "음용수 안내",
+      location: "냉장고 안에 필터 정수기가 있습니다.(제로워터)",
+      usage: [
+        "탭워터도 드셔도 괜찮습니다.",
+        "그냥 물을 드실 때는 냉장고 안에 제로워터 정수기 통이 있으니, 그 통에 채워서 드시는 것을 추천드립니다.",
+        "또는 생수를 드시는 것도 좋습니다."
+      ],
+      caution: "필터정수기의 물이 부족하면, 위의 뚜껑을 밀어서 여시고 탭워터(수돗물)를 채워서 드시면 됩니다.",
+      photo: "/water.jpg"
+    },
+    {
+      name: "화장실 비데 사용 안내",
+      location: "비데 리모콘은 변기 왼쪽 벽에 붙어 있습니다.",
+      usage: [
+        "대변 (대): 대변 시 사용합니다. 소변 (소): 소변 시 사용합니다.",
+        "쾌변 세정: 대변 후 세정 기능입니다. 비데 세정: 여성 세정 기능입니다.",
+        "건조: 세정 후 건조 기능입니다."
+      ],
+      caution: "용변을 마치신 후 일어나면 물이 자동으로 내려가니까, 변기 안에 휴지 외에 다른 물건이 들어가지 않도록 주의해주세요",
+      photo: "/bidet.jpg"
+    },
+    {
+      name: "바디드라이어",
+      location: "화장실 변기와 세면대 사이 바닥에 놓여있습니다.",
+      usage: [
+        "샤워 후 바디드라이어 위에 올라서면",
+        "자동으로 바람이 나옵니다.",
+        "빠르고 편리하게 몸의 물기를 말릴 수 있습니다."
+      ],
+      caution: "가급적 샤워기 물이 튀지 않게 해 주세요",
+      photo: "/bodydryer.jpg"
+    },
+    {
+      name: "주방 수납",
+      location: "인덕션 바로 아래 서랍",
+      usage: [
+        "수저와 커트러리는 인덕션 바로 아래 히든 서랍에 준비되어 있습니다.",
+        "가운데 서랍에는 매트, 행주, 여분의 비닐봉투, 키친타올 등 기타 용품이 준비되어 있습니다.",
+        "맨 아래 서랍에는 조리도구와 냄비 등 요리에 필요한 주방용품이 준비되어 있습니다."
+      ],
+      caution: "수저는 겉에서 보이지 않는 히든 서랍에 있습니다. 큰 서랍을 열면 맨 위에 작은 서랍이 있습니다.",
+      photo: "/kitchen.jpg"
+    },
+    {
+      name: "루프탑",
+      location: "현관 밖 계단으로 한 층 위",
+      usage: [
+        "루프탑을 이용하시려면, 전자레인지 옆 선반의 윗칸에 필요한 용품들을 바구니에 담아두었습니다.",
+        "옥상에서 여유로운 시간을 즐기실 수 있습니다.",
+        "안전을 위해 옥상 문 앞에 파라솔과 의자를 비치해두었습니다."
+      ],
+      caution: "사용 후에는 다시 접어서 제자리에 놓아주세요.",
+      photo: "/rooftop.jpg"
+    }
+  ],
+
+  /* ---------- 집 안에서: 꼭 지켜 주셨으면 하는 것 ---------- */
+  /* 한 줄에 하나씩. 번호는 자동으로 붙습니다 */
+  houseRules: [
+    "변기에 휴지 외에 아무것도 넣지 말아 주세요",
+    "흡연은 건물을 완전히 나가서 부탁드립니다.",
+    "외출시 에어컨, 전등이 모두 꺼졌는지 확인해 주세요",
+    "식기세척기에 들어가지 않는 물건과 와인잔은 손설거지 부탁드립니다."
+  ],
+
+  /* ---------- 집 안에서: 쓰레기 버리는 법 ---------- */
+  /* 단계 하나가 { } 한 덩어리입니다. title: 단계 이름 / text: 설명 (한 줄에 하나씩) / photo: 사진 */
+  trashSteps: [
+    {
+      title: "봉투 위치",
+      text: [
+        "쓰레기 봉투는 주방 전자레인지 아래 서랍 안에 준비되어 있습니다.",
+        "보라색 봉투: 일반쓰레기용 봉투",
+        "파란색 봉투: 음식물쓰레기용 봉투",
+        "쓰레기 봉투는 편의점에서도 구매할 수 있습니다."
+      ],
+      photo: "/trash1.jpg"
+    },
+    {
+      title: "사용 방법",
+      text: ["주방 쓰레기통에 봉투를 비치하여 사용하세요."],
+      photo: "/trash2.jpg"
+    },
+    {
+      title: "일반/음식물쓰레기 배출",
+      text: [
+        "봉투가 꽉 차면 빌라 현관을 나와 왼쪽 전봇대 밑에 배출해 주세요.",
+        "음식물쓰레기는 전봇대 밑에 있는 주황색 뚜껑 통 안에 버려주세요."
+      ],
+      photo: "/trash3.jpg"
+    },
+    {
+      title: "분리수거 배출",
+      text: [
+        "빌라 현관을 나와 오른쪽으로 돌면 분리수거함이 있습니다. 분리하여 배출해 주세요.",
+        "위 분리수거 봉투에 종류별로 모아두면 편리하게 분리수거할 수 있습니다! 이 봉투는 일회용이 아니므로 반복 사용해 주세요."
+      ],
+      photo: "/trash4.jpg"
+    }
+  ],
+
+  /* ---------- 자주 묻는 질문 ---------- */
+  /* 질문 하나가 { } 한 덩어리입니다. q: 질문 / a: 답 (한 문단에 한 줄씩) */
+  faq: [
+    {
+      q: "주변에 편의점이 어디있나요?",
+      a: [
+        "CU 서래중앙점 (서울 서초구 서래로8길 8, 연중무휴 24시간). 97 방배로 34길에서 도보 4분 거리에 위치한 편의점으로, 간편식, 음료, 생필품 등을 편리하게 구매할 수 있습니다."
+      ]
+    },
+    {
+      q: "새벽이나 밤늦게 음식을 먹을수 있는 곳이 있나요?",
+      a: [
+        "콩부자 방배점 (서울 서초구 방배로 42길 39, 연중무휴 24시간). 97 방배로 34길에서 도보 5분 거리에 위치한 인기 한식당으로, 부드러운 순두부찌개, 청국장, 두부보쌈이 유명하여 늦은 시간에도 든든한 한 끼를 즐길 수 있습니다.",
+        "육전국밥 내방역점 (서울 서초구 방배로 184, 연중무휴 24시간). 97 방배로 34길에서 도보 8분 거리에 위치한 국밥 맛집으로, 진한 국물과 바삭한 육전(소고기전)이 유명하여 든든하고 맛있는 한 끼를 즐기기에 좋습니다."
+      ]
+    },
+    {
+      q: "주변 약국이나 병원이 있나요?",
+      a: [
+        "응급실 (24시간): 가톨릭대학교 서울성모병원 (서울 서초구 반포대로 222, 24시간 연중무휴, 1588-1511, 응급실 02-2258-1511). 차로 약 10분 거리. 서초구에서 가장 가까운 대형 종합병원 응급실입니다.",
+        "야간진료 (평일): 이수리더스내과의원 (서울 서초구 동작대로 114, 유문빌딩 3층, 평일 08:30-20:00, 점심 13:00-14:00, 일요일 휴진, 02-599-8288). 밤 8시까지 진료하는 내과 의원. 차로 약 10~15분 거리입니다.",
+        "주말·공휴일 진료: 서초바로본365의원 (서울 서초구 동작대로 134, 2층, 토·일·공휴일 09:00-17:00, 점심 13:00-14:00, 02-535-0365). 내과·소아과 진료 가능. 차로 약 10~15분 거리입니다.",
+        "약국: 서초제일약국 (서울 서초구 방배로 111, 근복빌딩, 연중무휴, 야간 조제 가능). 서래마을과 같은 방배로 라인으로, 가장 가까운 상시 운영 약국입니다.",
+        "고속터미널약국 (서울 서초구 신반포로 194, 1층, 매일 09:00-21:00, 연중무휴). 심야는 아니지만 밤 9시까지 연중무휴로 운영됩니다.",
+        "약국이 모두 문을 닫은 심야에는 서울성모병원 응급실 내 약국(24시간)을 이용하시거나, CU 서래중앙점 같은 24시간 편의점에서 해열진통제·감기약·소화제 등 안전상비의약품을 구매하실 수 있습니다."
+      ]
+    }
+  ],
+
+  /* ---------- 화면에 나오는 글자 ---------- */
+  /* 버튼 이름과 안내 문구입니다. 말투를 바꾸고 싶으시면 여기를 고치세요 */
+  text: {
+    roomsLine: "최대 {guests}명 / 침실 {bedrooms}개 / 욕실 {bathrooms}개", // 첫 화면 안내 줄. {guests} 같은 자리에는 위 숫자가 자동으로 들어갑니다
+    timeLine: "체크인 {checkin} / 체크아웃 {checkout}",                     // 첫 화면 시간 안내 줄
+
+    menuCheckin: "체크인",                     // 메뉴 버튼 이름: 체크인 화면
+    menuCheckinSub: "주소와 들어오는 법",       // 메뉴 버튼 아래 작은 설명
+    menuWifi: "와이파이",                      // 메뉴 버튼 이름: 와이파이 화면
+    menuWifiSub: "이름과 비밀번호",             // 메뉴 버튼 아래 작은 설명
+    menuContact: "연락하기",                   // 메뉴 버튼 이름: 연락하기 화면
+    menuContactSub: "호스트에게 바로 연락",      // 메뉴 버튼 아래 작은 설명
+    menuHouse: "집 안에서",                    // 메뉴 버튼 이름: 집 안에서 화면
+    menuHouseSub: "시설 사용법과 쓰레기",        // 메뉴 버튼 아래 작은 설명
+    menuFaq: "자주 묻는 질문",                  // 메뉴 버튼 이름: 자주 묻는 질문 화면
+    menuFaqSub: "편의점, 식당, 병원",           // 메뉴 버튼 아래 작은 설명
+    menuCheckout: "체크아웃",                  // 메뉴 버튼 이름: 체크아웃 화면
+    menuCheckoutSub: "시각과 나가기 전 확인",     // 메뉴 버튼 아래 작은 설명
+
+    back: "메뉴로 돌아가기",                   // 모든 화면 위쪽의 돌아가기 버튼
+
+    addressLabel: "주소",                      // 체크인 화면: 주소 제목
+    checkinLabel: "체크인",                    // 체크인 화면: 체크인 시각 제목
+    checkoutLabel: "체크아웃",                 // 체크인 화면: 체크아웃 시각 제목
+    doorLabel: "들어오는 법",                  // 체크인 화면: 현관 안내 제목
+    openNaver: "네이버 지도로 열기",            // 체크인 화면: 네이버 지도 버튼
+    openKakaoMap: "카카오맵으로 열기",          // 체크인 화면: 카카오맵 버튼
+    copyAddress: "주소 복사",                  // 체크인 화면: 주소 복사 버튼
+
+    wifiNameLabel: "와이파이 이름",             // 와이파이 화면: 이름 제목
+    wifiName2Label: "2.4G 이름",               // 와이파이 화면: 두 번째 이름 제목
+    wifiPasswordLabel: "비밀번호",              // 와이파이 화면: 비밀번호 제목
+    wifiTip: "집 안에서는 5G가 더 빠릅니다.",    // 와이파이 화면: 아래 작은 안내
+    copyPassword: "비밀번호 복사",              // 와이파이 화면: 비밀번호 복사 버튼
+
+    contactIntro: "궁금한 점은 편하게 연락 주세요.", // 연락하기 화면: 호스트 이름 아래 안내
+    callButton: "전화 걸기",                   // 연락하기 화면: 전화 버튼
+    kakaoButton: "카카오톡으로 연락하기",        // 연락하기 화면: 카카오톡 버튼
+    kakaoCopied: "카카오톡 아이디가 복사되었습니다. 친구 추가에서 붙여넣어 주세요.", // 카카오톡 버튼을 눌렀을 때 나오는 알림
+    whatsappButton: "WhatsApp으로 연락하기",    // 연락하기 화면: WhatsApp 버튼
+    lineButton: "LINE으로 연락하기",            // 연락하기 화면: LINE 버튼
+
+    facilitiesTitle: "시설 사용법",             // 집 안에서 화면: 첫 번째 제목
+    facilitiesHint: "이름을 누르면 사용법과 사진이 펼쳐집니다.", // 집 안에서 화면: 첫 번째 제목 아래 안내
+    locationLabel: "위치",                     // 집 안에서 화면: 위치 앞에 붙는 글자
+    usageLabel: "사용법",                      // 집 안에서 화면: 사용법 제목
+    cautionLabel: "주의사항",                  // 집 안에서 화면: 주의사항 제목
+    rulesTitle: "꼭 지켜 주셨으면 하는 것",       // 집 안에서 화면: 두 번째 제목
+    trashTitle: "쓰레기 버리는 법",              // 집 안에서 화면: 세 번째 제목
+
+    faqHint: "질문을 누르면 답이 펼쳐집니다.",    // 자주 묻는 질문 화면: 제목 아래 안내
+
+    checkoutTimeLabel: "체크아웃 시각",          // 체크아웃 화면: 시각 제목
+    checkoutListTitle: "나가기 전 확인",         // 체크아웃 화면: 확인 목록 제목
+    checkoutProgress: "{total}개 중 {done}개 확인", // 체크아웃 화면: 확인 개수. {total} {done} 자리에 숫자가 들어갑니다
+    checkoutDone: "모두 확인했어요. 조심히 가세요!", // 체크아웃 화면: 모두 체크했을 때
+    checkoutContact: "호스트에게 연락하기",       // 체크아웃 화면: 연락하기 화면으로 가는 버튼
+
+    copied: "복사되었습니다",                   // 복사 버튼을 눌렀을 때 나오는 알림
+    copyFailed: "복사가 안 되었어요. 길게 눌러 직접 복사해 주세요." // 복사가 안 될 때 나오는 알림
+  }
+};
+/* ============================================================
+
+        여기부터는 고치지 않으셔도 됩니다
+
+   ============================================================ */
+
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function fill(tpl) {
+  return String(tpl)
+    .replace("{guests}", CONFIG.guests)
+    .replace("{bedrooms}", CONFIG.bedrooms)
+    .replace("{bathrooms}", CONFIG.bathrooms)
+    .replace("{checkin}", CONFIG.checkinTime)
+    .replace("{checkout}", CONFIG.checkoutTime);
+}
+
+function copyText(value, message) {
+  const T = CONFIG.text;
+  const done = () => showToast(message || T.copied);
+  const fallback = () => {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = value;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      ok ? done() : showToast(T.copyFailed);
+    } catch (e) { showToast(T.copyFailed); }
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(value).then(done).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById("toast");
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
+}
+
+function backButton() {
+  return '<button class="back" type="button" data-go="home">' + esc(CONFIG.text.back) + '</button>';
+}
+
+function renderHome() {
+  const T = CONFIG.text;
+  const photo = CONFIG.photo
+    ? '<div class="photo" id="photoWrap"><img src="' + esc(CONFIG.photo) + '" alt="' + esc(CONFIG.name) + '" onerror="document.getElementById(\'photoWrap\').style.display=\'none\'"></div>'
+    : '';
+  const items = [
+    ["checkin", T.menuCheckin, T.menuCheckinSub],
+    ["wifi", T.menuWifi, T.menuWifiSub],
+    ["house", T.menuHouse, T.menuHouseSub],
+    ["faq", T.menuFaq, T.menuFaqSub],
+    ["checkout", T.menuCheckout, T.menuCheckoutSub],
+    ["contact", T.menuContact, T.menuContactSub]
+  ];
+  return '<div class="brand">' + esc(CONFIG.name) + (CONFIG.nameSub ? ' <span class="name-sub">' + esc(CONFIG.nameSub) + '</span>' : '') + '</div>' +
+    photo +
+    '<header class="hero">' +
+      '<h1>' + esc(CONFIG.welcome).split("\n").join("<br>") + '</h1>' +
+      '<p class="tagline">' + esc(CONFIG.tagline) + '</p>' +
+      '<p class="meta">' + esc(fill(T.roomsLine)) + '<br>' + esc(fill(T.timeLine)) + '</p>' +
+    '</header>' +
+    '<div class="menu">' +
+      items.map(i =>
+        '<button class="menu-btn" type="button" data-go="' + i[0] + '">' +
+          '<span class="menu-title">' + esc(i[1]) + '</span>' +
+          '<span class="menu-sub">' + esc(i[2]) + '</span>' +
+        '</button>'
+      ).join("") +
+    '</div>';
+}
+
+function renderCheckin() {
+  const T = CONFIG.text;
+  const q = encodeURIComponent(CONFIG.mapQuery || CONFIG.address);
+  return backButton() +
+    '<h2>' + esc(T.menuCheckin) + '</h2>' +
+    '<div class="card">' +
+      '<p class="label">' + esc(T.addressLabel) + '</p>' +
+      '<p class="value">' + esc(CONFIG.address) + '</p>' +
+      '<div class="btns">' +
+        '<a class="btn" href="https://map.naver.com/p/search/' + q + '" target="_blank" rel="noopener">' + esc(T.openNaver) + '</a>' +
+        '<a class="btn" href="https://map.kakao.com/link/search/' + q + '" target="_blank" rel="noopener">' + esc(T.openKakaoMap) + '</a>' +
+        '<button class="btn line-btn" type="button" data-copy="address">' + esc(T.copyAddress) + '</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="card two">' +
+      '<div><p class="label">' + esc(T.checkinLabel) + '</p><p class="big">' + esc(CONFIG.checkinTime) + '</p></div>' +
+      '<div><p class="label">' + esc(T.checkoutLabel) + '</p><p class="big">' + esc(CONFIG.checkoutTime) + '</p></div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<p class="label">' + esc(T.doorLabel) + '</p>' +
+      '<p class="value">' + esc(CONFIG.doorGuide) + '</p>' +
+    '</div>';
+}
+
+function renderWifi() {
+  const T = CONFIG.text;
+  const second = CONFIG.wifiName2
+    ? '<p class="label">' + esc(T.wifiName2Label) + '</p><p class="value">' + esc(CONFIG.wifiName2) + '</p>'
+    : '';
+  return backButton() +
+    '<h2>' + esc(T.menuWifi) + '</h2>' +
+    '<div class="card">' +
+      '<p class="label">' + esc(T.wifiNameLabel) + '</p>' +
+      '<p class="big">' + esc(CONFIG.wifiName) + '</p>' +
+      second +
+      '<p class="label">' + esc(T.wifiPasswordLabel) + '</p>' +
+      '<p class="big mono">' + esc(CONFIG.wifiPassword) + '</p>' +
+      '<div class="btns">' +
+        '<button class="btn" type="button" data-copy="wifi">' + esc(T.copyPassword) + '</button>' +
+      '</div>' +
+      '<p class="tip">' + esc(T.wifiTip) + '</p>' +
+    '</div>';
+}
+
+function renderContact() {
+  const T = CONFIG.text;
+  let btns = "";
+  if (CONFIG.phone) {
+    btns += '<a class="btn" href="tel:' + esc(CONFIG.phone.replace(/[^0-9+]/g, "")) + '">' + esc(T.callButton) + '</a>';
+  }
+  if (CONFIG.kakaoId) {
+    btns += '<button class="btn" type="button" data-copy="kakao">' + esc(T.kakaoButton) + '</button>';
+  }
+  if (CONFIG.whatsapp) {
+    btns += '<a class="btn" href="https://wa.me/' + esc(CONFIG.whatsapp.replace(/[^0-9]/g, "")) + '" target="_blank" rel="noopener">' + esc(T.whatsappButton) + '</a>';
+  }
+  if (CONFIG.line) {
+    btns += '<a class="btn" href="' + esc(CONFIG.line) + '" target="_blank" rel="noopener">' + esc(T.lineButton) + '</a>';
+  }
+  return backButton() +
+    '<h2>' + esc(T.menuContact) + '</h2>' +
+    '<div class="card">' +
+      '<p class="big">' + esc(CONFIG.hostName) + '</p>' +
+      '<p class="value">' + esc(T.contactIntro) + '</p>' +
+      '<div class="btns stack">' + btns + '</div>' +
+    '</div>';
+}
+
+function photoTag(src, alt) {
+  if (!src) return "";
+  return '<img class="pic" src="' + esc(src) + '" alt="' + esc(alt) + '" loading="lazy" onerror="this.style.display=\'none\'">';
+}
+function lines(arr, cls) {
+  return (arr || []).map(t => '<p class="' + (cls || "line") + '">' + esc(t) + '</p>').join("");
+}
+
+function renderHouse() {
+  const T = CONFIG.text;
+  const fac = (CONFIG.facilities || []).map(f =>
+    '<details class="acc">' +
+      '<summary>' +
+        '<span class="acc-head">' +
+          '<span class="acc-title">' + esc(f.name) + '</span>' +
+          '<span class="acc-sub">' + esc(T.locationLabel) + ': ' + esc(f.location) + '</span>' +
+        '</span>' +
+        '<span class="acc-mark" aria-hidden="true"></span>' +
+      '</summary>' +
+      '<div class="acc-body">' +
+        '<p class="label">' + esc(T.usageLabel) + '</p>' +
+        lines(f.usage) +
+        (f.caution ? '<div class="caution"><p class="label">' + esc(T.cautionLabel) + '</p><p class="line">' + esc(f.caution) + '</p></div>' : '') +
+        photoTag(f.photo, f.name) +
+      '</div>' +
+    '</details>'
+  ).join("");
+  const rules = '<ol class="rules">' + (CONFIG.houseRules || []).map(r => '<li>' + esc(r) + '</li>').join("") + '</ol>';
+  const trash = (CONFIG.trashSteps || []).map((st, i) =>
+    '<div class="card step">' +
+      '<p class="step-title"><span class="step-no">' + (i + 1) + '</span>' + esc(st.title) + '</p>' +
+      lines(st.text) +
+      photoTag(st.photo, st.title) +
+    '</div>'
+  ).join("");
+  return backButton() +
+    '<h2>' + esc(T.menuHouse) + '</h2>' +
+    '<h3>' + esc(T.facilitiesTitle) + '</h3>' +
+    '<p class="hint">' + esc(T.facilitiesHint) + '</p>' +
+    '<div class="acc-list">' + fac + '</div>' +
+    '<h3>' + esc(T.rulesTitle) + '</h3>' +
+    '<div class="card">' + rules + '</div>' +
+    '<h3>' + esc(T.trashTitle) + '</h3>' +
+    trash;
+}
+
+function renderFaq() {
+  const T = CONFIG.text;
+  const items = (CONFIG.faq || []).map(f =>
+    '<details class="acc">' +
+      '<summary>' +
+        '<span class="acc-head"><span class="acc-title">' + esc(f.q) + '</span></span>' +
+        '<span class="acc-mark" aria-hidden="true"></span>' +
+      '</summary>' +
+      '<div class="acc-body">' + lines(f.a, "line para") + '</div>' +
+    '</details>'
+  ).join("");
+  return backButton() +
+    '<h2>' + esc(T.menuFaq) + '</h2>' +
+    '<p class="hint">' + esc(T.faqHint) + '</p>' +
+    '<div class="acc-list">' + items + '</div>';
+}
+
+function renderCheckout() {
+  const T = CONFIG.text;
+  const list = (CONFIG.checkoutList || []).map((c, i) =>
+    '<li><label class="check"><input type="checkbox" data-check="' + i + '"><span>' + esc(c) + '</span></label></li>'
+  ).join("");
+  return backButton() +
+    '<h2>' + esc(T.menuCheckout) + '</h2>' +
+    '<div class="card">' +
+      '<p class="label">' + esc(T.checkoutTimeLabel) + '</p>' +
+      '<p class="big">' + esc(CONFIG.checkoutTime) + '</p>' +
+    '</div>' +
+    '<div class="card">' +
+      '<p class="label">' + esc(T.checkoutListTitle) + '</p>' +
+      '<ul class="checks">' + list + '</ul>' +
+      '<p class="tip" id="checkProgress"></p>' +
+      '<div class="btns"><button class="btn line-btn" type="button" data-go="contact">' + esc(T.checkoutContact) + '</button></div>' +
+    '</div>';
+}
+
+const CHECK_KEY = "guestapp-checkout";
+function loadChecks() {
+  try { return JSON.parse(localStorage.getItem(CHECK_KEY) || "[]"); } catch (e) { return []; }
+}
+function saveChecks(arr) {
+  try { localStorage.setItem(CHECK_KEY, JSON.stringify(arr)); } catch (e) {}
+}
+function updateChecks() {
+  const boxes = document.querySelectorAll("[data-check]");
+  const done = [];
+  boxes.forEach(b => { if (b.checked) done.push(Number(b.getAttribute("data-check"))); });
+  saveChecks(done);
+  const T = CONFIG.text;
+  const el = document.getElementById("checkProgress");
+  if (!el) return;
+  el.textContent = (done.length === boxes.length && boxes.length > 0)
+    ? T.checkoutDone
+    : T.checkoutProgress.replace("{total}", boxes.length).replace("{done}", done.length);
+}
+
+const SCREENS = ["home", "checkin", "wifi", "house", "faq", "checkout", "contact"];
+
+function showScreen(id) {
+  if (SCREENS.indexOf(id) === -1) id = "home";
+  SCREENS.forEach(s => {
+    const el = document.getElementById("screen-" + s);
+    if (el) el.hidden = (s !== id);
+  });
+  window.scrollTo(0, 0);
+}
+
+function start() {
+  document.title = CONFIG.nameSub ? CONFIG.name + " " + CONFIG.nameSub : CONFIG.name;
+  if (CONFIG.accentColor) {
+    document.documentElement.style.setProperty("--accent", CONFIG.accentColor);
+  }
+  if (CONFIG.backgroundColor) {
+    document.documentElement.style.setProperty("--page", CONFIG.backgroundColor);
+  }
+  const app = document.getElementById("app");
+  app.innerHTML =
+    '<section id="screen-home">' + renderHome() + '</section>' +
+    '<section id="screen-checkin" hidden>' + renderCheckin() + '</section>' +
+    '<section id="screen-wifi" hidden>' + renderWifi() + '</section>' +
+    '<section id="screen-house" hidden>' + renderHouse() + '</section>' +
+    '<section id="screen-faq" hidden>' + renderFaq() + '</section>' +
+    '<section id="screen-checkout" hidden>' + renderCheckout() + '</section>' +
+    '<section id="screen-contact" hidden>' + renderContact() + '</section>';
+
+  const saved = loadChecks();
+  document.querySelectorAll("[data-check]").forEach(b => {
+    if (saved.indexOf(Number(b.getAttribute("data-check"))) !== -1) b.checked = true;
+  });
+  app.addEventListener("change", function (e) {
+    if (e.target.matches("[data-check]")) updateChecks();
+  });
+  updateChecks();
+
+  app.addEventListener("click", function (e) {
+    const go = e.target.closest("[data-go]");
+    if (go) {
+      const id = go.getAttribute("data-go");
+      if (id === "home") {
+        history.replaceState(null, "", location.pathname + location.search);
+        showScreen("home");
+      } else {
+        location.hash = id;
+      }
+      return;
+    }
+    const cp = e.target.closest("[data-copy]");
+    if (cp) {
+      const kind = cp.getAttribute("data-copy");
+      if (kind === "address") copyText(CONFIG.address);
+      if (kind === "wifi") copyText(CONFIG.wifiPassword);
+      if (kind === "kakao") {
+        copyText(CONFIG.kakaoId, CONFIG.text.kakaoCopied);
+        setTimeout(function () { window.location.href = "kakaotalk://"; }, 1200);
+      }
+    }
+  });
+
+  window.addEventListener("hashchange", function () {
+    showScreen(location.hash.replace("#", "") || "home");
+  });
+  showScreen(location.hash.replace("#", "") || "home");
+}
+
+document.addEventListener("DOMContentLoaded", start);
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --accent: #1B3D29;
+  --page: #F5F1EC;
+  --card: #FFFFFF;
+  --ink: #222222;
+  --muted: #666666;
+  --line: #D9D4C7;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --serif: "Gowun Batang", "Noto Serif KR", "AppleMyungjo", "Batang", Georgia, serif;
+  --sans: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-text-size-adjust: 100%;
+}
+#app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px calc(40px + env(safe-area-inset-bottom, 0px));
+}
+section[hidden] { display: none; }
+
+.brand {
+  padding: 0 0 8px;
+  font-family: var(--serif);
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+.photo {
+  margin: 12px 0 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--line);
+  aspect-ratio: 4 / 3;
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.hero {
+  padding: 40px 0 32px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+h1 {
+  margin: 0 0 18px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(34px, 9vw, 46px);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+.name-sub { font-size: 18px; letter-spacing: 0; white-space: nowrap; }
+.tagline { margin: 0; max-width: 34ch; color: var(--muted); font-size: 16px; }
+.meta { margin: 22px 0 0; color: var(--muted); font-size: 16px; }
+
+.menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.menu-btn {
+  min-height: 110px;
+  padding: 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 4px;
+}
+.menu-btn:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  min-height: 88px;
+}
+.menu-btn:active { border-color: var(--accent); }
+.menu-title { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--accent); }
+.menu-sub { font-size: 16px; color: var(--muted); }
+
+h2 { margin: 12px 0 16px; font-family: var(--serif); font-weight: 700; font-size: 24px; color: var(--accent); }
+
+.back {
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.card.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.label { margin: 0 0 2px; font-size: 16px; color: var(--muted); }
+.label ~ .label { margin-top: 14px; }
+.value { margin: 0; font-size: 16px; }
+.big { margin: 0; font-family: var(--serif); font-size: 24px; font-weight: 700; }
+.mono { font-family: var(--sans); font-size: 20px; font-weight: 600; letter-spacing: 0.02em; word-break: break-all; }
+.tip { margin: 14px 0 0; font-size: 16px; color: var(--muted); }
+
+.btns { display: grid; gap: 10px; margin-top: 16px; }
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent);
+  color: #FFFFFF;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+.btn.line-btn { background: var(--card); color: var(--accent); }
+.btn:active { opacity: 0.85; }
+
+button:focus-visible, a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+h3 {
+  margin: 32px 0 6px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ink);
+}
+.hint { margin: 0 0 14px; font-size: 16px; color: var(--muted); }
+.line { margin: 0 0 8px; font-size: 16px; }
+.line.para { margin-bottom: 14px; }
+
+.acc-list { display: grid; gap: 10px; }
+.acc {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.acc summary {
+  list-style: none;
+  cursor: pointer;
+  min-height: 56px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.acc summary::-webkit-details-marker { display: none; }
+.acc-head { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.acc-title { font-family: var(--serif); font-weight: 700; font-size: 18px; color: var(--accent); }
+.acc-sub { font-size: 16px; color: var(--muted); }
+.acc-mark { position: relative; width: 16px; height: 16px; flex-shrink: 0; }
+.acc-mark::before, .acc-mark::after {
+  content: "";
+  position: absolute;
+  left: 0; top: 7px;
+  width: 16px; height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transition: transform 0.2s;
+}
+.acc-mark::after { transform: rotate(90deg); }
+.acc[open] .acc-mark::after { transform: rotate(0deg); }
+.acc-body { padding: 0 18px 18px; }
+.acc-body .label { margin-top: 4px; }
+.caution {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--page);
+}
+.caution .line { margin: 0; }
+
+.pic {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-top: 14px;
+  border-radius: 8px;
+}
+
+.rules { margin: 0; padding-left: 22px; }
+.rules li { margin: 0 0 10px; font-size: 16px; }
+.rules li:last-child { margin-bottom: 0; }
+
+.step-title {
+  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--accent);
+}
+.step-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.checks { list-style: none; margin: 8px 0 0; padding: 0; }
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-height: 48px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+  cursor: pointer;
+}
+.check input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  flex-shrink: 0;
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  background: var(--card);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.check input:checked { background: var(--accent); }
+.check input:checked::after {
+  content: "";
+  width: 6px;
+  height: 11px;
+  border: solid #FFFFFF;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+.check input:checked + span { color: var(--muted); text-decoration: line-through; }
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 480px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: #222222;
+  color: #FFFFFF;
+  font-size: 16px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
