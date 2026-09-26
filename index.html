@@ -24,7 +24,7 @@ const CONFIG = {
   nameSub: "- 강남칼므",                     // 숙소 이름 뒤에 더 작게 붙는 글자. 필요 없으면 "" 로 비워 두세요
   welcome: "잘 오셨어요.\n이제 여정을 천천히.", // 첫 화면의 큰 환영 문장. \n 자리에서 줄이 바뀝니다
   tagline: "서래마을의 고요한 가족 집. 머무시는 동안 필요한 건 모두 이 페이지에 있어요.", // 한 줄 소개. 큰 환영 문장 아래에 회색으로 나옵니다
-  photo: "img/main.jpg",                      // 첫 화면 사진. img 폴더에 main.jpg 파일을 넣어 주세요. 사진이 없으면 사진 자리만 사라집니다 [샘플입니다. 바꿔 주세요]
+  photo: "main.jpg",                      // 첫 화면 사진. img 폴더에 main.jpg 파일을 넣어 주세요. 사진이 없으면 사진 자리만 사라집니다 [샘플입니다. 바꿔 주세요]
   accentColor: "#1B3D29",                     // 강조색. 버튼과 제목 색이 모두 이 색으로 바뀝니다
   backgroundColor: "#F5F1EC",                 // 바탕색. 화면 전체 배경색이 바뀝니다. 카드와 버튼 안쪽은 흰색으로 유지됩니다
   guests: 7,                                  // 최대 인원. 첫 화면 안내 줄에 나옵니다
@@ -70,7 +70,7 @@ const CONFIG = {
         "2. 겨울철 사용 시: 1) 왼쪽 위 “난방” 버튼(집 모양)을 눌러 난방 모드로 전환합니다. 2) 다이얼을 돌려 원하는 온도를 설정합니다."
       ],
       caution: "보일러 전원은 항상 켜 두어야 정상 작동합니다.",
-      photo: "img/boiler.jpg"
+      photo: "boiler.jpg"
     },
     {
       name: "인터폰",
@@ -82,7 +82,7 @@ const CONFIG = {
         "3. 열쇠모양 버튼 누르기"
       ],
       caution: "문 앞에서 초인종을 누르면 방문자를 확인하시고 직접 현관문을 열어주세요. 통화가 끝나면 화면은 자동으로 꺼집니다.",
-      photo: "img/intercom.jpg"
+      photo: "intercom.jpg"
     },
     {
       name: "에어컨 리모컨",
@@ -93,7 +93,7 @@ const CONFIG = {
         "희망온도 조절: ▲ 또는 ▼ 버튼으로 희망하는 온도를 조절합니다."
       ],
       caution: "전원을 켰을때 에어컨 오른쪽에 초록불이 들어오면 작동하는 상태이고, 불이 안들어오면 꺼진 상태입니다.",
-      photo: "img/aircon.jpg"
+      photo: "aircon.jpg"
     },
     {
       name: "음용수 안내",
@@ -104,7 +104,7 @@ const CONFIG = {
         "또는 생수를 드시는 것도 좋습니다."
       ],
       caution: "필터정수기의 물이 부족하면, 위의 뚜껑을 밀어서 여시고 탭워터(수돗물)를 채워서 드시면 됩니다.",
-      photo: "img/water.jpg"
+      photo: "water.jpg"
     },
     {
       name: "화장실 비데 사용 안내",
@@ -115,7 +115,7 @@ const CONFIG = {
         "건조: 세정 후 건조 기능입니다."
       ],
       caution: "용변을 마치신 후 일어나면 물이 자동으로 내려가니까, 변기 안에 휴지 외에 다른 물건이 들어가지 않도록 주의해주세요",
-      photo: "img/bidet.jpg"
+      photo: "bidet.jpg"
     },
     {
       name: "바디드라이어",
@@ -126,7 +126,7 @@ const CONFIG = {
         "빠르고 편리하게 몸의 물기를 말릴 수 있습니다."
       ],
       caution: "가급적 샤워기 물이 튀지 않게 해 주세요",
-      photo: "img/bodydryer.jpg"
+      photo: "bodydryer.jpg"
     },
     {
       name: "주방 수납",
@@ -137,7 +137,7 @@ const CONFIG = {
         "맨 아래 서랍에는 조리도구와 냄비 등 요리에 필요한 주방용품이 준비되어 있습니다."
       ],
       caution: "수저는 겉에서 보이지 않는 히든 서랍에 있습니다. 큰 서랍을 열면 맨 위에 작은 서랍이 있습니다.",
-      photo: "img/kitchen.jpg"
+      photo: "kitchen.jpg"
     },
     {
       name: "루프탑",
@@ -148,7 +148,7 @@ const CONFIG = {
         "안전을 위해 옥상 문 앞에 파라솔과 의자를 비치해두었습니다."
       ],
       caution: "사용 후에는 다시 접어서 제자리에 놓아주세요.",
-      photo: "img/rooftop.jpg"
+      photo: "rooftop.jpg"
     }
   ],
 
@@ -172,12 +172,12 @@ const CONFIG = {
         "파란색 봉투: 음식물쓰레기용 봉투",
         "쓰레기 봉투는 편의점에서도 구매할 수 있습니다."
       ],
-      photo: "img/trash1.jpg"
+      photo: "trash1.jpg"
     },
     {
       title: "사용 방법",
       text: ["주방 쓰레기통에 봉투를 비치하여 사용하세요."],
-      photo: "img/trash2.jpg"
+      photo: "trash2.jpg"
     },
     {
       title: "일반/음식물쓰레기 배출",
@@ -185,7 +185,7 @@ const CONFIG = {
         "봉투가 꽉 차면 빌라 현관을 나와 왼쪽 전봇대 밑에 배출해 주세요.",
         "음식물쓰레기는 전봇대 밑에 있는 주황색 뚜껑 통 안에 버려주세요."
       ],
-      photo: "img/trash3.jpg"
+      photo: "trash3.jpg"
     },
     {
       title: "분리수거 배출",
@@ -193,7 +193,7 @@ const CONFIG = {
         "빌라 현관을 나와 오른쪽으로 돌면 분리수거함이 있습니다. 분리하여 배출해 주세요.",
         "위 분리수거 봉투에 종류별로 모아두면 편리하게 분리수거할 수 있습니다! 이 봉투는 일회용이 아니므로 반복 사용해 주세요."
       ],
-      photo: "img/trash4.jpg"
+      photo: "trash4.jpg"
     }
   ],
 
