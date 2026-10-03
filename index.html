@@ -1025,6 +1025,8 @@ function renderNearby() {
 
 /* ---------- 지도 (Leaflet). 못 불러와도 목록은 그대로 보입니다 ---------- */
 const LEAFLET_JS = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";
+// 지도 바탕 그림. 연한 회색 톤의 단순한 지도(CARTO Positron)입니다. 키가 필요 없습니다
+const MAP_TILES = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 const LEAFLET_CSS = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
 let mapState = { tried: false, map: null, markers: [] };
 
@@ -1078,9 +1080,9 @@ function initMap() {
       wrap.hidden = false;
       const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#1B3D29";
       const map = L.map("map", { scrollWheelZoom: false, attributionControl: true });
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: "&copy; OpenStreetMap"
+      L.tileLayer(MAP_TILES, {
+        subdomains: "abcd", maxZoom: 20,
+        attribution: "&copy; OpenStreetMap &copy; CARTO"
       }).addTo(map);
       const pts = [];
       withCoord.forEach(o => {
@@ -1184,9 +1186,9 @@ function initTransitMap() {
       wrap.hidden = false;
       const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#4b4727";
       const map = L.map("transitMap", { scrollWheelZoom: false, attributionControl: true });
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: "&copy; OpenStreetMap"
+      L.tileLayer(MAP_TILES, {
+        subdomains: "abcd", maxZoom: 20,
+        attribution: "&copy; OpenStreetMap &copy; CARTO"
       }).addTo(map);
       const pts = [];
       const busPts = [];
