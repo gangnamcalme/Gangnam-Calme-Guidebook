@@ -66,6 +66,7 @@ const CONFIG = {
   /* ---------- 체크인 ---------- */
   address: "서울시 서초구 방배로34길 97 방배하이빌 11차 501호", // 화면에 보이는 주소. 두 언어 모두 이 글자 그대로 나옵니다. 주소 복사 버튼도 이 값을 복사합니다
   mapQuery: "서울 서초구 방배로34길 97",       // 지도 앱에서 검색할 주소. 호수는 넣지 않는 것이 검색이 잘 됩니다
+  addressEn: "Unit 501, 97 Bangbae-ro 34-gil, Seocho-gu, Seoul", // 영문 주소. 음식 주문 카드를 누르면 한글 주소와 함께 복사됩니다
   checkinTime: "16:00",                       // 체크인 시각. 이 값을 바꾸면 앱 전체에 반영됩니다
   checkoutTime: "11:00",                      // 체크아웃 시각. 이 값을 바꾸면 앱 전체에 반영됩니다
   doorGuide: {                                // 현관 여는 법. 실제 비밀번호는 절대 넣지 마세요
@@ -108,7 +109,7 @@ const CONFIG = {
     taxiTitle: { kr: "우버로 택시 부르기", en: "Call a Taxi", cn: "叫出租车" },  // 첫 화면 택시 카드 제목 (하우스 매뉴얼·서래마을 카드 아래)
     taxiSub: { kr: "숙소 주소가 출발지로 자동 입력돼요. 도착지만 입력하시면 됩니다", en: "Opens Uber with the house as your pickup. Just add your destination", cn: "打开Uber,出发地自动设为住所,只需输入目的地" }, // 택시 카드 작은 설명
     foodTitle: { kr: "KoreaOrder로 음식 주문", en: "Order Food Delivery", cn: "用KoreaOrder点外卖" },  // 첫 화면 음식 주문 카드 제목 (택시 카드 옆)
-    foodSub: { kr: "한국 전화번호 없이 영어로 주문하고 해외 카드로 결제할 수 있어요", en: "Order in English with KoreaOrder. No Korean phone number needed, pay by international card", cn: "无需韩国手机号,可用英文下单,支持海外信用卡支付" } // 음식 주문 카드 작은 설명
+    foodSub: { kr: "누르면 숙소 주소가 복사돼요. 배달 주소 칸에 붙여넣으세요", en: "Tap to copy the house address, then paste it as your delivery address", cn: "点击即复制住所地址,粘贴到配送地址栏即可" } // 음식 주문 카드 작은 설명
   },
 
   /* ---------- 첫 화면 후기 안내 띠 ---------- */
@@ -337,7 +338,7 @@ const CONFIG = {
 
   /* ---------- 동네 안내 ---------- */
   /* 지도 가운데와 숙소 핀 위치입니다. 비워 두면(null) 숙소 핀만 사라집니다 */
-  homeLat: 37.49368,                          // 숙소 위도. 지도에 숙소 핀이 찍히는 자리입니다
+  homeLat: 37.49368,                          // 숙소 위도. 지도에 숙소 핀이 찍히는 자리이자, 우버 출발지 핀 위치입니다
   homeLng: 126.99617,                         // 숙소 경도
 
   /* ---------- 대중교통으로 오시는 길 (유용한 정보 화면 카드) ---------- */
@@ -528,6 +529,7 @@ const CONFIG = {
     naverTip: { kr: "", en: "Naver Map works best in Korea. You can switch it to English in the app settings.", cn: "在韩国使用 Naver 地图最方便。您可以在应用设置中将其切换为中文。" }, // 지도 버튼 아래 작은 안내. 한국어 화면에서는 보이지 않습니다
     copyAddress: { kr: "주소 복사", en: "Copy address", cn: "复制地址" },                        // 체크인 화면: 주소 복사 버튼
     transitQuestion: { kr: "대중교통을 이용하려면 어떻게 해야 하나요?", en: "How do I get here by public transit?", cn: "怎么乘坐公共交通过来?" }, // 유용한 정보 화면: 대중교통 질문(자주 묻는 질문 중 하나)
+    foodCopied: { kr: "숙소 주소를 복사했어요. KoreaOrder 배달 주소 칸에 붙여넣어 주세요", en: "House address copied. Paste it as your delivery address in KoreaOrder", cn: "已复制住所地址,请粘贴到KoreaOrder的配送地址栏" }, // 음식 주문 카드를 누를 때 뜨는 안내
     callTaxi: { kr: "우버로 택시 호출하기", en: "Call a Taxi (Uber)", cn: "叫Uber出租车" },        // 택시 호출 버튼. 누르면 숙소 주소(mapQuery)가 출발지로 입력된 채 우버 앱(없으면 우버 웹)이 열립니다
     callTaxiHint: { kr: "출발지는 숙소 주소로 자동 입력됩니다. 도착지 입력과 요금 확인은 우버 앱에서 해주세요.", en: "Pickup is set to the house automatically. Enter your destination and check the fare in the Uber app.", cn: "出发地已自动设为住所地址。请在Uber应用中输入目的地并确认费用。" }, // 택시 호출 버튼 아래 작은 안내
 
@@ -774,7 +776,7 @@ function renderHome() {
       '</div>'+
       '<div class="feature-grid action-grid">'+
         '<a class="feature-card action-card" href="'+uberUrl()+'" target="_blank" rel="noopener"><img src="'+taxiImg+'" alt=""><span class="feature-shade"></span><span class="feature-copy"><strong>TAXI</strong><b>'+t(HT.taxiTitle,escBr)+'</b><small>'+t(HT.taxiSub,escBr)+'</small></span><span class="round-arrow">›</span></a>'+
-        (CONFIG.foodOrderLink ? '<a class="feature-card action-card" href="'+esc(CONFIG.foodOrderLink)+'" target="_blank" rel="noopener"><img src="'+foodImg+'" alt=""><span class="feature-shade"></span><span class="feature-copy"><strong>FOOD</strong><b>'+t(HT.foodTitle,escBr)+'</b><small>'+t(HT.foodSub,escBr)+'</small></span><span class="round-arrow">›</span></a>' : '')+
+        (CONFIG.foodOrderLink ? '<a class="feature-card action-card" data-copy="food" href="'+esc(CONFIG.foodOrderLink)+'" target="_blank" rel="noopener"><img src="'+foodImg+'" alt=""><span class="feature-shade"></span><span class="feature-copy"><strong>FOOD</strong><b>'+t(HT.foodTitle,escBr)+'</b><small>'+t(HT.foodSub,escBr)+'</small></span><span class="round-arrow">›</span></a>' : '')+
       '</div>'+
       '</section>'+
       '<section class="content explore"><div class="section-title"><h3>'+t(HT.exploreTitle)+'</h3><button data-go="nearby">'+t(HT.viewAll)+'&nbsp; →</button></div><div class="explore-grid">'+
@@ -917,7 +919,9 @@ function renderHouse() {
 
 function uberUrl() {
   const addr = CONFIG.mapQuery || CONFIG.address;
-  return "https://m.uber.com/ul/?action=setPickup&pickup%5Bformatted_address%5D=" + encodeURIComponent(addr) + "&pickup%5Bnickname%5D=" + encodeURIComponent("Gangnam Calme");
+  const lat = parseFloat(CONFIG.homeLat), lng = parseFloat(CONFIG.homeLng);
+  const pin = (isFinite(lat) && isFinite(lng)) ? "&pickup%5Blatitude%5D=" + lat + "&pickup%5Blongitude%5D=" + lng : "";
+  return "https://m.uber.com/ul/?action=setPickup" + pin + "&pickup%5Bformatted_address%5D=" + encodeURIComponent(addr) + "&pickup%5Bnickname%5D=" + encodeURIComponent("Gangnam Calme");
 }
 /* 우버 택시 호출 버튼. 숙소 주소를 출발지로 넣어 우버 앱(또는 웹)을 엽니다. API 키가 필요 없습니다 */
 function taxiBlock() {
@@ -1327,6 +1331,7 @@ function start() {
       const kind = cp.getAttribute("data-copy");
       if (kind === "address") copyText(CONFIG.address);
       if (kind === "wifi") copyText(CONFIG.wifiPassword);
+      if (kind === "food") copyText(CONFIG.address + (CONFIG.addressEn ? " / " + CONFIG.addressEn : ""), CONFIG.text.foodCopied);
       if (kind === "kakao") {
         copyText(CONFIG.kakaoId, CONFIG.text.kakaoCopied);
         setTimeout(function () { window.location.href = "kakaotalk://"; }, 1200);
