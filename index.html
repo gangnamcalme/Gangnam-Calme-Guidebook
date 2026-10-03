@@ -311,9 +311,11 @@ const CONFIG = {
   /* 질문 하나가 { } 한 덩어리입니다. q: 질문 / a: 답 (한 문단에 한 줄씩) */
   faq: [
     {
-      q: { kr: "주변에 편의점이 어디있나요?", en: "Where's the nearest convenience store?", cn: "附近哪里有便利店?" },
+      q: { kr: "주변에 편의점이나 마트가 있나요?", en: "Where can I find a convenience store or supermarket?", cn: "附近有便利店或超市吗?" },
       a: [
-        { kr: "CU 서래중앙점 (서울 서초구 서래로8길 8, 연중무휴 24시간). 97 방배로 34길에서 도보 4분 거리에 위치한 편의점으로, 간편식, 음료, 생필품 등을 편리하게 구매할 수 있습니다.", en: "CU Seorae Jungang (서울 서초구 서래로8길 8, open 24/7). A 4-minute walk from the house, with quick meals, drinks and daily essentials.", cn: "CU Seorae Jungang(서울 서초구 서래로8길 8,24小时营业)。从住所步行4分钟,可以方便买到简餐、饮料和日用品。" }
+        { kr: "CU 서래중앙점 (서울 서초구 서래로8길 8, 연중무휴 24시간). 97 방배로 34길에서 도보 4분 거리에 위치한 편의점으로, 간편식, 음료, 생필품 등을 편리하게 구매할 수 있습니다.", en: "CU Seorae Jungang (서울 서초구 서래로8길 8, open 24/7). A 4-minute walk from the house, with quick meals, drinks and daily essentials.", cn: "CU Seorae Jungang(서울 서초구 서래로8길 8,24小时营业)。从住所步行4分钟,可以方便买到简餐、饮料和日用品。" },
+        { kr: "홈플러스 익스프레스 서래마을점 (08:00-23:00, 연중무휴). 숙소에서 걸어서 7분 거리의 마트로, 편의점으로는 부족한 날 저녁거리와 아침 장을 한 번에 볼 수 있습니다.", en: "Homeplus Express Seorae Village (08:00-23:00, open every day). A supermarket a 7-minute walk away. When the convenience store isn't enough, get dinner and breakfast groceries in one trip.", cn: "Homeplus Express Seorae Village(08:00-23:00,每天营业)。步行7分钟的超市,便利店买不齐的时候,可以一次买好晚餐和早餐的食材。" },
+        { kr: "초록마을 서래마을점 (09:00-22:00, 연중무휴). 숙소에서 걸어서 6분 거리의 유기농 마트로, 아이 간식이나 유기농 재료를 찾을 때 좋습니다.", en: "Chorokmaeul Seorae Village (09:00-22:00, open every day). An organic grocery a 6-minute walk away. Good for kids' snacks and organic ingredients.", cn: "Chorokmaeul Seorae Village(09:00-22:00,每天营业)。步行6分钟的有机超市,适合购买孩子的零食和有机食材。" }
       ]
     },
     {
@@ -363,8 +365,7 @@ const CONFIG = {
     { key: "food", label: { kr: "식사", en: "Food", cn: "餐厅" } },
     { key: "cafe", label: { kr: "카페", en: "Cafés", cn: "咖啡厅" } },
     { key: "bar",  label: { kr: "바", en: "Bars", cn: "酒吧" } },
-    { key: "see",  label: { kr: "볼거리", en: "Sights", cn: "景点" } },
-    { key: "shop", label: { kr: "장보기", en: "Groceries", cn: "超市" } }
+    { key: "see",  label: { kr: "볼거리", en: "Sights", cn: "景点" } }
   ],
 
   /* 가게 하나가 { } 한 덩어리입니다. 덩어리를 복사해 붙이면 가게가 늘어납니다
@@ -373,14 +374,6 @@ const CONFIG = {
      photo: 사진 주소. 넣으면 카드 맨 위에 사진이 나오고, 지우면 사진 없이 나옵니다.
             지금 사진들은 무료 사진 사이트(Unsplash)의 '분위기 사진'입니다. 가게 실제 사진이 생기면 이 주소만 바꾸세요 */
   places: [
-    { name: { kr: "홈플러스 익스프레스 서래마을점", en: "Homeplus Express Seorae Village", cn: "Homeplus Express Seorae Village" }, type: "shop",
-      walk: { kr: "걸어서 7분", en: "7 min walk", cn: "步行7分钟" }, hours: { kr: "08:00-23:00, 연중무휴", en: "08:00-23:00, open every day", cn: "08:00-23:00,每天营业" },
-      line: { kr: "편의점으로는 부족한 날, 저녁거리와 아침 장을 한 번에", en: "When the convenience store isn't enough: dinner and breakfast groceries in one trip", cn: "便利店不够用的日子,一次买齐晚餐和早餐食材" },
-      lat: 37.49705, lng: 126.99807, photo: "https://images.unsplash.com/photo-1653222439737-a377eb21c965?auto=format&fit=crop&w=800&q=70" },
-    { name: { kr: "초록마을 서래마을점", en: "Chorokmaeul Seorae Village", cn: "Chorokmaeul Seorae Village" }, type: "shop",
-      walk: { kr: "걸어서 6분", en: "6 min walk", cn: "步行6分钟" }, hours: { kr: "09:00-22:00, 연중무휴", en: "09:00-22:00, open every day", cn: "09:00-22:00,每天营业" },
-      line: { kr: "아이 간식이나 유기농 재료를 찾는 날", en: "For kids' snacks or organic groceries", cn: "想买孩子的零食或有机食材的日子" },
-      lat: 37.49619, lng: 126.99828, photo: "https://images.unsplash.com/photo-1636386794940-507b0c899394?auto=format&fit=crop&w=800&q=70" },
     { name: { kr: "서래삼겹살", en: "Seorae Samgyeopsal", cn: "Seorae Samgyeopsal" }, type: "food",
       walk: { kr: "걸어서 10분", en: "10 min walk", cn: "步行10分钟" }, hours: { kr: "11:30-23:00, 연중무휴", en: "11:30-23:00, open every day", cn: "11:30-23:00,每天营业" },
       line: { kr: "두툼한 삼겹살에 소주 한잔, 동네 사람처럼 저녁 먹고 싶은 날", en: "Thick-cut pork belly and a soju, dinner like a local", cn: "厚切五花肉配一杯烧酒,像当地人一样吃晚餐的日子" },
@@ -514,7 +507,7 @@ const CONFIG = {
     menuNearby: { kr: "동네 안내", en: "Neighborhood", cn: "周边指南" },                         // 메뉴 버튼 이름: 동네 안내 화면
     menuNearbySub: { kr: "식사, 카페, 바, 볼거리", en: "Food, cafés, bars, sights", cn: "餐厅,咖啡厅,酒吧,景点" }, // 메뉴 버튼 아래 작은 설명
     menuFaq: { kr: "자주 묻는 질문", en: "FAQ", cn: "常见问题" },                                // 메뉴 버튼 이름: 자주 묻는 질문 화면
-    menuFaqSub: { kr: "편의점, 식당, 병원", en: "Stores, late food, clinics", cn: "便利店,深夜餐厅,医院" },    // 메뉴 버튼 아래 작은 설명
+    menuFaqSub: { kr: "편의점·마트, 식당, 병원", en: "Stores, late food, clinics", cn: "便利店·超市,深夜餐厅,医院" },    // 메뉴 버튼 아래 작은 설명
     menuCheckout: { kr: "체크아웃", en: "Check-out", cn: "退房" },                           // 메뉴 버튼 이름: 체크아웃 화면
     menuCheckoutSub: { kr: "시각과 나가기 전 확인", en: "Time and a quick checklist", cn: "退房时间和检查清单" }, // 메뉴 버튼 아래 작은 설명
     menuContact: { kr: "연락하기", en: "Contact", cn: "联系方式" },                              // 메뉴 버튼 이름: 연락하기 화면
