@@ -338,8 +338,8 @@ const CONFIG = {
 
   /* ---------- 동네 안내 ---------- */
   /* 지도 가운데와 숙소 핀 위치입니다. 비워 두면(null) 숙소 핀만 사라집니다 */
-  homeLat: 37.49368,                          // 숙소 위도. 지도에 숙소 핀이 찍히는 자리이자, 우버 출발지 핀 위치입니다
-  homeLng: 126.99617,                         // 숙소 경도
+  homeLat: 37.493688,                        // 숙소 위도. 지도에 숙소 핀이 찍히는 자리이자, 우버 출발지 핀 위치입니다
+  homeLng: 126.996188,                        // 숙소 경도
 
   /* ---------- 대중교통으로 오시는 길 (유용한 정보 화면 카드) ---------- */
   /* 설명 문장과, 승차 정류장·하차 정류장·지하철역의 위도·경도입니다. 지도에 경로로 표시됩니다 */
@@ -921,7 +921,9 @@ function uberUrl() {
   const addr = CONFIG.mapQuery || CONFIG.address;
   const lat = parseFloat(CONFIG.homeLat), lng = parseFloat(CONFIG.homeLng);
   const pin = (isFinite(lat) && isFinite(lng)) ? "&pickup%5Blatitude%5D=" + lat + "&pickup%5Blongitude%5D=" + lng : "";
-  return "https://m.uber.com/ul/?action=setPickup" + pin + "&pickup%5Bformatted_address%5D=" + encodeURIComponent(addr) + "&pickup%5Bnickname%5D=" + encodeURIComponent("Gangnam Calme");
+  // 좌표가 있으면 좌표만 보냅니다. 주소 글자를 같이 보내면 우버가 글자로 근처 다른 건물을 찾아 버릴 수 있기 때문입니다
+  if (pin) return "https://m.uber.com/ul/?action=setPickup" + pin + "&pickup%5Bnickname%5D=" + encodeURIComponent("Gangnam Calme (" + addr + ")");
+  return "https://m.uber.com/ul/?action=setPickup&pickup%5Bformatted_address%5D=" + encodeURIComponent(addr) + "&pickup%5Bnickname%5D=" + encodeURIComponent("Gangnam Calme");
 }
 /* 우버 택시 호출 버튼. 숙소 주소를 출발지로 넣어 우버 앱(또는 웹)을 엽니다. API 키가 필요 없습니다 */
 function taxiBlock() {
