@@ -523,6 +523,8 @@ const CONFIG = {
     naverTip: { kr: "", en: "Naver Map works best in Korea. You can switch it to English in the app settings.", cn: "在韩国使用 Naver 地图最方便。您可以在应用设置中将其切换为中文。" }, // 지도 버튼 아래 작은 안내. 한국어 화면에서는 보이지 않습니다
     copyAddress: { kr: "주소 복사", en: "Copy address", cn: "复制地址" },                        // 체크인 화면: 주소 복사 버튼
     transitQuestion: { kr: "대중교통을 이용하려면 어떻게 해야 하나요?", en: "How do I get here by public transit?", cn: "怎么乘坐公共交通过来?" }, // 유용한 정보 화면: 대중교통 질문(자주 묻는 질문 중 하나)
+    callTaxi: { kr: "우버로 택시 호출하기", en: "Call a Taxi (Uber)", cn: "叫Uber出租车" },        // 택시 호출 버튼. 누르면 숙소 주소(mapQuery)가 출발지로 입력된 채 우버 앱(없으면 우버 웹)이 열립니다
+    callTaxiHint: { kr: "출발지는 숙소 주소로 자동 입력됩니다. 도착지 입력과 요금 확인은 우버 앱에서 해주세요.", en: "Pickup is set to the house automatically. Enter your destination and check the fare in the Uber app.", cn: "出发地已自动设为住所地址。请在Uber应用中输入目的地并确认费用。" }, // 택시 호출 버튼 아래 작은 안내
 
     wifiNameLabel: { kr: "와이파이 이름", en: "Network", cn: "Wi-Fi名称" },                        // 와이파이 화면: 이름 제목
     wifiName2Label: { kr: "2.4G 이름", en: "2.4G network", cn: "2.4G名称" },                     // 와이파이 화면: 두 번째 이름 제목
@@ -901,6 +903,15 @@ function renderHouse() {
     trash;
 }
 
+/* 우버 택시 호출 버튼. 숙소 주소를 출발지로 넣어 우버 앱(또는 웹)을 엽니다. API 키가 필요 없습니다 */
+function taxiBlock() {
+  const T = CONFIG.text;
+  const addr = CONFIG.mapQuery || CONFIG.address;
+  const url = "https://m.uber.com/ul/?action=setPickup&pickup%5Bformatted_address%5D=" + encodeURIComponent(addr) + "&pickup%5Bnickname%5D=" + encodeURIComponent("Gangnam Calme");
+  return '<div class="taxi"><div class="btns"><a class="btn" href="' + url + '" target="_blank" rel="noopener">🚕&nbsp; ' + t(T.callTaxi) + '</a></div>' +
+    '<p class="tip">' + t(T.callTaxiHint) + '</p></div>';
+}
+
 function renderFaq() {
   const T = CONFIG.text;
   const transitItem = CONFIG.transit ?
@@ -911,6 +922,7 @@ function renderFaq() {
       '</summary>' +
       '<div class="acc-body">' +
         '<p class="line para">' + t(CONFIG.transit.desc) + '</p>' +
+        taxiBlock() +
         '<div class="map-wrap" id="transitMapWrap" hidden><div id="transitMap"></div></div>' +
       '</div>' +
     '</details>' : '';
@@ -949,6 +961,7 @@ function renderCheckout() {
       '<p class="label">' + t(T.checkoutTimeLabel) + '</p>' +
       '<p class="big">' + esc(CONFIG.checkoutTime) + '</p>' +
     '</div>' +
+    '<div class="card">' + taxiBlock() + '</div>' +
     (CONFIG.checkoutReview ? '<div class="card review"><p class="value">' + t(CONFIG.checkoutReview) + '</p></div>' : '');
 }
 
@@ -1336,7 +1349,7 @@ html[data-lang="kr"] .en,html[data-lang="kr"] .cn{display:none}html[data-lang="e
 #screen-checkin,#screen-wifi,#screen-house,#screen-nearby,#screen-faq,#screen-checkout,#screen-contact{width:min(760px,calc(100% - 40px));margin:0 auto;padding:28px 0 60px}.back{min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--paper);cursor:pointer}h2{font:400 34px var(--serif);margin:22px 0 18px}.card,.acc{border:1px solid var(--line);background:var(--paper);border-radius:14px;margin-bottom:14px;box-shadow:0 4px 18px rgba(60,50,30,.04)}.card{padding:20px}.card.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.label,.tip,.hint,.place-type,.place-meta{color:var(--muted);font-size:14px}.label,.value,.big,.tip,.line,.place-type,.place-name,.place-line,.place-meta{margin:0 0 8px}.big{font:700 24px var(--serif)}.btns{display:grid;gap:9px;margin-top:14px}.btn{min-height:48px;border:1px solid var(--accent);border-radius:8px;background:var(--accent);color:white;text-decoration:none;display:flex;align-items:center;justify-content:center;padding:0 14px;cursor:pointer}.btn.line-btn{background:transparent;color:var(--accent)}h3{font:700 21px var(--serif);margin:30px 0 8px}.acc-list{display:grid;gap:10px}.acc{overflow:hidden}.acc summary{list-style:none;padding:16px 18px;display:flex;align-items:center;cursor:pointer}.acc summary::-webkit-details-marker{display:none}.acc-head{flex:1;display:flex;flex-direction:column}.acc-title{font:700 18px var(--serif)}.acc-sub{font-size:14px;color:var(--muted)}.acc-mark{width:18px;height:18px;position:relative}.acc-mark:before,.acc-mark:after{content:"";position:absolute;left:1px;top:8px;width:16px;height:1px;background:var(--ink)}.acc-mark:after{transform:rotate(90deg)}.acc[open] .acc-mark:after{transform:none}.acc-body{padding:0 18px 18px}.caution{padding:12px;background:#f2ecdf;border-radius:8px}.pic{display:block;width:100%;height:auto;border-radius:8px;margin-top:14px}.rules{padding-left:22px}.step-title{font:700 18px var(--serif)}.step-no{display:inline-grid;place-items:center;width:28px;height:28px;border:1px solid;border-radius:50%;margin-right:8px}.checks{list-style:none;padding:0}.check{display:flex;gap:12px;padding:10px 0}.map-wrap{border:1px solid var(--line);border-radius:14px;overflow:hidden}.map-wrap[hidden]{display:none}.chips{display:flex;gap:8px;overflow:auto;padding:12px 0}.chip{flex:none;min-height:42px;padding:0 15px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}.chip.on{background:var(--accent);color:white}.place[hidden]{display:none}#map{height:300px}.place-name{font:700 20px var(--serif)}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#222;color:white;padding:12px 18px;border-radius:8px;opacity:0;pointer-events:none;z-index:100}#toast.show{opacity:1}
 .place-map-icon{background:transparent;border:0}.place-map-symbol{width:38px;height:38px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(40,35,25,.32)}.place-map-symbol svg{width:22px;height:22px;display:block}
-.transit-map-icon{background:transparent;border:0}.transit-map-symbol{width:34px;height:34px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;color:#fff;box-shadow:0 2px 8px rgba(40,35,25,.32)}.transit-map-symbol svg{width:19px;height:19px;display:block}#transitMap{height:260px}
+.transit-map-icon{background:transparent;border:0}.transit-map-symbol{width:34px;height:34px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;color:#fff;box-shadow:0 2px 8px rgba(40,35,25,.32)}.transit-map-symbol svg{width:19px;height:19px;display:block}#transitMap{height:260px}.taxi{margin:14px 0}.card>.taxi{margin:0}.taxi .btns{margin-top:0}.taxi .tip{margin-top:10px}
 @media(max-width:900px){.site-header{grid-template-columns:180px 1fr 150px;padding:0 20px}.brand-button{width:160px}.brand-button img{width:120px}.site-header nav{gap:22px}.hero{grid-template-columns:42% 58%}.hero-copy{padding-left:28px}.hero h1{font-size:68px}.content,.utility,footer{width:calc(100% - 40px)}}
 @media(max-width:680px){.site-header{height:72px;grid-template-columns:1fr auto;padding:0 14px}.brand-button{width:130px;height:64px}.brand-button img{width:104px;height:60px}.site-header nav{display:none}.header-lang{grid-column:2}.lang-btn{height:36px;padding:0 11px;font-size:12px}.hero{display:block;min-height:0}.hero-copy{padding:44px 22px 30px}.eyebrow{font-size:12px}.hero h1{font-size:64px;line-height:.88}.rule{margin:26px 0 20px}.hero-image{min-height:330px}.hero-image:before{background:linear-gradient(180deg,#f1ecdf 0%,rgba(241,236,223,.2) 18%,transparent 35%)}.content,.utility,footer{width:calc(100% - 32px)}.welcome{padding-top:28px}.welcome h2{font-size:40px}.welcome>p{font-size:17px}.feature-grid{grid-template-columns:1fr;gap:14px}.feature-card{height:290px}.feature-copy{left:26px;top:38px}.feature-copy strong{font-size:30px}.explore{padding-top:30px}.section-title h3{font-size:17px;letter-spacing:.14em}.explore-grid{grid-template-columns:1fr 1fr;gap:12px}.explore-copy{padding:10px 4px}.explore-copy strong{font-size:16px}.utility{grid-template-columns:1fr 1fr;gap:12px;padding:14px}.utility button{border-right:0;justify-content:flex-start;gap:8px;padding:0}.utility b{font-size:24px;flex:0 0 26px}.utility span{white-space:nowrap}footer span:last-child{display:none}.card.two{grid-template-columns:1fr}}
 /* 언어 단추가 3개(한/영/중)로 늘어나 중간 너비 화면에서 메뉴와 겹치는 것을 막기 위한 규칙입니다.
