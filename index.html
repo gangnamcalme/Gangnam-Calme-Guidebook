@@ -767,6 +767,7 @@ function renderHome() {
     '<main>'+
       '<section class="hero"><div class="hero-copy"><p class="eyebrow">'+t(HT.eyebrow)+'</p><h1>Gangnam<br>Calme</h1><span class="rule"></span><p class="hero-ko">'+t({kr:"서래마을의 조용한 일상 속,\n편안한 시간을 보내시길 바랍니다.",en:"A quiet family home in Seorae Village.\nEverything you need for your stay is here.",cn:"在Seorae Village宁静的日常中,\n愿您度过舒适惬意的时光。"},escBr)+'</p><p class="hero-en">A more local, more peaceful Seoul.</p></div><div class="hero-image"><img src="'+living+'" alt="Gangnam Calme living room"><span>STAY<br>LIKE<br>A LOCAL</span></div></section>'+
       '<section class="content welcome"><h2>'+t(HT.welcomeTitle)+'</h2><p>'+t(HT.welcomeSub)+'</p>'+
+      '<div class="weather" id="homeWeather" hidden></div>'+
       '<div class="stay-times">'+
         '<button type="button" data-go="checkin"><small>CHECK-IN</small><strong>'+esc(CONFIG.checkinTime)+'</strong><span>'+t({kr:"체크인 안내",en:"Check-in guide",cn:"入住指南"},escBr)+' →</span></button>'+
         '<button type="button" data-go="checkout"><small>CHECK-OUT</small><strong>'+esc(CONFIG.checkoutTime)+'</strong><span>'+t({kr:"체크아웃 안내",en:"Check-out guide",cn:"退房指南"},escBr)+' →</span></button>'+
@@ -793,7 +794,7 @@ function renderHome() {
         explore(pBar,'BARS',t({kr:"바",en:"Bars",cn:"酒吧"},escBr),'bar')+
         explore(pSee,'SIGHTS',t({kr:"볼거리",en:"Sights",cn:"景点"},escBr),'see')+
       '</div></section>'+
-    '</main><footer><span>GANGNAM CALME</span><i></i><span>A QUIET STAY IN SEORAE VILLAGE &nbsp; | &nbsp; SEOUL</span></footer></div>';
+    '</main><footer><span>GANGNAM CALME</span><i></i><span>A QUIET STAY IN SEORAE VILLAGE &nbsp; | &nbsp; SEOUL</span><small class="credit">Weather: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></small></footer></div>';
 }
 function renderCheckin() {
   const T = CONFIG.text;
@@ -1028,8 +1029,13 @@ function renderNearby() {
 
 /* ---------- 지도 (Leaflet). 못 불러와도 목록은 그대로 보입니다 ---------- */
 const LEAFLET_JS = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";
-// 지도 바탕 그림(오픈스트리트맵). 키가 필요 없습니다. 색을 빼고 연하게 만드는 것은 아래 CSS의 .leaflet-tile-pane 에서 합니다
+// 지도 바탕 그림. 컬러지만 단순한 무료 지도(OpenFreeMap "Liberty")를 씁니다. 키가 필요 없습니다.
+// 이 지도를 못 불러오면(오래된 휴대폰 등) 오픈스트리트맵을 연하게 보여줍니다
+const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 const MAP_TILES = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+const MAPLIBRE_JS = "https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js";
+const MAPLIBRE_CSS = "https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css";
+const MAPLIBRE_LEAFLET_JS = "https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js";
 const LEAFLET_CSS = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
 let mapState = { tried: false, map: null, markers: [] };
 
@@ -1047,6 +1053,54 @@ function placeMapIcon(type) {
     className: "place-map-icon",
     html: '<span class="place-map-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + drawing + '</svg></span>',
     iconSize: [38, 38], iconAnchor: [19, 19], popupAnchor: [0, -20]
+  });
+}
+
+function loadScript(src, done) {
+  try {
+    const js = document.createElement("script");
+    js.src = src;
+    let finished = false;
+    const finish = ok => { if (!finished) { finished = true; done(ok); } };
+    js.onload = () => finish(true);
+    js.onerror = () => finish(false);
+    setTimeout(() => finish(false), 10000);
+    document.head.appendChild(js);
+  } catch (e) { done(false); }
+}
+let mapLibreState = null;
+function mapLibreLayer() {
+  return (window.MaplibreGLLeaflet && window.MaplibreGLLeaflet.maplibreGL) || (window.L && L.maplibreGL) || null;
+}
+function loadMapLibre(done) {
+  if (window.maplibregl && mapLibreLayer()) { done(true); return; }
+  if (mapLibreState) { mapLibreState.push(done); return; }
+  mapLibreState = [done];
+  const finish = ok => { const q = mapLibreState; mapLibreState = ok ? null : []; q.forEach(f => f(ok)); };
+  try {
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = MAPLIBRE_CSS;
+    document.head.appendChild(css);
+  } catch (e) {}
+  loadScript(MAPLIBRE_JS, function (ok) {
+    if (!ok || !window.maplibregl) { finish(false); return; }
+    loadScript(MAPLIBRE_LEAFLET_JS, function (ok2) { finish(ok2 && !!mapLibreLayer()); });
+  });
+}
+function addBaseMap(map) {
+  const osm = L.tileLayer(MAP_TILES, { maxZoom: 19, className: "osm-soft", attribution: "&copy; OpenStreetMap" }).addTo(map);
+  loadMapLibre(function (ok) {
+    if (!ok) return;
+    try {
+      const gl = mapLibreLayer()({ style: MAP_STYLE });
+      gl.addTo(map);
+      const glMap = gl.getMaplibreMap();
+      glMap.once("load", function () {
+        map.removeLayer(osm);
+        map.attributionControl.addAttribution('<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> &copy; OpenMapTiles &copy; OpenStreetMap');
+      });
+    } catch (e) {}
   });
 }
 
@@ -1083,10 +1137,7 @@ function initMap() {
       wrap.hidden = false;
       const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#1B3D29";
       const map = L.map("map", { scrollWheelZoom: false, attributionControl: true });
-      L.tileLayer(MAP_TILES, {
-        maxZoom: 19,
-        attribution: "&copy; OpenStreetMap"
-      }).addTo(map);
+      addBaseMap(map);
       const pts = [];
       withCoord.forEach(o => {
         const m = L.marker([o.p.lat, o.p.lng], { icon: placeMapIcon(o.p.type) }).addTo(map);
@@ -1189,10 +1240,7 @@ function initTransitMap() {
       wrap.hidden = false;
       const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#4b4727";
       const map = L.map("transitMap", { scrollWheelZoom: false, attributionControl: true });
-      L.tileLayer(MAP_TILES, {
-        maxZoom: 19,
-        attribution: "&copy; OpenStreetMap"
-      }).addTo(map);
+      addBaseMap(map);
       const pts = [];
       const busPts = [];
       const hasHome = typeof CONFIG.homeLat === "number" && typeof CONFIG.homeLng === "number";
@@ -1359,7 +1407,47 @@ function start() {
   else showScreen(location.hash.replace("#", "") || "home");
 }
 
+/* ---------- 오늘 날씨 (Open-Meteo, 무료·키 없음). 못 불러오면 칸이 아예 안 보입니다 ---------- */
+const WEATHER_TEXT = {
+  sun:   { icon: "☀️", label: { kr: "맑음", en: "Clear", cn: "晴" } },
+  part:  { icon: "⛅", label: { kr: "구름 조금", en: "Partly cloudy", cn: "多云" } },
+  cloud: { icon: "☁️", label: { kr: "흐림", en: "Cloudy", cn: "阴" } },
+  fog:   { icon: "🌫️", label: { kr: "안개", en: "Foggy", cn: "雾" } },
+  rain:  { icon: "🌧️", label: { kr: "비", en: "Rain", cn: "雨" } },
+  snow:  { icon: "🌨️", label: { kr: "눈", en: "Snow", cn: "雪" } },
+  storm: { icon: "⛈️", label: { kr: "뇌우", en: "Thunderstorm", cn: "雷阵雨" } }
+};
+function weatherKind(code) {
+  if (code === 0) return "sun";
+  if (code === 1 || code === 2) return "part";
+  if (code === 3) return "cloud";
+  if (code === 45 || code === 48) return "fog";
+  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return "snow";
+  if (code >= 95) return "storm";
+  return "rain";
+}
+function loadWeather() {
+  const box = document.getElementById("homeWeather");
+  if (!box || !window.fetch || typeof CONFIG.homeLat !== "number") return;
+  const url = "https://api.open-meteo.com/v1/forecast?latitude=" + CONFIG.homeLat + "&longitude=" + CONFIG.homeLng +
+    "&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul&forecast_days=1";
+  fetch(url).then(r => r.json()).then(function (d) {
+    const now = Math.round(d.current.temperature_2m);
+    const hi = Math.round(d.daily.temperature_2m_max[0]);
+    const lo = Math.round(d.daily.temperature_2m_min[0]);
+    const w = WEATHER_TEXT[weatherKind(d.current.weather_code)];
+    if (!isFinite(now) || !w) return;
+    box.innerHTML = '<span class="w-ico" aria-hidden="true">' + w.icon + '</span>' +
+      '<span class="w-now">' + now + '°</span>' +
+      '<span class="w-label">' + t(w.label) + '</span>' +
+      '<span class="w-range">↑' + hi + '° ↓' + lo + '°</span>';
+    box.title = pick({ kr: "서래마을 오늘 날씨", en: "Today's weather in Seorae Village", cn: "Seorae Village 今日天气" });
+    box.hidden = false;
+  }).catch(function () {});
+}
+
 document.addEventListener("DOMContentLoaded", start);
+document.addEventListener("DOMContentLoaded", loadWeather);
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1380,7 +1468,7 @@ html[data-lang="kr"] .en,html[data-lang="kr"] .cn{display:none}html[data-lang="e
 #screen-checkin,#screen-wifi,#screen-house,#screen-nearby,#screen-faq,#screen-checkout,#screen-contact{width:min(760px,calc(100% - 40px));margin:0 auto;padding:28px 0 60px}.back{min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--paper);cursor:pointer}h2{font:400 34px var(--serif);margin:22px 0 18px}.card,.acc{border:1px solid var(--line);background:var(--paper);border-radius:14px;margin-bottom:14px;box-shadow:0 4px 18px rgba(60,50,30,.04)}.card{padding:20px}.card.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.label,.tip,.hint,.place-type,.place-meta{color:var(--muted);font-size:14px}.label,.value,.big,.tip,.line,.place-type,.place-name,.place-line,.place-meta{margin:0 0 8px}.big{font:700 24px var(--serif)}.btns{display:grid;gap:9px;margin-top:14px}.btn{min-height:48px;border:1px solid var(--accent);border-radius:8px;background:var(--accent);color:white;text-decoration:none;display:flex;align-items:center;justify-content:center;padding:0 14px;cursor:pointer}.btn.line-btn{background:transparent;color:var(--accent)}h3{font:700 21px var(--serif);margin:30px 0 8px}.acc-list{display:grid;gap:10px}.acc{overflow:hidden}.acc summary{list-style:none;padding:16px 18px;display:flex;align-items:center;cursor:pointer}.acc summary::-webkit-details-marker{display:none}.acc-head{flex:1;display:flex;flex-direction:column}.acc-title{font:700 18px var(--serif)}.acc-sub{font-size:14px;color:var(--muted)}.acc-mark{width:18px;height:18px;position:relative}.acc-mark:before,.acc-mark:after{content:"";position:absolute;left:1px;top:8px;width:16px;height:1px;background:var(--ink)}.acc-mark:after{transform:rotate(90deg)}.acc[open] .acc-mark:after{transform:none}.acc-body{padding:0 18px 18px}.caution{padding:12px;background:#f2ecdf;border-radius:8px}.pic{display:block;width:100%;height:auto;border-radius:8px;margin-top:14px}.rules{padding-left:22px}.step-title{font:700 18px var(--serif)}.step-no{display:inline-grid;place-items:center;width:28px;height:28px;border:1px solid;border-radius:50%;margin-right:8px}.checks{list-style:none;padding:0}.check{display:flex;gap:12px;padding:10px 0}.map-wrap{border:1px solid var(--line);border-radius:14px;overflow:hidden}.map-wrap[hidden]{display:none}.chips{display:flex;gap:8px;overflow:auto;padding:12px 0}.chip{flex:none;min-height:42px;padding:0 15px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}.chip.on{background:var(--accent);color:white}.place[hidden]{display:none}#map{height:300px}.place-name{font:700 20px var(--serif)}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#222;color:white;padding:12px 18px;border-radius:8px;opacity:0;pointer-events:none;z-index:100}#toast.show{opacity:1}
 .place-map-icon{background:transparent;border:0}.place-map-symbol{width:38px;height:38px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(40,35,25,.32)}.place-map-symbol svg{width:22px;height:22px;display:block}
-.transit-map-icon{background:transparent;border:0}.transit-map-symbol{width:34px;height:34px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;color:#fff;box-shadow:0 2px 8px rgba(40,35,25,.32)}.transit-map-symbol svg{width:19px;height:19px;display:block}#transitMap{height:260px}.leaflet-tile-pane{filter:grayscale(1) sepia(.12) brightness(1.06) contrast(.82)}.place-photo{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;margin:0 0 16px;border-radius:12px;background:#e8dfcd}.quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:22px 0 26px}.quick button{display:flex;align-items:center;gap:14px;min-width:0;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;cursor:pointer;text-align:left;color:var(--ink);box-shadow:0 2px 10px rgba(60,50,30,.07);transition:transform .15s,box-shadow .15s}.quick button:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(60,50,30,.12)}.quick i{flex:0 0 46px;width:46px;height:46px;border-radius:50%;background:#1d3b2c;color:#f5e9c8;display:grid;place-items:center}.quick svg{width:22px;height:22px;display:block}.quick span{min-width:0}.quick strong{display:block;font:600 15px var(--sans);letter-spacing:.02em}.quick small{display:block;margin-top:3px;font:12.5px var(--sans);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}@media(max-width:900px){.quick{grid-template-columns:1fr 1fr}}@media(max-width:680px){.quick{gap:10px;margin:18px 0 20px}.quick button{padding:13px 12px;gap:10px;border-radius:14px}.quick i{flex-basis:40px;width:40px;height:40px}.quick svg{width:20px;height:20px}.quick strong{font-size:14px}.quick small{font-size:12px}}.action-grid{margin-top:28px}a.explore-card{color:inherit;text-decoration:none;display:block}@media(max-width:680px){.action-grid{margin-top:14px}}.taxi{margin:14px 0}.card>.taxi{margin:0}.taxi .btns{margin-top:0}.taxi .tip{margin-top:10px}
+.transit-map-icon{background:transparent;border:0}.transit-map-symbol{width:34px;height:34px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;color:#fff;box-shadow:0 2px 8px rgba(40,35,25,.32)}.transit-map-symbol svg{width:19px;height:19px;display:block}#transitMap{height:260px}.weather{display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px 10px;margin:0 0 18px;padding:8px 16px;border:1px solid var(--line);border-radius:999px;background:#fff;font:14px var(--sans);color:var(--ink)}.weather[hidden]{display:none}.w-ico{font-size:18px;line-height:1}.w-now{font-weight:600;font-size:16px}.w-label{color:var(--ink)}.w-range{color:var(--muted);font-size:13px}footer .credit{margin-left:auto;color:var(--muted);letter-spacing:0;font:10px var(--sans)}footer .credit a{color:inherit}.osm-soft{filter:saturate(.6) brightness(1.04) contrast(.92)}.place-photo{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;margin:0 0 16px;border-radius:12px;background:#e8dfcd}.quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:22px 0 26px}.quick button{display:flex;align-items:center;gap:14px;min-width:0;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;cursor:pointer;text-align:left;color:var(--ink);box-shadow:0 2px 10px rgba(60,50,30,.07);transition:transform .15s,box-shadow .15s}.quick button:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(60,50,30,.12)}.quick i{flex:0 0 46px;width:46px;height:46px;border-radius:50%;background:#1d3b2c;color:#f5e9c8;display:grid;place-items:center}.quick svg{width:22px;height:22px;display:block}.quick span{min-width:0}.quick strong{display:block;font:600 15px var(--sans);letter-spacing:.02em}.quick small{display:block;margin-top:3px;font:12.5px var(--sans);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}@media(max-width:900px){.quick{grid-template-columns:1fr 1fr}}@media(max-width:680px){.quick{gap:10px;margin:18px 0 20px}.quick button{padding:13px 12px;gap:10px;border-radius:14px}.quick i{flex-basis:40px;width:40px;height:40px}.quick svg{width:20px;height:20px}.quick strong{font-size:14px}.quick small{font-size:12px}}.action-grid{margin-top:28px}a.explore-card{color:inherit;text-decoration:none;display:block}@media(max-width:680px){.action-grid{margin-top:14px}}.taxi{margin:14px 0}.card>.taxi{margin:0}.taxi .btns{margin-top:0}.taxi .tip{margin-top:10px}
 @media(max-width:900px){.site-header{grid-template-columns:180px 1fr 150px;padding:0 20px}.brand-button{width:160px}.brand-button img{width:120px}.site-header nav{gap:22px}.hero{grid-template-columns:42% 58%}.hero-copy{padding-left:28px}.hero h1{font-size:68px}.content,.utility,footer{width:calc(100% - 40px)}}
 @media(max-width:680px){.site-header{height:72px;grid-template-columns:1fr auto;padding:0 14px}.brand-button{width:130px;height:64px}.brand-button img{width:104px;height:60px}.site-header nav{display:none}.header-lang{grid-column:2}.lang-btn{height:36px;padding:0 11px;font-size:12px}.hero{display:block;min-height:0}.hero-copy{padding:44px 22px 30px}.eyebrow{font-size:12px}.hero h1{font-size:64px;line-height:.88}.rule{margin:26px 0 20px}.hero-image{min-height:330px}.hero-image:before{background:linear-gradient(180deg,#f1ecdf 0%,rgba(241,236,223,.2) 18%,transparent 35%)}.content,.utility,footer{width:calc(100% - 32px)}.welcome{padding-top:28px}.welcome h2{font-size:40px}.welcome>p{font-size:17px}.feature-grid{grid-template-columns:1fr;gap:14px}.feature-card{height:290px}.feature-copy{left:26px;top:38px}.feature-copy strong{font-size:30px}.explore{padding-top:30px}.section-title h3{font-size:17px;letter-spacing:.14em}.explore-grid{grid-template-columns:1fr 1fr;gap:12px}.explore-copy{padding:10px 4px}.explore-copy strong{font-size:16px}.utility{grid-template-columns:1fr 1fr;gap:12px;padding:14px}.utility button{border-right:0;justify-content:flex-start;gap:8px;padding:0}.utility b{font-size:24px;flex:0 0 26px}.utility span{white-space:nowrap}footer span:last-child{display:none}.card.two{grid-template-columns:1fr}}
 /* 언어 단추가 3개(한/영/중)로 늘어나 중간 너비 화면에서 메뉴와 겹치는 것을 막기 위한 규칙입니다.
