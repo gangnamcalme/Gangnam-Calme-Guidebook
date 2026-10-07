@@ -93,6 +93,7 @@ const CONFIG = {
     { number: "119", tel: "119", label: { kr: "화재 · 구급차", en: "Fire · Ambulance", cn: "火警 · 急救车" } },
     { number: "1330", tel: "+8221330", label: { kr: "관광 안내·통역 (외국 번호는 +82-2-1330)", en: "Korea Travel Hotline: help & interpretation (foreign phone: +82-2-1330)", cn: "旅游咨询·翻译热线(海外号码：+82-2-1330)" } }
   ],
+  carCardReady: false,                         // 현관에 '차량 안내 카드'를 두었으면 true, 아직이면 false. false면 손님에게 종이에 직접 적어 두라고 안내합니다
   carPhone: "1599-3489",                      // 차량 안내 카드에 나오는 안심번호 (호스트 휴대폰으로 연결됩니다)
   unit: "501호",                              // 호수. 차량 안내 카드에 크게 나옵니다
   /* 주차 안내. 체크인 화면과 유용한 정보에 나옵니다. 한 줄이 한 항목(•)입니다 */
@@ -104,8 +105,8 @@ const CONFIG = {
     { kr: "대수: 501호는 기본 1대입니다. 빈자리가 넉넉할 때만 방문 차량을 추가로 세울 수 있어요.", en: "How many: Unit 501 has one car. Visitors' cars are fine only when there are plenty of free spaces.", cn: "数量：501号默认1辆车。只有空位充足时，访客车辆才可以停放。" },
     { kr: "두 대일 때: 건물 왼쪽 담벼락을 따라, 쓰레기 버리는 전봇대 뒤쪽에 두 대를 앞뒤로 한 줄(일렬)로 세워 주세요.", en: "Two cars: Park them one behind the other along the wall on the left side of the building, behind the utility pole where the trash goes.", cn: "两辆车时：请沿着大楼左侧的围墙，在扔垃圾的电线杆后面，前后排成一列停放。" },
     { kr: "매너: 한 칸에 한 대씩, 선 안에 반듯하게 세워 주세요. 다른 차의 출입을 막지 않도록 주의해 주세요.", en: "Please: One car per space, parked neatly within the lines, without blocking other cars.", cn: "请注意：一个车位停一辆车，停在线内，不要挡住其他车辆进出。" },
-    { kr: "차량 안내 카드: 현관에 있는 '501호 방문 차량' 카드를 차 앞 유리 쪽에 두세요. 이웃이 안심번호로 바로 호스트에게 연락할 수 있어요. 퇴실하실 때 현관 제자리에 두어 주세요.", en: "Car card: Leave the '501호 방문 차량' card from the entrance on your dashboard, so neighbors can call the host's contact number. Please put it back by the entrance when you check out.", cn: "车辆卡片：请把玄关处的'501호 방문 차량'卡片放在挡风玻璃前，邻居可通过安心号码直接联系房主。退房时请放回玄关原处。" },
-    { kr: "카드가 없을 때: 아래 버튼을 눌러 같은 내용을 화면으로 보여주세요.", en: "No card? Tap the button below to show the same thing on your phone.", cn: "找不到卡片时：点下方按钮，用手机显示相同内容。" }
+    { when: "card", kr: "차량 안내 카드: 현관에 있는 '501호 방문 차량' 카드에 출차 예정 시간을 적어(함께 있는 펜 사용) 차 앞 유리 쪽에 두세요. 이웃이 안심번호로 바로 호스트에게 연락할 수 있어요. 퇴실하실 때 글씨를 물티슈로 지우고 현관 제자리에 두어 주세요.", en: "Car card: Take the '501호 방문 차량' card by the entrance, write when you'll move the car (pen provided), and leave it on your dashboard so neighbors can call the host's contact number. At check-out, wipe it clean and put it back by the entrance.", cn: "车辆卡片：拿玄关处的'501호 방문 차량'卡片，用旁边的笔写上预计挪车时间，放在挡风玻璃前，邻居可通过安心号码直接联系房主。退房时请用湿巾擦掉字迹，放回玄关原处。" },
+    { when: "nocard", kr: "차량 메모: 종이에 '501호 방문 차량 · 1599-3489(안심번호) · 출차 예정 시간'을 적어 차 앞 유리 쪽에 두세요. 이웃이 바로 호스트에게 연락할 수 있어요.", en: "Car note: On a piece of paper, write '501호 방문 차량 · 1599-3489 · 출차 예정 (your departure time)' and leave it on your dashboard so neighbors can reach the host.", cn: "车辆便条：请在纸上写'501호 방문 차량 · 1599-3489 · 출차 예정（预计挪车时间）'，放在挡风玻璃前，邻居就能直接联系房主。" },
   ],
   hostName: "Amy",                            // 호스트 이름. 연락하기 화면에 나옵니다
   phone: "010-5777-0876",                     // 전화번호. 전화 걸기 버튼을 누르면 이 번호로 전화가 걸립니다
@@ -122,7 +123,8 @@ const CONFIG = {
   /* 체크인 화면의 확인 목록. { } 한 줄이 한 항목입니다 */
   checkinList: [
     { kr: "체크인하시면 호스트에게 한 번만 알려주세요!", en: "Please let your host know once you've checked in!", cn: "入住后，请告诉房主一声！" },
-    { kr: "차를 가져오셨다면, 한 칸에 한 대씩 세우고 현관에 있는 차량 안내 카드를 차 앞에 두세요.", en: "If you came by car, park one car per space and leave the car card from the entrance on your dashboard.", cn: "如果开车来，请一个车位停一辆车，并把玄关处的车辆卡片放在车前。" },
+    { when: "card", kr: "차를 가져오셨다면, 한 칸에 한 대씩 세우고 현관의 차량 안내 카드에 출차 예정 시간을 적어 차 앞에 두세요.", en: "If you came by car, park one car per space, write your departure time on the car card by the entrance, and leave it on your dashboard.", cn: "如果开车来，请一个车位停一辆车，在玄关的车辆卡片上写好预计挪车时间，放在车前。" },
+    { when: "nocard", kr: "차를 가져오셨다면, 한 칸에 한 대씩 세우고 종이에 '501호 방문 차량 · 1599-3489 · 출차 예정 시간'을 적어 차 앞에 두세요.", en: "If you came by car, park one car per space and leave a note on your dashboard: '501호 방문 차량 · 1599-3489 · 출차 예정 (departure time)'.", cn: "如果开车来，请一个车位停一辆车，并在纸上写'501호 방문 차량 · 1599-3489 · 출차 예정（挪车时间）'放在车前。" },
     { kr: "1층에서 벨이 울릴 때 문 여는 법(인터폰)을 한 번 확인해 주세요.", en: "Take a quick look at how to open the ground-floor door from the intercom.", cn: "请先看一下有人在一楼按门铃时如何用对讲机开门。" }
   ],
 
@@ -935,7 +937,7 @@ function renderCheckin() {
     ((CONFIG.checkinList || []).length ?
       '<div class="card todo">' +
         '<p class="todo-title">' + t(T.checkinListTitle) + '</p>' +
-        '<ul class="checks">' + CONFIG.checkinList.map((c, i) =>
+        '<ul class="checks">' + CONFIG.checkinList.filter(okWhen).map((c, i) =>
           '<li><label class="check"><input type="checkbox" data-checkin="' + i + '"><span>' + t(c) + '</span></label></li>'
         ).join("") + '</ul>' +
         '<div class="btns"><button class="btn line-btn" type="button" data-go="contact">' + t(T.checkoutContact) + '</button></div>' +
@@ -961,6 +963,10 @@ function renderCheckin() {
     '</div>' +
     parkingCard();
 }
+function okWhen(x) {
+  if (!x || !x.when) return true;
+  return x.when === (CONFIG.carCardReady ? "card" : "nocard");
+}
 function renderParking() {
   const T = CONFIG.text;
   return backButton() + '<h2>' + t(T.parkingTitle) + '</h2>' + parkingCard();
@@ -969,8 +975,8 @@ function parkingCard() {
   const T = CONFIG.text;
   if (!(CONFIG.parking || []).length) return '';
   const photo = CONFIG.parkingPhoto ? '<figure class="park-photo"><img src="' + esc(CONFIG.parkingPhoto) + '" alt="" loading="lazy"><figcaption>' + t(CONFIG.parkingPhotoCaption) + '</figcaption></figure>' : '';
-  return '<div class="card"><p class="label">' + t(T.parkingTitle) + '</p>' + photo + faqList(CONFIG.parking) +
-    '<div class="btns"><button class="btn" type="button" data-car-card>🚗&nbsp; ' + t(T.carCardButton) + '</button></div></div>';
+  return '<div class="card"><p class="label">' + t(T.parkingTitle) + '</p>' + photo + faqList(CONFIG.parking.filter(okWhen)) +
+    '</div>';
 }
 function openCarCard() {
   const T = CONFIG.text;
@@ -1155,7 +1161,7 @@ function renderFaq() {
         '<span class="acc-head"><span class="acc-title">' + t(f.q) + '</span></span>' +
         '<span class="acc-mark" aria-hidden="true"></span>' +
       '</summary>' +
-      '<div class="acc-body">' + (f.fromParking ? faqList(CONFIG.parking || []) + '<div class="btns"><button class="btn" type="button" data-car-card>🚗&nbsp; ' + t(T.carCardButton) + '</button></div>' : faqList(f.a)) + '</div>' +
+      '<div class="acc-body">' + (f.fromParking ? faqList((CONFIG.parking || []).filter(okWhen)) : faqList(f.a)) + '</div>' +
     '</details>'
   ).join("");
   return backButton() +
