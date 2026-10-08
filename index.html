@@ -371,11 +371,7 @@ const CONFIG = {
   faq: [
     {
       q: { kr: "1층에서 벨이 울리면 문을 어떻게 열어주나요?", en: "Someone rang from the ground floor. How do I open the door?", cn: "有人在一楼按门铃，怎么开门？" },
-      a: [
-        { kr: "현관 옆 인터폰 화면으로 누구인지 확인하세요.", en: "Check who it is on the intercom screen by the entrance.", cn: "通过门口对讲机屏幕确认是谁。" },
-        { kr: "사람 모양 버튼을 누른 뒤, 열쇠 모양 버튼을 누르면 1층 공동현관 문이 열립니다.", en: "Press the person button, then the key button, and the building entrance opens.", cn: "先按人形按钮，再按钥匙按钮，一楼大门就会打开。" },
-        { kr: "사진으로 보기: 하우스 매뉴얼 → 인터폰", en: "With photos: House Manual → Intercom", cn: "看图说明：住宿指南 → 对讲机" }
-      ]
+      a: [], fromFacility: "intercom2.jpg"   // 답변은 하우스 매뉴얼의 인터폰 사진 안내를 그대로 보여줍니다
     },
     {
       q: { kr: "주차는 어디에 하나요?", en: "Where do I park?", cn: "在哪里停车？" },
@@ -1064,6 +1060,10 @@ function guidePhoto(f) {
     '<p class="label">' + t(T.buttonsLabel) + '</p>' + legend +
     '<p class="label">' + t(T.usageLabel) + '</p>' + steps;
 }
+function facilityGuide(photo) {
+  const fac = (CONFIG.facilities || []).find(x => x.photo === photo);
+  return fac && fac.markers ? guidePhoto(fac) : '';
+}
 function openIntercom() {
   const accs = document.querySelectorAll("#screen-house details.acc");
   const i = (CONFIG.facilities || []).findIndex(f => f.photo === "intercom2.jpg");
@@ -1161,7 +1161,7 @@ function renderFaq() {
         '<span class="acc-head"><span class="acc-title">' + t(f.q) + '</span></span>' +
         '<span class="acc-mark" aria-hidden="true"></span>' +
       '</summary>' +
-      '<div class="acc-body">' + (f.fromParking ? faqList((CONFIG.parking || []).filter(okWhen)) : faqList(f.a)) + '</div>' +
+      '<div class="acc-body">' + (f.fromParking ? faqList((CONFIG.parking || []).filter(okWhen)) : f.fromFacility ? facilityGuide(f.fromFacility) : faqList(f.a)) + '</div>' +
     '</details>'
   ).join("");
   return backButton() +
