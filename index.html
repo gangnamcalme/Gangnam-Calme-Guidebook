@@ -93,7 +93,7 @@ const CONFIG = {
     { number: "119", tel: "119", label: { kr: "화재 · 구급차", en: "Fire · Ambulance", cn: "火警 · 急救车" } },
     { number: "1330", tel: "+8221330", label: { kr: "관광 안내·통역 (외국 번호는 +82-2-1330)", en: "Korea Travel Hotline: help & interpretation (foreign phone: +82-2-1330)", cn: "旅游咨询·翻译热线(海外号码：+82-2-1330)" } }
   ],
-  carCardReady: false,                         // 현관에 '차량 안내 카드'를 두었으면 true, 아직이면 false. false면 손님에게 종이에 직접 적어 두라고 안내합니다
+  carCardReady: true,                          // 신발장 서랍에 '방문 차량' 안내지를 두었으면 true(안내지 사용 안내), false면 손님에게 종이에 직접 적어 두라고 안내합니다
   carPhone: "1599-3489",                      // 차량 안내 카드에 나오는 안심번호 (호스트 휴대폰으로 연결됩니다)
   unit: "501호",                              // 호수. 차량 안내 카드에 크게 나옵니다
   /* 주차 안내. 체크인 화면과 유용한 정보에 나옵니다. 한 줄이 한 항목(•)입니다 */
@@ -105,7 +105,7 @@ const CONFIG = {
     { kr: "대수: 501호는 기본 1대입니다. 빈자리가 넉넉할 때만 방문 차량을 추가로 세울 수 있어요.", en: "How many: Unit 501 has one car. Visitors' cars are fine only when there are plenty of free spaces.", cn: "数量：501号默认1辆车。只有空位充足时，访客车辆才可以停放。" },
     { kr: "두 대일 때: 건물 왼쪽 담벼락을 따라, 쓰레기 버리는 전봇대 뒤쪽에 두 대를 앞뒤로 한 줄(일렬)로 세워 주세요.", en: "Two cars: Park them one behind the other along the wall on the left side of the building, behind the utility pole where the trash goes.", cn: "两辆车时：请沿着大楼左侧的围墙，在扔垃圾的电线杆后面，前后排成一列停放。" },
     { kr: "매너: 한 칸에 한 대씩, 선 안에 반듯하게 세워 주세요. 다른 차의 출입을 막지 않도록 주의해 주세요.", en: "Please: One car per space, parked neatly within the lines, without blocking other cars.", cn: "请注意：一个车位停一辆车，停在线内，不要挡住其他车辆进出。" },
-    { when: "card", kr: "차량 안내 카드: 현관에 카드가 두 종류 있어요. 숙박하시는 분의 차에는 '501호 차량' 카드를, 잠깐 들르는 방문 차량에는 '501호 방문 차량' 카드에 출차 예정 시간을 적어(함께 있는 펜 사용) 차 앞 유리 쪽에 두세요. 이웃이 안심번호로 바로 호스트에게 연락할 수 있어요. 퇴실하실 때 글씨를 지우고 현관 제자리에 두어 주세요.", en: "Car cards: There are two kinds by the entrance. Put the '501호 차량' card in a guest's car; for a visitor's car, write the departure time on the '501호 방문 차량' card (pen provided). Leave it on the dashboard so neighbors can call the host's contact number. At check-out, wipe it clean and put it back by the entrance.", cn: "车辆卡片：玄关处有两种卡片。住客的车请放'501호 차량'卡片；访客的车请在'501호 방문 차량'卡片上用旁边的笔写上预计挪车时间。放在挡风玻璃前，邻居可通过安心号码直接联系房主。退房时请擦掉字迹，放回玄关原处。" },
+    { when: "card", kr: "방문 차량 안내지: 신발장 안 서랍에 '501호 방문 차량' 안내지가 있어요. 한 장 꺼내 출차 예정 시간을 적어 차 앞 유리 쪽에 두세요. 이웃이 안심번호로 바로 호스트에게 연락할 수 있어요. 안내지는 가져가셔도 돼요. (서랍에 안내지가 없으면 종이에 '501호 방문 차량 · 1599-3489 · 출차 예정 시간'을 적어 주세요.)", en: "Visitor car sheet: There are '501호 방문 차량' sheets in the drawer inside the shoe cabinet. Take one, write your expected departure time, and leave it on your dashboard so neighbors can call the host's contact number. You can keep the sheet. (If none are left, write '501호 방문 차량 · 1599-3489 · 출차 예정 (departure time)' on a piece of paper.)", cn: "访客车辆单：鞋柜里的抽屉中有'501호 방문 차량'单子。请取一张，写上预计挪车时间，放在挡风玻璃前，邻居可通过安心号码直接联系房主。单子不用归还。（如果抽屉里没有了，请在纸上写'501호 방문 차량 · 1599-3489 · 출차 예정（预计挪车时间）'。）" },
     { when: "nocard", kr: "차량 메모: 종이에 '501호 방문 차량 · 1599-3489(안심번호) · 출차 예정 시간'을 적어 차 앞 유리 쪽에 두세요. 이웃이 바로 호스트에게 연락할 수 있어요.", en: "Car note: On a piece of paper, write '501호 방문 차량 · 1599-3489 · 출차 예정 (your departure time)' and leave it on your dashboard so neighbors can reach the host.", cn: "车辆便条：请在纸上写'501호 방문 차량 · 1599-3489 · 출차 예정（预计挪车时间）'，放在挡风玻璃前，邻居就能直接联系房主。" },
   ],
   hostName: "Amy",                            // 호스트 이름. 연락하기 화면에 나옵니다
@@ -123,7 +123,7 @@ const CONFIG = {
   /* 체크인 화면의 확인 목록. { } 한 줄이 한 항목입니다 */
   checkinList: [
     { kr: "체크인하시면 호스트에게 한 번만 알려주세요!", en: "Please let your host know once you've checked in!", cn: "入住后，请告诉房主一声！" },
-    { when: "card", kr: "차를 가져오셨다면, 한 칸에 한 대씩 세우고 현관의 차량 안내 카드를 차 앞에 두세요. 방문 차량은 '방문 차량' 카드에 출차 예정 시간을 적어 주세요.", en: "If you came by car, park one car per space and leave a car card from the entrance on your dashboard. For a visitor's car, write the departure time on the '방문 차량' card.", cn: "如果开车来，请一个车位停一辆车，并把玄关的车辆卡片放在车前。访客车辆请在'방문 차량'卡片上写好预计挪车时间。" },
+    { when: "card", kr: "차를 가져오셨다면, 한 칸에 한 대씩 세우고 신발장 안 서랍의 '방문 차량' 안내지에 출차 예정 시간을 적어 차 앞에 두세요.", en: "If you came by car, park one car per space, take a '방문 차량' sheet from the drawer inside the shoe cabinet, write your departure time and leave it on your dashboard.", cn: "如果开车来，请一个车位停一辆车，从鞋柜抽屉里取一张'방문 차량'单子，写上预计挪车时间放在车前。" },
     { when: "nocard", kr: "차를 가져오셨다면, 한 칸에 한 대씩 세우고 종이에 '501호 방문 차량 · 1599-3489 · 출차 예정 시간'을 적어 차 앞에 두세요.", en: "If you came by car, park one car per space and leave a note on your dashboard: '501호 방문 차량 · 1599-3489 · 출차 예정 (departure time)'.", cn: "如果开车来，请一个车位停一辆车，并在纸上写'501호 방문 차량 · 1599-3489 · 출차 예정（挪车时间）'放在车前。" },
     { kr: "1층에서 벨이 울릴 때 문 여는 법(인터폰)을 한 번 확인해 주세요.", en: "Take a quick look at how to open the ground-floor door from the intercom.", cn: "请先看一下有人在一楼按门铃时如何用对讲机开门。" }
   ],
