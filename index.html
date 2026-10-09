@@ -883,12 +883,15 @@ function renderHome() {
   return '<div class="site">'+
     '<header class="site-header"><button class="brand-button" data-go="home" aria-label="Gangnam Calme"><img src="'+logo+'" alt="Gangnam Calme"></button><nav><button data-go="home">'+t({kr:"Home",en:"Home",cn:"首页"})+'</button><button data-go="house">'+t({kr:"House Manual",en:"House Manual",cn:"住宿指南"})+'</button><button data-go="nearby">'+t({kr:"Seorae Guide",en:"Seorae Guide",cn:"周边指南"})+'</button></nav><div class="header-lang">'+renderLangBar()+'</div></header>'+
     '<main>'+
-      '<section class="hero"><div class="hero-copy"><p class="eyebrow">'+t(HT.eyebrow)+'</p><h1>Gangnam<br>Calme</h1><span class="rule"></span><p class="hero-ko">'+t({kr:"서래마을의 조용한 일상 속,\n편안한 시간을 보내시길 바랍니다.",en:"A quiet family home in Seorae Village.\nEverything you need for your stay is here.",cn:"在Seorae Village宁静的日常中，\n愿您度过舒适惬意的时光。"},escBr)+'</p><p class="hero-en">A more local, more peaceful Seoul.</p></div><div class="hero-image"><img src="'+living+'" alt="Gangnam Calme living room"><span>STAY<br>LIKE<br>A LOCAL</span></div></section>'+
+      '<section class="hero"><div class="hero-copy"><p class="eyebrow">'+t(HT.eyebrow)+'</p><h1>Gangnam<br> Calme</h1><span class="rule"></span><p class="hero-ko">'+t({kr:"서래마을의 조용한 일상 속,\n편안한 시간을 보내시길 바랍니다.",en:"A quiet family home in Seorae Village.\nEverything you need for your stay is here.",cn:"在Seorae Village宁静的日常中，\n愿您度过舒适惬意的时光。"},escBr)+'</p><p class="hero-en">A more local, more peaceful Seoul.</p></div><div class="hero-image"><img src="'+living+'" alt="Gangnam Calme living room"><span>STAY<br>LIKE<br>A LOCAL</span></div></section>'+
       '<section class="content welcome"><h2>'+t(HT.welcomeTitle)+'</h2><p>'+t(HT.welcomeSub)+'</p>'+
       '<div class="weather" id="homeWeather" hidden></div>'+
       '<div class="stay-times">'+
         '<button type="button" data-go="checkin"><small>CHECK-IN</small><strong>'+esc(CONFIG.checkinTime)+'</strong><span>'+t({kr:"체크인 안내",en:"Check-in guide",cn:"入住指南"},escBr)+' →</span></button>'+
         '<button type="button" data-go="checkout"><small>CHECK-OUT</small><strong>'+esc(CONFIG.checkoutTime)+'</strong><span>'+t({kr:"체크아웃 안내",en:"Check-out guide",cn:"退房指南"},escBr)+' →</span></button>'+
+      '</div>'+
+      '<div class="feature-grid single">'+
+        feature('house',bedroom,'HOUSE<br>MANUAL',t({kr:"숙소 이용 안내",en:"Stay Guide",cn:"住宿指南"},escBr),t({kr:"숙박, 시설 이용 방법 및 유용한 정보들",en:"Everything you need inside the home",cn:"住宿、设施使用方法及实用信息"},escBr))+
       '</div>'+
       '<nav class="quick" aria-label="Quick menu">'+
         '<button type="button" data-go="wifi"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1.3" fill="currentColor" stroke="none"/></svg></i><span><strong>Wi-Fi</strong><small>'+t({kr:"와이파이 정보",en:"Network info",cn:"网络信息"},escBr)+'</small></span></button>'+
@@ -898,9 +901,6 @@ function renderHome() {
       '</nav>'+
       '<div class="install" id="installBox" hidden><p><span aria-hidden="true">📲</span> '+t(CONFIG.text.installTitle)+'</p><button type="button" class="install-btn" data-install>'+t(CONFIG.text.installButton)+'</button><p class="install-help" id="installHelp" hidden></p></div>'+
       (CONFIG.homeHelp ? '<button class="review-strip help-strip" type="button" data-go="contact"><span class="rs-text"><b>'+t(CONFIG.homeHelp.title)+'</b><small>'+t(CONFIG.homeHelp.body)+'</small></span><span class="rs-arrow" aria-hidden="true">›</span></button>' : '')+
-      '<div class="feature-grid single">'+
-        feature('house',bedroom,'HOUSE<br>MANUAL',t({kr:"숙소 이용 안내",en:"Stay Guide",cn:"住宿指南"},escBr),t({kr:"숙박, 시설 이용 방법 및 유용한 정보들",en:"Everything you need inside the home",cn:"住宿、设施使用方法及实用信息"},escBr))+
-      '</div>'+
       '<div class="explore-grid action-grid">'+
         '<a class="explore-card" href="'+uberUrl()+'" target="_blank" rel="noopener"><img src="'+taxiImg+'" alt=""><span class="explore-copy"><strong>TAXI</strong><small>— &nbsp;'+t(HT.taxiTitle,escBr)+'</small></span></a>'+
         (CONFIG.callVanPhone ? '<a class="explore-card" href="tel:'+esc(CONFIG.callVanPhone.replace(/[^0-9+]/g,""))+'"><img src="'+vanImg+'" alt=""><span class="explore-copy"><strong>VAN</strong><small>— &nbsp;'+t(HT.vanTitle,escBr)+'</small></span></a>' : '')+
@@ -1800,6 +1800,14 @@ body.rv-lock{overflow:hidden}
 .review-strip b{font:600 17px/1.45 var(--sans);color:var(--accent)}
 .review-strip small{font:16px/1.45 var(--sans);color:#6b6254}
 .review-strip .rs-arrow{flex:0 0 auto;font-size:26px;color:#B8964A;line-height:1}
+
+@media(max-width:680px){
+.hero-copy{padding:22px 22px 16px}.eyebrow{margin-bottom:8px}.hero h1{font-size:42px;line-height:1}.hero h1 br{display:none}.hero .rule,.hero-en{display:none}.hero-ko{margin:8px 0 0;font-size:14px;line-height:1.6}
+.hero-image{min-height:200px;height:200px}.hero-image>span{display:none}
+.welcome{padding-top:20px}.welcome h2{font-size:30px}.welcome>p{font-size:15px;margin-bottom:14px}
+.stay-times{margin-bottom:14px}.stay-times button{padding:12px 14px}.stay-times strong{font-size:30px}.stay-times span{font-size:14px}
+.feature-grid.single{margin:0 0 14px}.feature-card{height:150px;border-radius:16px}.feature-copy{left:20px;top:20px}.feature-copy strong{font-size:24px}.feature-copy b{font-size:16px;margin-top:8px}.feature-copy small{font-size:12px;max-width:190px;margin-top:4px}.round-arrow{width:38px;height:38px;font-size:26px;right:14px;bottom:14px}
+}
 </style>
 </head>
 <body>
