@@ -96,7 +96,7 @@ const CONFIG = {
   carCardReady: true,                          // 신발장 서랍에 '방문 차량' 안내지를 두었으면 true(안내지 사용 안내), false면 손님에게 종이에 직접 적어 두라고 안내합니다
   carPhone: "1599-3489",                      // 차량 안내 카드에 나오는 안심번호 (호스트 휴대폰으로 연결됩니다)
   unit: "501호",                              // 호수. 차량 안내 카드에 크게 나옵니다
-  /* 주차 안내. 체크인 화면과 유용한 정보에 나옵니다. 한 줄이 한 항목(•)입니다 */
+  /* 주차 안내. 첫 화면의 '주차' 메뉴에 나옵니다. 한 줄이 한 항목(•)입니다 */
   parkingPhoto: "parking.jpg",                // 주차 안내 사진. 주황색 표시가 두 대일 때 일렬로 세우는 자리입니다
   parkingPhotoCaption: { kr: "주황색 표시: 두 대일 때 일렬로 세우는 자리 (건물 맨 왼쪽, 담벼락 쪽)", en: "Orange box: where two cars park in a line (far left of the building, along the wall)", cn: "橙色框：两辆车前后排成一列停放的位置（大楼最左侧，靠围墙）" },
   parking: [
@@ -370,10 +370,6 @@ const CONFIG = {
     {
       q: { kr: "1층에서 벨이 울리면 문을 어떻게 열어주나요?", en: "Someone rang from the ground floor. How do I open the door?", cn: "有人在一楼按门铃，怎么开门？" },
       a: [], fromFacility: "intercom2.jpg"   // 답변은 하우스 매뉴얼의 인터폰 사진 안내를 그대로 보여줍니다
-    },
-    {
-      q: { kr: "주차는 어디에 하나요?", en: "Where do I park?", cn: "在哪里停车？" },
-      a: [], fromParking: true   // 답변은 위 parking 목록을 그대로 씁니다
     },
     {
       q: { kr: "주변에 편의점이나 마트가 있나요?", en: "Where can I find a convenience store or supermarket?", cn: "附近有便利店或超市吗？" },
