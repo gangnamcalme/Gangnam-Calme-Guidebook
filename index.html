@@ -283,6 +283,7 @@ const CONFIG = {
       photo: "kitchen.jpg"
     },
     {
+      hidden: true,   // 고장으로 치워둠. 다시 꺼내면 이 줄을 지우면 매뉴얼에 다시 나옵니다
       name: { kr: "턴테이블 (레코드 플레이어)", en: "Turntable (record player)", cn: "黑胶唱片机" },
       location: { kr: "거실 책상 위에 있습니다.", en: "On the desk in the living room.", cn: "在客厅的桌子上。" },
       usage: [
@@ -1059,7 +1060,7 @@ function openIntercom() {
 }
 function renderHouse() {
   const T = CONFIG.text;
-  const facs = (CONFIG.facilities || []).slice().sort((a, b) => (b.photo === "intercom2.jpg") - (a.photo === "intercom2.jpg")); // 인터폰을 맨 위로
+  const facs = (CONFIG.facilities || []).filter(f => !f.hidden).sort((a, b) => (b.photo === "intercom2.jpg") - (a.photo === "intercom2.jpg")); // 인터폰을 맨 위로
   const facHtml = f =>
     '<details class="acc"' + (f.photo === "intercom2.jpg" ? ' id="acc-intercom"' : '') + '>' +
       '<summary>' +
