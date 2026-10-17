@@ -1276,6 +1276,7 @@ function arrivalSmsUrl() {
 function arrivalBox() {
   if (!CONFIG.phone) return "";
   return '<div class="arrive" id="arriveBox">' +
+    '<button type="button" class="ar-done" data-arrive-again>✓ ' + t({ kr: "도착 알림을 보냈어요", en: "Arrival message sent", cn: "已发送到达通知" }) + ' <u>' + t({ kr: "다시 보내기", en: "Send again", cn: "再次发送" }) + '</u></button>' +
     '<p class="ar-t">' + t({ kr: "체크인하셨나요?", en: "Just checked in?", cn: "已经入住了吗？" }) + '</p>' +
     '<p class="ar-s">' + t({ kr: "호스트에게 도착했다고 한 번만 알려 주세요.", en: "Please let your host know you've arrived.", cn: "请告诉房主一声您已到达。" }) + '</p>' +
     '<div class="ar-btns"><a class="btn" data-arrived href="' + esc(arrivalSmsUrl()) + '">' + t({ kr: "문자로 알리기", en: "Send a text", cn: "发短信告知" }) + '</a>' +
@@ -2075,7 +2076,7 @@ function start() {
     '<section id="screen-parking" hidden>' + renderParking() + '</section>' +
     renderReviewSheet() + renderTabbar();
   updateClock(); setInterval(updateClock, 30000);
-  try { const at = Number(localStorage.getItem("gc-arrived") || 0); const ab = document.getElementById("arriveBox"); if (ab && at && Date.now() - at < 14 * 864e5) ab.hidden = true; } catch (er) {}
+  try { const at = Number(localStorage.getItem("gc-arrived") || 0); const ab = document.getElementById("arriveBox"); if (ab && at && Date.now() - at < 14 * 864e5) ab.classList.add("done"); } catch (er) {}
 
   const saved = loadChecks();
   document.querySelectorAll("[data-check]").forEach(b => {
@@ -2108,7 +2109,8 @@ function start() {
     const lb = e.target.closest("[data-lang-btn]");
     if (lb) { setLang(lb.getAttribute("data-lang-btn")); const f = document.querySelector(".lang-fab"); if (f) f.classList.remove("open"); return; }
     if (!lf) { const f = document.querySelector(".lang-fab.open"); if (f) f.classList.remove("open"); }
-    if (e.target.closest("[data-arrived]")) { try { localStorage.setItem("gc-arrived", String(Date.now())); } catch (er) {} setTimeout(function () { const a = document.getElementById("arriveBox"); if (a) a.hidden = true; }, 1500); }
+    if (e.target.closest("[data-arrived]")) { try { localStorage.setItem("gc-arrived", String(Date.now())); } catch (er) {} setTimeout(function () { const a = document.getElementById("arriveBox"); if (a) a.classList.add("done"); }, 1500); }
+    if (e.target.closest("[data-arrive-again]")) { const a = document.getElementById("arriveBox"); if (a) a.classList.remove("done"); return; }
     if (e.target.closest("[data-taxi-card]")) { showTaxiCard(); return; }
     const ph = e.target.closest("[data-phrase]");
     if (ph) { showPhrase(Number(ph.getAttribute("data-phrase"))); return; }
@@ -2523,6 +2525,8 @@ a.ci-row{text-decoration:none}
 .gs-hit em{font-style:normal;color:var(--v-sub)}
 .gs-none{margin:0;padding:14px 16px;font:14px var(--sans);color:var(--v-sub)}
 .arrive[hidden]{display:none}
+.ar-done{display:none;width:100%;border:0;background:transparent;color:#f5e9c8;font:600 15px var(--sans);text-align:left;cursor:pointer;padding:0}.ar-done u{margin-left:6px;font-weight:400;opacity:.85}
+.arrive.done{padding:14px 18px}.arrive.done>*:not(.ar-done){display:none}.arrive.done .ar-done{display:block}
 </style>
 </head>
 <body>
