@@ -169,7 +169,7 @@ const CONFIG = {
   /* ---------- 공항 가는 법 (체크아웃 안내) ---------- */
   airportOut: [
     { kr: "**택시·국제택시:** 짐이 많으면 가장 편해요. 외국어가 가능한 기사의 국제택시·대형 콜밴은 미리 예약하면 정해진 요금으로 갑니다(☎ 1644-2255).", en: "**Taxi / international taxi:** easiest with luggage. International taxis and large vans with English-speaking drivers run at a fixed fare if you book ahead (☎ 1644-2255).", cn: "**出租车·国际出租车：**行李多时最方便。会说外语的国际出租车·大型出租车提前预约可按固定价格(☎ 1644-2255)。" },
-    { kr: "**공항버스:** 택시로 '서래마을입구(반포)' 정류장까지 가서(약 5분) K리무진 6703번 인천공항행을 타세요. 성인 18,000원이에요. 타는 곳은 내리던 곳의 길 건너편일 수 있으니 출발 전에 시간표와 함께 확인해 주세요.", en: "**Airport bus:** Take a taxi to the 'Seorae Village entrance (Banpo)' stop (about 5 min) and ride K Limousine 6703 to Incheon Airport. Adults ₩18,000. The boarding stop may be across the road from where you got off, so please check it and the timetable before you leave.", cn: "**机场巴士：**打车到'Seorae Village入口(Banpo)'站(约5分钟)，乘坐K Limousine 6703路前往仁川机场。成人18,000韩元。上车站可能在下车站的马路对面，出发前请确认站点和时刻表。" },
+    { kr: "**공항버스:** 택시로 '서래마을입구(반포)' 정류장까지 가서(약 5분) K리무진 6703번 인천공항행을 타세요. 성인 18,000원이에요. 타는 곳은 공항에서 오실 때 내리신 곳과 같은 정류장이에요. 출발 전에 시간표를 한 번 확인해 주세요.", en: "**Airport bus:** Take a taxi to the 'Seorae Village entrance (Banpo)' stop (about 5 min) and ride K Limousine 6703 to Incheon Airport. Adults ₩18,000. You board at the same stop where you got off when you arrived. Please check the timetable before you leave.", cn: "**机场巴士：**打车到'Seorae Village入口(Banpo)'站(约5分钟)，乘坐K Limousine 6703路前往仁川机场。成人18,000韩元。上车站和来时下车的是同一个站点。出发前请确认一下时刻表。" },
     { kr: "**지하철:** 택시로 내방역(약 5분) → 7호선 고속터미널역 → 9호선 급행 김포공항역 → 공항철도로 인천공항까지 가요. 김포공항은 9호선 급행 김포공항역에서 바로 내리시면 돼요.", en: "**Subway:** Taxi to Naebang Station (about 5 min) → Line 7 to Express Bus Terminal → Line 9 express to Gimpo Airport → AREX to Incheon Airport. For Gimpo Airport, just get off at Gimpo Airport on Line 9.", cn: "**地铁：**打车到Naebang站(约5分钟) → 7号线到高速巴士客运站 → 9号线快车到金浦机场站 → 机场铁路到仁川机场。去金浦机场的话在9号线金浦机场站下车即可。" },
     { kr: "국제선은 **출발 3시간 전**까지 공항에 도착하시는 걸 추천해요. 체크아웃(11시) 후 여유 있게 출발하세요.", en: "For international flights, we recommend arriving **3 hours before departure**. Leave with time to spare after check-out (11:00).", cn: "国际航班建议**起飞前3小时**到达机场。退房(11:00)后请留出充足时间出发。" }
   ],
@@ -402,7 +402,7 @@ const CONFIG = {
         { kr: "유아 의자는 숙소에 항상 비치되어 있어요.", en: "A high chair is always available in the home.", cn: "房内随时备有儿童餐椅。" },
         { kr: "아기 침대는 요청하시면 준비해 드려요. 도착 전에 미리 호스트에게 알려 주세요.", en: "A baby cot can be set up on request. Please let the host know before you arrive.", cn: "如需婴儿床，可应要求准备。请在到达前告知房主。" }
       ],
-      photo: ""
+      photo: "kids-cot.jpg"
     },
     {
       name: { kr: "모기향 (홈매트)", en: "Mosquito repellent", cn: "电蚊香" },
@@ -1502,7 +1502,7 @@ function renderContact() {
   }
   return backButton() +
     '<h2>' + t(T.menuContact) + '</h2>' +
-    '<p class="sub-lead">' + t({ kr: "물어보시기 전에 검색해 보세요. 앱에 답이 있을 수 있어요.", en: "Try a quick search first — the answer may already be here.", cn: "咨询前可以先搜索一下，答案可能就在应用里。" }) + '</p>' +
+    '<p class="sub-lead">' + t({ kr: "궁금한 건 뭐든 검색해 주시거나 편하게 물어봐 주세요.", en: "Search for anything you're curious about, or just ask us.", cn: "有任何疑问，都可以搜索或随时询问我们。" }) + '</p>' +
     gSearchBox("gsContact") +
     '<div class="card">' +
       '<p class="big">' + esc(CONFIG.hostName) + '</p>' +
