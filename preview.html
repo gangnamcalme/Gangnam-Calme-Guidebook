@@ -95,7 +95,8 @@ const CONFIG = {
   ],
   /* 비상시 안내: 구급상자·소화기 위치. { } 한 줄이 한 항목. 비워 두면 화면에 안 나옵니다 */
   safetyItems: [
-    // { kr: "구급상자: (위치)", en: "First-aid kit: (location)", cn: "急救箱：(位置)" },
+    { kr: "**구급상자:** 주방 상부장 맨 오른쪽 칸", en: "**First-aid kit:** the far-right upper kitchen cabinet", cn: "**急救箱：**厨房上柜最右边的柜子" },
+    { kr: "**소화기:** 현관 신발장 안", en: "**Fire extinguisher:** inside the shoe cabinet by the entrance", cn: "**灭火器：**玄关鞋柜里" }
   ],
   carCardReady: true,                          // 신발장 서랍에 '방문 차량' 안내지를 두었으면 true(안내지 사용 안내), false면 손님에게 종이에 직접 적어 두라고 안내합니다
   carPhone: "1599-3489",                      // 차량 안내 카드에 나오는 안심번호 (호스트 휴대폰으로 연결됩니다)
@@ -1237,7 +1238,7 @@ function renderSos() {
       CONFIG.emergency.map(e => '<a class="em-row" href="tel:' + esc(e.tel) + '"><b>' + esc(e.number) + '</b><span>' + t(e.label) + '</span><i aria-hidden="true">›</i></a>').join("") +
       (phone ? '<div class="btns"><a class="btn" href="tel:' + esc(phone) + '">' + t({ kr: "호스트에게 전화하기", en: "Call the host", cn: "给房主打电话" }) + '</a></div>' : '') +
       '</div>' : '') +
-    ((CONFIG.safetyItems || []).length ? '<div class="card"><p class="label">' + t({ kr: "구급상자 · 소화기 위치", en: "First-aid kit & fire extinguisher", cn: "急救箱 · 灭火器位置" }) + '</p>' + faqList(CONFIG.safetyItems) + '</div>' : '') +
+    ((CONFIG.safetyItems || []).length ? '<div class="card"><p class="label">' + t({ kr: "구급상자 · 소화기 위치", en: "First-aid kit & fire extinguisher", cn: "急救箱 · 灭火器位置" }) + '</p>' + richLines(CONFIG.safetyItems) + '</div>' : '') +
     (med ? '<div class="card"><p class="label">' + t({ kr: "가까운 병원 · 약국", en: "Nearby hospital & pharmacies", cn: "附近的医院 · 药店" }) + '</p>' + faqList(med.a) + '</div>' : '') +
     (kids.length ? '<div class="card"><p class="label">' + t({ kr: "아이가 아플 때 (소아과)", en: "If a child is sick (pediatrics)", cn: "孩子生病时（儿科）" }) + '</p>' + faqList(kids) + '</div>' : '');
 }
