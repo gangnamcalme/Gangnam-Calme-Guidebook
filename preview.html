@@ -821,9 +821,13 @@ function detectLang() {
     const saved = localStorage.getItem(LANG_KEY);
     if (saved === "kr" || saved === "en" || saved === "cn") return saved;
   } catch (e) {}
-  const nav = (navigator.language || (navigator.languages && navigator.languages[0]) || "").toLowerCase();
-  if (nav.indexOf("ko") === 0) return "kr";
-  if (nav.indexOf("zh") === 0) return "cn";
+  /* 휴대폰에 설정된 언어 순서대로 보고, 한국어·중국어·영어 중 처음 맞는 것으로 시작합니다. 그 밖의 언어는 영어 */
+  const list = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""]).map(x => String(x).toLowerCase());
+  for (const l of list) {
+    if (l.indexOf("ko") === 0) return "kr";
+    if (l.indexOf("zh") === 0) return "cn";
+    if (l.indexOf("en") === 0) return "en";
+  }
   return "en";
 }
 let LANG = detectLang();
