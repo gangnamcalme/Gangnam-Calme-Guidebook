@@ -1194,7 +1194,7 @@ function renderCo() {
       '<div><small>' + t({ kr: "체크아웃", en: "Check-out", cn: "退房" }) + '</small><b>' + esc(CONFIG.checkoutTime) + '</b><span>' + t({ kr: "까지", en: "until", cn: "前" }) + '</span></div>' +
       (van ? '<div><small>' + t({ kr: "대형 콜밴", en: "Large taxi", cn: "大型出租车" }) + '</small><b>' + esc(CONFIG.callVanPhone) + '</b><span>' + t({ kr: "공항 예약 가능", en: "airport booking", cn: "可预约机场" }) + '</span></div>' : '') +
     '</div>' +
-    '<button class="co-review" type="button" data-review-open><span class="stars" aria-hidden="true">★★★★★</span><b>' + t({ kr: "즐거우셨다면 후기를 부탁드려요", en: "Enjoyed your stay? Please leave a review", cn: "如果住得愉快，请留下评价" }) + '</b><small>' + t({ kr: "에어비앤비에서는 5점이 '좋았어요'의 기준이에요. 작은 숙소에 큰 힘이 돼요.", en: "On Airbnb, 5 stars means 'it was good'. It means a lot to a small home like ours.", cn: "在Airbnb上，5星代表“满意”。这对我们这样的小民宿意义重大。" }) + '</small><em>' + t({ kr: "후기 남기기 →", en: "Write a review →", cn: "写评价 →" }) + '</em></button>' +
+    '<button class="co-review" type="button" data-review-open><span class="stars" aria-hidden="true">★★★★★</span><small>' + t((CONFIG.checkoutList || []).find(c => c.star) || {}) + '</small><em>' + t({ kr: "후기 남기기 →", en: "Write a review →", cn: "写评价 →" }) + '</em></button>' +
     '<p class="hint">' + t({ kr: "필요한 항목을 눌러 자세히 보세요.", en: "Tap an item for details.", cn: "点击项目查看详情。" }) + '</p>' +
     '<div class="ci-list">' +
       ciRow("checkout", "doc", { kr: "체크아웃 체크리스트", en: "Check-out checklist", cn: "退房清单" }, { kr: "퇴실 전 확인할 것", en: "Things to check before you leave", cn: "离开前需要确认的事项" }) +
@@ -2563,7 +2563,7 @@ a.ci-row{text-decoration:none}
 .co-review{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin:0 0 16px;padding:20px;border:0;border-radius:18px;background:var(--v-green);color:#f5e9c8;text-align:left;cursor:pointer;box-shadow:0 8px 22px rgba(27,61,41,.22)}
 .co-review .stars{color:#E8C77A;font-size:22px;letter-spacing:5px;line-height:1}
 .co-review b{font:600 18px/1.4 var(--sans);color:#fff}
-.co-review small{font:14px/1.55 var(--sans);opacity:.9}
+.co-review small{font:16px/1.65 var(--sans);color:#fff}
 .co-review em{margin-top:6px;padding:9px 16px;border-radius:999px;background:#E8C77A;color:var(--v-green);font:700 15px var(--sans);font-style:normal}
 </style>
 </head>
