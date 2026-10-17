@@ -2144,7 +2144,7 @@ function start() {
       if (kind === "wifi") copyText(CONFIG.wifiPassword);
       if (kind === "arrival") copyText(CONFIG.arrivalMessage);
       if (kind === "arrival-kakao") {
-        copyText(CONFIG.arrivalMessage, { kr: "메시지를 복사했어요. 카카오톡에서 " + CONFIG.kakaoId + " 를 찾아 붙여넣어 주세요.", en: "Message copied. In KakaoTalk, find " + CONFIG.kakaoId + " and paste it.", cn: "消息已复制。请在KakaoTalk中搜索 " + CONFIG.kakaoId + " 并粘贴。" });
+        copyText(CONFIG.arrivalMessage, { kr: "메시지를 복사했어요. 카카오톡의 " + CONFIG.hostName + "님 대화방에 붙여넣어 주세요.", en: "Message copied. Paste it into your KakaoTalk chat with " + CONFIG.hostName + ".", cn: "消息已复制。请粘贴到与 " + CONFIG.hostName + " 的KakaoTalk聊天中。" });
         setTimeout(function () { window.location.href = "kakaotalk://"; }, 1800);
       }
       if (kind === "food") copyText(CONFIG.address + (CONFIG.addressEn ? " / " + CONFIG.addressEn : ""), CONFIG.text.foodCopied);
