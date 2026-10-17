@@ -955,6 +955,7 @@ const V2_ICON = {
   bag: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 12h18"/>',
   parkplus: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 17V7h4a3 3 0 0 1 0 6H8"/><path d="M17 8v4M15 10h4"/>',
   van: '<path d="M3 16V8a2 2 0 0 1 2-2h10l4 4h1a1 1 0 0 1 1 1v5H3Z"/><path d="M3 11h18M9 6v5"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/>',
+  house: '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
   globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>'
 };
 function v2i(name) {
@@ -1030,13 +1031,13 @@ function renderStay() {
 }
 
 /* 아래 탭 */
-const TAB_OF = { stay: "stay", wifi: "stay", parking: "stay", checkout: "stay", nearby: "nearby", house: "house", faq: "faq", contact: "contact" };
+const TAB_OF = { home: "home", checkin: "home", "ci-address": "home", "ci-luggage": "home", "ci-extra": "home", co: "home", stay: "stay", house: "stay", wifi: "stay", parking: "stay", checkout: "stay", nearby: "nearby", faq: "faq", contact: "contact" };
 function renderTabbar() {
   const tab = (id, ic, label) => '<button type="button" data-go="' + id + '" data-tab="' + id + '">' + v2i(ic) + '<span>' + t(label) + '</span></button>';
   return '<nav class="tabbar" aria-label="Menu">' +
-    tab("stay", "bed", { kr: "스테이", en: "Stay", cn: "住宿" }) +
+    tab("home", "house", { kr: "홈", en: "Home", cn: "首页" }) +
     tab("nearby", "map", { kr: "둘러보기", en: "Explore", cn: "周边" }) +
-    tab("house", "book", { kr: "가이드", en: "Guide", cn: "指南" }) +
+    tab("stay", "book", { kr: "가이드", en: "Guide", cn: "指南" }) +
     tab("faq", "info", { kr: "유용한 정보", en: "Info", cn: "信息" }) +
     tab("contact", "chat", { kr: "호스트 연락", en: "Host", cn: "联系房主" }) +
   '</nav>';
