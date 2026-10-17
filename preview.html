@@ -1692,7 +1692,8 @@ function renderFaq() {
 function renderCheckout() {
   const T = CONFIG.text;
   const list = (CONFIG.checkoutList || []).map((c, i) =>
-    c.star
+    c.star ? '' /* 후기 부탁은 체크아웃 안내 맨 위 칸으로 옮겼습니다 */
+    : c.star
       ? '<li class="star-li"><label class="check star"><input type="checkbox" data-check="' + i + '"><span><b class="stars" aria-hidden="true">★★★★★</b>' + t(c) + '</span></label>' +
           '<button class="review-btn" type="button" data-review-open>' + t(CONFIG.reviewButton) + ' →</button>' + '</li>'
       : '<li><label class="check"><input type="checkbox" data-check="' + i + '"><span>' + t(c) + '</span></label></li>'
