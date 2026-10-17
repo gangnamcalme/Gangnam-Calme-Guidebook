@@ -817,6 +817,7 @@ function langAttr(key) {
   return key === "kr" ? "ko" : key === "cn" ? "zh-CN" : "en";
 }
 function detectLang() {
+  if (/translate\.goog$/.test(location.hostname)) return "en";
   try {
     const saved = localStorage.getItem(LANG_KEY);
     if (saved === "kr" || saved === "en" || saved === "cn") return saved;
@@ -990,11 +991,13 @@ function showToast(msg) {
   toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
 }
 
-function renderLangBar() {
+function renderLangBar(more) {
   return '<div class="langbar" role="group">' +
     (CONFIG.languages || []).map(l =>
       '<button class="lang-btn" type="button" data-lang-btn="' + esc(l.key) + '" aria-pressed="' + (l.key === LANG) + '" lang="' + langAttr(l.key) + '">' + esc(l.label) + '</button>'
     ).join("") +
+    (more ? '<p class="lang-more-t">' + t({ kr: "다른 언어 (자동 번역)", en: "Other languages (auto-translate)", cn: "其他语言（自动翻译）" }) + '</p>' +
+      '<div class="lang-more">' + MORE_LANGS.map(c => '<a class="lang-btn" href="' + esc(translateUrl(c)) + '" lang="' + c + '">' + esc(langName(c)) + '</a>').join("") + '</div>' : '') +
   '</div>';
 }
 
@@ -1052,7 +1055,7 @@ function v2i(name) {
 function renderHome() {
   return '<div class="lp">' +
     '<div class="lp-hero"><img src="' + HOME_PHOTO + '" alt=""><span class="lp-fade"></span></div>' +
-    '<div class="lp-body">' +
+    '<div class="lp-body">' + translateBanner() +
       '<p class="lp-tag">' + t(HT.eyebrow) + '</p>' +
       '<h1 class="lp-title">' + t({ kr: "강남칼므", en: "Gangnam Calme", cn: "Gangnam Calme" }) + '</h1>' +
       '<p class="lp-date" data-now></p>' +
@@ -1137,9 +1140,35 @@ function setActiveTab(id) {
 }
 
 /* 언어 버튼 (오른쪽 위) */
+/* ---------- 그 밖의 언어: 구글 자동 번역 ---------- */
+const MORE_LANGS = ["ja", "zh-TW", "es", "fr", "de", "it", "pt", "ru", "vi", "th", "id", "ms", "ar", "hi", "tr", "nl"];
+function langName(code) {
+  try { return new Intl.DisplayNames([code], { type: "language" }).of(code); } catch (e) { return code; }
+}
+function translateUrl(code) {
+  const h = location.hostname;
+  if (!h || /translate\.goog$/.test(h)) return "";
+  const proxy = h.replace(/-/g, "--").replace(/\./g, "-") + ".translate.goog";
+  return "https://" + proxy + location.pathname + "?_x_tr_sl=en&_x_tr_tl=" + encodeURIComponent(code) + "&_x_tr_hl=" + encodeURIComponent(code) + location.hash;
+}
+function otherDeviceLang() {
+  const list = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""]).map(x => String(x));
+  const first = list[0] || "";
+  const low = first.toLowerCase();
+  if (!first || low.indexOf("ko") === 0 || low.indexOf("en") === 0) return "";
+  if (low.indexOf("zh") === 0) return /tw|hk|mo|hant/.test(low) ? "zh-TW" : "";
+  return first.split("-")[0];
+}
 function renderLangFab() {
+  const more = location.protocol.indexOf("http") === 0 && !/translate\.goog$/.test(location.hostname);
   return '<div class="lang-fab"><button type="button" class="lf-btn" data-lang-toggle aria-label="Language">' + v2i("globe") +
-    '<span>' + t({ kr: "한국어", en: "EN", cn: "中文" }) + '</span></button>' + renderLangBar() + '</div>';
+    '<span>' + t({ kr: "한국어", en: "EN", cn: "中文" }) + '</span></button>' + renderLangBar(more) + '</div>';
+}
+function translateBanner() {
+  const code = otherDeviceLang();
+  if (!code || location.protocol.indexOf("http") !== 0 || /translate\.goog$/.test(location.hostname)) return "";
+  try { if (localStorage.getItem("gc-tr-dismiss") === code) return ""; } catch (e) {}
+  return '<div class="tr-banner" id="trBanner"><a href="' + esc(translateUrl(code)) + '">🌐 ' + esc(langName(code)) + ' <small>· auto-translate</small> →</a><button type="button" data-tr-dismiss="' + esc(code) + '" aria-label="Close">×</button></div>';
 }
 
 /* 날짜 · 시각 · 인사 */
@@ -2142,6 +2171,8 @@ function start() {
     if (!lf) { const f = document.querySelector(".lang-fab.open"); if (f) f.classList.remove("open"); }
     if (e.target.closest("[data-arrived]")) { try { localStorage.setItem("gc-arrived", String(Date.now())); } catch (er) {} setTimeout(function () { const a = document.getElementById("arriveBox"); if (a) a.classList.add("done"); }, 1500); }
     if (e.target.closest("[data-arrive-again]")) { const a = document.getElementById("arriveBox"); if (a) a.classList.remove("done"); return; }
+    const trd = e.target.closest("[data-tr-dismiss]");
+    if (trd) { try { localStorage.setItem("gc-tr-dismiss", trd.getAttribute("data-tr-dismiss")); } catch (er) {} const tb = document.getElementById("trBanner"); if (tb) tb.remove(); return; }
     if (e.target.closest("[data-taxi-card]")) { showTaxiCard(); return; }
     const ph = e.target.closest("[data-phrase]");
     if (ph) { showPhrase(Number(ph.getAttribute("data-phrase"))); return; }
@@ -2569,6 +2600,15 @@ a.ci-row{text-decoration:none}
 .co-review b{font:600 18px/1.4 var(--sans);color:#fff}
 .co-review small{font:16px/1.65 var(--sans);color:#fff}
 .co-review em{margin-top:6px;padding:9px 16px;border-radius:999px;background:#E8C77A;color:var(--v-green);font:700 15px var(--sans);font-style:normal}
+.lang-fab .langbar{max-height:70vh;overflow-y:auto;width:260px}
+.lang-more .lang-btn{padding:0 8px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lang-more-t{margin:8px 6px 4px;padding-top:8px;border-top:1px solid var(--line);font:12px var(--sans);color:var(--v-sub)}
+.lang-more{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.lang-more .lang-btn{display:flex;align-items:center;min-width:0;height:36px;font-size:14px;text-decoration:none}
+.tr-banner{display:flex;align-items:center;gap:8px;margin:0 0 14px;padding:10px 12px 10px 16px;border-radius:14px;background:var(--v-green);position:relative;z-index:2}
+.tr-banner a{flex:1;color:#fff;font:600 15px var(--sans);text-decoration:none}
+.tr-banner small{font-weight:400;opacity:.8}
+.tr-banner button{width:32px;height:32px;border:0;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:18px;cursor:pointer}
 </style>
 </head>
 <body>
