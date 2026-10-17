@@ -954,6 +954,7 @@ const V2_ICON = {
   pin: '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>',
   bag: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 12h18"/>',
   parkplus: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 17V7h4a3 3 0 0 1 0 6H8"/><path d="M17 8v4M15 10h4"/>',
+  van: '<path d="M3 16V8a2 2 0 0 1 2-2h10l4 4h1a1 1 0 0 1 1 1v5H3Z"/><path d="M3 11h18M9 6v5"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/>',
   globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>'
 };
 function v2i(name) {
@@ -971,6 +972,7 @@ function renderHome() {
       '<h2 class="lp-q">' + t({ kr: "지금, 여정의 어디쯤인가요?", en: "Where are you on your trip?", cn: "您现在在旅程的哪一步？" }) + '</h2>' +
       '<button class="jr" type="button" data-go="checkin"><i>' + v2i("doc") + '</i><span><b>' + t({ kr: "체크인 전", en: "Before check-in", cn: "入住前" }) + '</b><small>' + t({ kr: "주소 · 오시는 길 · 체크인 시간", en: "Address · directions · check-in time", cn: "地址 · 路线 · 入住时间" }) + '</small></span><em>→</em></button>' +
       '<button class="jr" type="button" data-go="stay"><i>' + v2i("key") + '</i><span><b>' + t({ kr: "체크인 후", en: "After check-in", cn: "入住后" }) + '</b><small>' + t({ kr: "하우스 허브 · 머무는 동안 필요한 모든 것", en: "House hub · everything for your stay", cn: "住宿中心 · 入住期间所需的一切" }) + '</small></span><em>→</em></button>' +
+      '<button class="jr" type="button" data-go="co"><i>' + v2i("out") + '</i><span><b>' + t({ kr: "체크아웃 전", en: "Before check-out", cn: "退房前" }) + '</b><small>' + t({ kr: "퇴실 체크리스트 · 대형 콜밴", en: "Check-out list · large taxi", cn: "退房清单 · 大型出租车" }) + '</small></span><em>→</em></button>' +
     '</div>' +
   '</div>';
 }
@@ -997,7 +999,7 @@ function renderStay() {
 
     '<div class="trio">' +
       '<button type="button" data-go="wifi"><i>' + v2i("wifi") + '</i><small>WI-FI</small><b>' + t({ kr: "와이파이", en: "Wi-Fi", cn: "无线网络" }) + '</b><span>' + t({ kr: "이름 · 비밀번호", en: "Name · password", cn: "名称 · 密码" }) + '</span></button>' +
-      '<button type="button" data-go="checkout"><i>' + v2i("clock") + '</i><small>CHECK-OUT</small><b>' + esc(CONFIG.checkoutTime) + '</b><span>' + t({ kr: "퇴실 안내", en: "Check-out guide", cn: "退房指南" }) + '</span></button>' +
+      '<button type="button" data-go="co"><i>' + v2i("clock") + '</i><small>CHECK-OUT</small><b>' + esc(CONFIG.checkoutTime) + '</b><span>' + t({ kr: "퇴실 안내", en: "Check-out guide", cn: "退房指南" }) + '</span></button>' +
       '<button type="button" data-go="contact"><i>' + v2i("chat") + '</i><small>HOST</small><b>' + t({ kr: "문의하기", en: "Contact", cn: "联系房主" }) + '</b><span>' + t({ kr: "카카오톡 · 전화", en: "KakaoTalk · call", cn: "KakaoTalk · 电话" }) + '</span></button>' +
     '</div>' +
 
@@ -1007,10 +1009,9 @@ function renderStay() {
       tile('data-go="house" data-open-trash', "trash", { kr: "쓰레기 · 분리수거", en: "Trash · recycling", cn: "垃圾 · 分类回收" }, { kr: "봉투 위치 · 버리는 곳", en: "Bags · where to put it", cn: "垃圾袋 · 投放地点" }) +
       tile('data-go="parking"', "car", { kr: "주차 안내", en: "Parking", cn: "停车指南" }, { kr: "자리 · 일렬주차 · 방문 차량", en: "Spaces · two cars · visitors", cn: "车位 · 两辆车 · 访客车辆" }) +
       tile('href="' + uberUrl() + '" target="_blank" rel="noopener"', "taxi", { kr: "택시 호출", en: "Call a taxi", cn: "叫出租车" }, { kr: "Uber · 숙소에서 출발", en: "Uber · pickup at the house", cn: "Uber · 从住处出发" }) +
-      (van ? tile('href="tel:' + esc(van) + '"', "car", { kr: "콜밴 · 대형택시", en: "Call van", cn: "大型出租车" }, { kr: "짐이 많을 때 · 전화 연결", en: "For big luggage · call", cn: "行李多时 · 电话" }) : '') +
       (CONFIG.foodOrderLink ? tile('href="' + esc(CONFIG.foodOrderLink) + '" target="_blank" rel="noopener" data-copy="food"', "food", { kr: "음식 배달", en: "Food delivery", cn: "外卖" }, { kr: "주소 자동 복사 · 바로가기", en: "Address copied · order", cn: "自动复制地址 · 下单" }) : '') +
       tile('data-go="faq"', "info", { kr: "유용한 정보", en: "Useful info", cn: "实用信息" }, { kr: "마트 · 병원 · 교통", en: "Shops · clinics · transport", cn: "超市 · 医院 · 交通" }) +
-      tile('data-go="checkout"', "out", { kr: "체크아웃 안내", en: "Check-out", cn: "退房指南" }, { kr: "퇴실 전 체크리스트", en: "Before you leave", cn: "退房前清单" }) +
+      tile('data-go="co"', "out", { kr: "체크아웃 안내", en: "Check-out", cn: "退房指南" }, { kr: "퇴실 전 체크리스트", en: "Before you leave", cn: "退房前清单" }) +
     '</div>' +
 
     '<h2 class="st-h">' + t({ kr: "대문 밖은, 서래마을", en: "Outside the door, Seorae Village", cn: "门外，就是 Seorae Village" }) + '</h2>' +
@@ -1095,6 +1096,24 @@ function renderCheckin() {
       ciRow("ci-extra", "parkplus", { kr: "추가 주차", en: "Extra parking", cn: "额外停车" }, { kr: "자리가 없을 땐 모두의주차장", en: "If full, use Modu Parking", cn: "没有车位时用Modu停车场" }) +
     '</div>' +
     '<div class="ci-note">' + t({ kr: "서래마을의 조용한 집에서, 편안한 시간 보내시길 바랍니다.", en: "We hope you have a calm, easy stay in Seorae Village.", cn: "愿您在Seorae Village的安静住所中度过舒适的时光。" }) + '</div>';
+}
+function renderCo() {
+  const van = CONFIG.callVanPhone ? CONFIG.callVanPhone.replace(/[^0-9+]/g, "") : "";
+  const linkRow = (href, ic, title, sub, ext) => '<a class="ci-row" href="' + href + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '><i>' + v2i(ic) + '</i><span><b>' + t(title) + '</b><small>' + t(sub) + '</small></span><em>›</em></a>';
+  return backButton("home") +
+    '<h2>' + t({ kr: "체크아웃 안내", en: "Check-out guide", cn: "退房指南" }) + '</h2>' +
+    '<div class="ci-times co-times">' +
+      '<div><small>' + t({ kr: "체크아웃", en: "Check-out", cn: "退房" }) + '</small><b>' + esc(CONFIG.checkoutTime) + '</b><span>' + t({ kr: "까지", en: "until", cn: "前" }) + '</span></div>' +
+      (van ? '<div><small>' + t({ kr: "대형 콜밴", en: "Large taxi", cn: "大型出租车" }) + '</small><b>' + esc(CONFIG.callVanPhone) + '</b><span>' + t({ kr: "공항 예약 가능", en: "airport booking", cn: "可预约机场" }) + '</span></div>' : '') +
+    '</div>' +
+    '<p class="hint">' + t({ kr: "필요한 항목을 눌러 자세히 보세요.", en: "Tap an item for details.", cn: "点击项目查看详情。" }) + '</p>' +
+    '<div class="ci-list">' +
+      ciRow("checkout", "doc", { kr: "체크아웃 체크리스트", en: "Check-out checklist", cn: "退房清单" }, { kr: "퇴실 전 확인할 것", en: "Things to check before you leave", cn: "离开前需要确认的事项" }) +
+      (van ? linkRow("tel:" + esc(van), "van", { kr: "대형 콜밴 호출", en: "Call a large taxi", cn: "叫大型出租车" }, { kr: "짐·인원이 많을 때 · 전화 연결", en: "Lots of luggage or people · call", cn: "行李或人多时 · 电话" }) : '') +
+      linkRow(uberUrl(), "taxi", { kr: "택시 호출", en: "Call a taxi", cn: "叫出租车" }, { kr: "Uber · 숙소에서 출발", en: "Uber · pickup at the house", cn: "Uber · 从住处出发" }, true) +
+      ciRow("contact", "chat", { kr: "호스트에게 연락", en: "Contact the host", cn: "联系房主" }, { kr: "늦은 퇴실 · 문의", en: "Late check-out · questions", cn: "延迟退房 · 咨询" }) +
+    '</div>' +
+    (van ? '<div class="ci-note">' + t(CONFIG.homeText.vanHint) + '</div>' : '');
 }
 function renderCiAddress() {
   const T = CONFIG.text;
@@ -1367,7 +1386,7 @@ function renderCheckout() {
           '<button class="review-btn" type="button" data-review-open>' + t(CONFIG.reviewButton) + ' →</button>' + '</li>'
       : '<li><label class="check"><input type="checkbox" data-check="' + i + '"><span>' + t(c) + '</span></label></li>'
   ).join("");
-  return backButton() +
+  return backButton("back") +
     '<h2>' + t(T.menuCheckout) + '</h2>' +
     '<div class="card todo">' +
       '<p class="todo-title">' + t(T.checkoutListTitle) + '</p>' +
@@ -1706,7 +1725,7 @@ function saveCheckin() {
   try { localStorage.setItem(CHECKIN_KEY, JSON.stringify(done)); } catch (e) {}
 }
 
-const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
+const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
 let navStack = [];
 
 function showScreen(id) {
@@ -1750,6 +1769,7 @@ function start() {
     '<section id="screen-home">' + renderHome() + '</section>' +
     '<section id="screen-stay" hidden>' + renderStay() + '</section>' +
     '<section id="screen-checkin" hidden>' + renderCheckin() + '</section>' +
+    '<section id="screen-co" hidden>' + renderCo() + '</section>' +
     '<section id="screen-ci-address" hidden>' + renderCiAddress() + '</section>' +
     '<section id="screen-ci-luggage" hidden>' + renderCiLuggage() + '</section>' +
     '<section id="screen-ci-extra" hidden>' + renderCiExtra() + '</section>' +
@@ -2146,6 +2166,8 @@ html body .back{min-height:40px;padding:0 4px!important;border:0!important;backg
 .rich{margin:0 0 12px;font:16px/1.7 var(--sans);color:var(--v-ink)}
 .rich b{color:var(--v-green)}
 @media(max-width:380px){.ci-times b{font-size:20px}}
+.co-times{grid-template-columns:1fr 1.4fr}
+a.ci-row{text-decoration:none}
 </style>
 </head>
 <body>
