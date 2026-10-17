@@ -1097,10 +1097,12 @@ function renderHome() {
       '<p class="lp-tag">' + t(HT.eyebrow) + '</p>' +
       '<h1 class="lp-title">' + t({ kr: "강남칼므", en: "Gangnam Calme", cn: "Gangnam Calme" }) + '</h1>' +
       '<p class="lp-date" data-now></p>' +
+      '<div class="install" id="installBox" hidden><p><span aria-hidden="true">📲</span> ' + t(CONFIG.text.installTitle) + '</p><button type="button" class="install-btn" data-install>' + t(CONFIG.text.installButton) + '</button><p class="install-help" id="installHelp" hidden></p></div>' +
       '<h2 class="lp-q">' + t({ kr: "지금, 여정의 어디쯤인가요?", en: "Where are you on your trip?", cn: "您现在在旅程的哪一步？" }) + '</h2>' +
       '<button class="jr" type="button" data-go="checkin"><i>' + v2i("doc") + '</i><span><b>' + t({ kr: "체크인 전", en: "Before check-in", cn: "入住前" }) + '</b><small>' + t({ kr: "주소 · 오시는 길 · 체크인 시간", en: "Address · directions · check-in time", cn: "地址 · 路线 · 入住时间" }) + '</small></span><em>→</em></button>' +
       '<button class="jr" type="button" data-go="stay"><i>' + v2i("key") + '</i><span><b>' + t({ kr: "체크인 후", en: "After check-in", cn: "入住后" }) + '</b><small>' + t({ kr: "하우스 허브 · 머무는 동안 필요한 모든 것", en: "House hub · everything for your stay", cn: "住宿中心 · 入住期间所需的一切" }) + '</small></span><em>→</em></button>' +
       '<button class="jr" type="button" data-go="co"><i>' + v2i("out") + '</i><span><b>' + t({ kr: "체크아웃 전", en: "Before check-out", cn: "退房前" }) + '</b><small>' + t({ kr: "퇴실 체크리스트 · 대형 콜밴", en: "Check-out list · large taxi", cn: "退房清单 · 大型出租车" }) + '</small></span><em>→</em></button>' +
+      (CONFIG.homeHelp ? '<button class="help-row" type="button" data-go="contact"><span><b>' + t(CONFIG.homeHelp.title) + '</b><small>' + t(CONFIG.homeHelp.body) + '</small></span><em>›</em></button>' : '') +
     '</div>' +
   '</div>';
 }
@@ -1154,8 +1156,6 @@ function renderStay() {
       explore(P_SEE, 'SIGHTS', t({ kr: "볼거리", en: "Sights", cn: "景点" }), 'see') +
     '</div>' +
 
-    '<div class="install" id="installBox" hidden><p><span aria-hidden="true">📲</span> ' + t(CONFIG.text.installTitle) + '</p><button type="button" class="install-btn" data-install>' + t(CONFIG.text.installButton) + '</button><p class="install-help" id="installHelp" hidden></p></div>' +
-    (CONFIG.homeHelp ? '<button class="help-row" type="button" data-go="contact"><span><b>' + t(CONFIG.homeHelp.title) + '</b><small>' + t(CONFIG.homeHelp.body) + '</small></span><em>›</em></button>' : '') +
     '<p class="st-credit">Weather: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></p>' +
   '</div>';
 }
@@ -2656,6 +2656,7 @@ a.ci-row{text-decoration:none}
 #gtEl,.goog-te-banner-frame,iframe.skiptranslate,#goog-gt-tt,.goog-te-balloon-frame,.goog-tooltip,.VIpgJd-ZVi9od-ORHb-OEVmcd,.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,.VIpgJd-yAWNEb-L7lbkb{display:none!important}
 html body{top:0!important}
 .goog-text-highlight{background:none!important;box-shadow:none!important}
+.lp .install{margin:22px 0 0}.lp .help-row{margin-top:8px}
 </style>
 </head>
 <body>
