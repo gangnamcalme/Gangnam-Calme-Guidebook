@@ -127,6 +127,25 @@ const CONFIG = {
     { kr: "체크인하시면 호스트에게 한 번만 알려주세요!", en: "Please let your host know once you've checked in!", cn: "入住后，请告诉房主一声！" },
   ],
 
+  /* ---------- 체크인 전: 짐 보관 ---------- */
+  luggageFrom: "11:30",                        // 짐 보관 시작 시각 (체크인 전)
+  luggageTo: "16:00",                          // 짐 보관 끝 시각 (체크인 시각)
+  luggage: [                                   // 짐 보관 상세 안내. 한 줄이 한 문단입니다
+    { kr: "짐 보관은 체크인 전 **오전 11시 30분부터 오후 4시까지** 가능해요.", en: "Luggage storage is available before check-in, **from 11:30 AM to 4:00 PM**.", cn: "入住前可寄存行李，时间为**上午11:30至下午4:00**。" },
+    { kr: "호스트가 청소하는 동안 **숙소 안에** 짐을 보관해 드려요. 짐을 맡기고 편하게 외출하셔도 됩니다.", en: "Your bags are kept **inside the home** while the host is cleaning, so you can head out freely.", cn: "房主打扫期间，行李会**存放在房内**，您可以放心外出。" },
+    { kr: "비용은 **시간당 5달러(USD)** 입니다.", en: "The fee is **USD 5 per hour**.", cn: "费用为**每小时5美元（USD）**。" },
+    { kr: "이용하시려면 **도착 전에 꼭 미리 연락**해 주세요.", en: "Please **contact the host before you arrive** to arrange it.", cn: "如需寄存，请**务必在到达前联系房主**。" }
+  ],
+
+  /* ---------- 체크인 전: 추가 주차 (모두의주차장) ---------- */
+  extraParking: [
+    { kr: "1층 주차장은 501호 기본 **1대**예요. 자리가 없거나 차가 더 있으면 근처 유료 주차장을 이용해 주세요.", en: "Unit 501 has **one** space in the ground-floor lot. If it's full or you have another car, please use a nearby paid lot.", cn: "一楼停车场501号房默认可停**1辆**。如没有车位或有更多车辆，请使用附近的收费停车场。" },
+    { kr: "**모두의주차장 앱**에서 숙소 근처 주차장의 자리와 요금을 보고 **미리 예약**할 수 있어요.", en: "In the **Modu Parking app** you can see nearby lots, prices and **book in advance**.", cn: "在**Modu停车场（모두의주차장）App**中可查看附近停车场的车位和价格，并**提前预约**。" },
+    { kr: "앱에서 숙소 주소(방배로34길 97)를 검색하면 근처 주차장이 나와요.", en: "Search the address (방배로34길 97) in the app to see lots nearby.", cn: "在App中搜索住处地址（방배로34길 97）即可看到附近的停车场。" }
+  ],
+  moduIos: "https://apps.apple.com/kr/app/id780174422",                                         // 모두의주차장 (아이폰 앱스토어)
+  moduAndroid: "https://play.google.com/store/search?q=%EB%AA%A8%EB%91%90%EC%9D%98%EC%A3%BC%EC%B0%A8%EC%9E%A5&c=apps", // 모두의주차장 (플레이스토어)
+
   /* ---------- 첫 화면 글자 ---------- */
   homeText: {
     eyebrow: { kr: "서래마을의 조용한 쉼", en: "Your quiet stay in Seorae Village", cn: "在 Seorae Village 静静地休息" },            // 큰 이름 위 작은 글자
@@ -897,8 +916,12 @@ function renderLangBar() {
 }
 
 function backButton(to) {
-  const home = to === "home";
-  return '<button class="back" type="button" data-go="' + (home ? "home" : "stay") + '">← ' + t(home ? { kr: "처음으로", en: "Start", cn: "首页" } : { kr: "이용 가이드", en: "Stay guide", cn: "住宿指南" }) + '</button>';
+  const label = to === "home" ? { kr: "처음으로", en: "Start", cn: "首页" }
+    : to === "checkin" ? { kr: "체크인 안내", en: "Check-in guide", cn: "入住指南" }
+    : to === "back" ? { kr: "뒤로", en: "Back", cn: "返回" }
+    : { kr: "이용 가이드", en: "Stay guide", cn: "住宿指南" };
+  const fallback = (to === "home" || to === "checkin") ? to : "stay";
+  return '<button class="back" type="button" data-back data-go="' + fallback + '">← ' + t(label) + '</button>';
 }
 
 const HOME_PHOTO = "hero.jpg";
@@ -928,6 +951,9 @@ const V2_ICON = {
   chat: '<path d="M4 5h16v11H9l-5 4V5Z"/>',
   bed: '<path d="M3 18v-6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v6"/><path d="M3 15h18M5 9V6h14v3"/>',
   map: '<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
+  pin: '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  bag: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 12h18"/>',
+  parkplus: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 17V7h4a3 3 0 0 1 0 6H8"/><path d="M17 8v4M15 10h4"/>',
   globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>'
 };
 function v2i(name) {
@@ -1045,19 +1071,36 @@ function openTrash() {
   if (d) { d.open = true; d.scrollIntoView({ behavior: "smooth", block: "start" }); }
 }
 
+function ciRow(go, ic, title, sub) {
+  return '<button class="ci-row" type="button" data-go="' + go + '"><i>' + v2i(ic) + '</i><span><b>' + t(title) + '</b><small>' + t(sub) + '</small></span><em>›</em></button>';
+}
+function richLines(arr) {
+  return (arr || []).map(v => '<p class="rich">' + t(v, x => esc(x).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")) + '</p>').join("");
+}
 function renderCheckin() {
   const T = CONFIG.text;
-  const q = encodeURIComponent(CONFIG.mapQuery || CONFIG.address);
+  const tile = (label, val, sub) => '<div><small>' + t(label) + '</small><b>' + val + '</b><span>' + t(sub) + '</span></div>';
   return backButton("home") +
-    '<h2>' + t(T.menuCheckin) + '</h2>' +
-    ((CONFIG.checkinList || []).length ?
-      '<div class="card todo">' +
-        '<p class="todo-title">' + t(T.checkinListTitle) + '</p>' +
-        '<ul class="checks">' + CONFIG.checkinList.filter(okWhen).map((c, i) =>
-          '<li><label class="check"><input type="checkbox" data-checkin="' + i + '"><span>' + t(c) + '</span></label></li>'
-        ).join("") + '</ul>' +
-        '<div class="btns"><button class="btn line-btn" type="button" data-go="contact">' + t(T.checkoutContact) + '</button></div>' +
-      '</div>' : '') +
+    '<h2>' + t({ kr: "체크인 안내", en: "Check-in guide", cn: "入住指南" }) + '</h2>' +
+    '<div class="ci-times">' +
+      tile({ kr: "체크인", en: "Check-in", cn: "入住" }, esc(CONFIG.checkinTime), { kr: "이후", en: "from", cn: "起" }) +
+      tile({ kr: "체크아웃", en: "Check-out", cn: "退房" }, esc(CONFIG.checkoutTime), { kr: "까지", en: "until", cn: "前" }) +
+      tile({ kr: "짐 보관", en: "Luggage", cn: "行李寄存" }, esc(CONFIG.luggageFrom) + '<i>–</i>' + esc(CONFIG.luggageTo), { kr: "사전 연락", en: "ask first", cn: "需提前联系" }) +
+    '</div>' +
+    '<p class="hint">' + t({ kr: "필요한 항목을 눌러 자세히 보세요.", en: "Tap an item for details.", cn: "点击项目查看详情。" }) + '</p>' +
+    '<div class="ci-list">' +
+      ciRow("ci-address", "pin", { kr: "주소 · 오시는 길", en: "Address & directions", cn: "地址 · 路线" }, { kr: "지도 앱 바로 열기 · 들어오는 법", en: "Open in map apps · getting in", cn: "打开地图 · 进门方法" }) +
+      ciRow("ci-luggage", "bag", { kr: "짐 보관", en: "Luggage storage", cn: "行李寄存" }, { kr: "체크인 전 · 시간당 5달러", en: "Before check-in · USD 5/hour", cn: "入住前 · 每小时5美元" }) +
+      ciRow("parking", "car", { kr: "주차 안내", en: "Parking", cn: "停车指南" }, { kr: "1층 주차장 · 기본 1대", en: "Ground-floor lot · 1 car", cn: "一楼停车场 · 默认1辆" }) +
+      ciRow("ci-extra", "parkplus", { kr: "추가 주차", en: "Extra parking", cn: "额外停车" }, { kr: "자리가 없을 땐 모두의주차장", en: "If full, use Modu Parking", cn: "没有车位时用Modu停车场" }) +
+    '</div>' +
+    '<div class="ci-note">' + t({ kr: "서래마을의 조용한 집에서, 편안한 시간 보내시길 바랍니다.", en: "We hope you have a calm, easy stay in Seorae Village.", cn: "愿您在Seorae Village的安静住所中度过舒适的时光。" }) + '</div>';
+}
+function renderCiAddress() {
+  const T = CONFIG.text;
+  const q = encodeURIComponent(CONFIG.mapQuery || CONFIG.address);
+  return backButton("checkin") +
+    '<h2>' + t({ kr: "주소 · 오시는 길", en: "Address & directions", cn: "地址 · 路线" }) + '</h2>' +
     '<div class="card">' +
       '<p class="label">' + t(T.addressLabel) + '</p>' +
       '<p class="value">' + esc(CONFIG.address) + '</p>' +
@@ -1068,13 +1111,32 @@ function renderCheckin() {
       '</div>' +
       '<p class="tip not-kr">' + t(T.naverTip) + '</p>' +
     '</div>' +
-    '<div class="card two">' +
-      '<div><p class="label">' + t(T.checkinLabel) + '</p><p class="big">' + esc(CONFIG.checkinTime) + '</p></div>' +
-      '<div><p class="label">' + t(T.checkoutLabel) + '</p><p class="big">' + esc(CONFIG.checkoutTime) + '</p></div>' +
-    '</div>' +
     '<div class="card">' +
       '<p class="label">' + t(T.doorLabel) + '</p>' +
       '<p class="value">' + t(CONFIG.doorGuide) + '</p>' +
+    '</div>';
+}
+function renderCiLuggage() {
+  return backButton("checkin") +
+    '<h2>' + t({ kr: "짐 보관", en: "Luggage storage", cn: "行李寄存" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "체크인 전 · 사전 연락 필수", en: "Before check-in · contact first", cn: "入住前 · 需提前联系" }) + '</p>' +
+    '<div class="card">' + richLines(CONFIG.luggage) +
+      '<div class="btns"><button class="btn" type="button" data-go="contact">' + t({ kr: "호스트에게 미리 연락하기", en: "Contact the host", cn: "提前联系房主" }) + '</button></div>' +
+    '</div>';
+}
+function moduUrl() {
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  return ios ? CONFIG.moduIos : CONFIG.moduAndroid;
+}
+function renderCiExtra() {
+  return backButton("checkin") +
+    '<h2>' + t({ kr: "추가 주차", en: "Extra parking", cn: "额外停车" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "자리가 없을 땐 근처 유료 주차장", en: "Nearby paid lots when it's full", cn: "没有车位时使用附近收费停车场" }) + '</p>' +
+    '<div class="card">' + richLines(CONFIG.extraParking) +
+      '<div class="btns">' +
+        '<a class="btn" href="' + esc(moduUrl()) + '" target="_blank" rel="noopener">' + t({ kr: "모두의주차장 앱 열기", en: "Open Modu Parking app", cn: "打开Modu停车场App" }) + ' ↗</a>' +
+        '<button class="btn line-btn" type="button" data-copy="address">' + t({ kr: "숙소 주소 복사", en: "Copy the address", cn: "复制住处地址" }) + '</button>' +
+      '</div>' +
     '</div>';
 }
 function okWhen(x) {
@@ -1083,7 +1145,7 @@ function okWhen(x) {
 }
 function renderParking() {
   const T = CONFIG.text;
-  return backButton() + '<h2>' + t(T.parkingTitle) + '</h2>' + parkingCard();
+  return backButton("back") + '<h2>' + t(T.parkingTitle) + '</h2>' + parkingCard();
 }
 function parkingCard() {
   const T = CONFIG.text;
@@ -1644,7 +1706,8 @@ function saveCheckin() {
   try { localStorage.setItem(CHECKIN_KEY, JSON.stringify(done)); } catch (e) {}
 }
 
-const SCREENS = ["home", "stay", "checkin", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
+const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
+let navStack = [];
 
 function showScreen(id) {
   if (SCREENS.indexOf(id) === -1) id = "home";
@@ -1653,6 +1716,7 @@ function showScreen(id) {
     if (el) el.hidden = (s !== id);
   });
   window.scrollTo(0, 0);
+  if (navStack.length > 1 && navStack[navStack.length - 2] === id) navStack.pop(); else if (navStack[navStack.length - 1] !== id) navStack.push(id);
   setActiveTab(id);
   updateClock();
   if (id === "nearby") {
@@ -1686,6 +1750,9 @@ function start() {
     '<section id="screen-home">' + renderHome() + '</section>' +
     '<section id="screen-stay" hidden>' + renderStay() + '</section>' +
     '<section id="screen-checkin" hidden>' + renderCheckin() + '</section>' +
+    '<section id="screen-ci-address" hidden>' + renderCiAddress() + '</section>' +
+    '<section id="screen-ci-luggage" hidden>' + renderCiLuggage() + '</section>' +
+    '<section id="screen-ci-extra" hidden>' + renderCiExtra() + '</section>' +
     '<section id="screen-wifi" hidden>' + renderWifi() + '</section>' +
     '<section id="screen-house" hidden>' + renderHouse() + '</section>' +
     '<section id="screen-nearby" hidden>' + renderNearby() + '</section>' +
@@ -1725,6 +1792,8 @@ function start() {
     const lb = e.target.closest("[data-lang-btn]");
     if (lb) { setLang(lb.getAttribute("data-lang-btn")); const f = document.querySelector(".lang-fab"); if (f) f.classList.remove("open"); return; }
     if (!lf) { const f = document.querySelector(".lang-fab.open"); if (f) f.classList.remove("open"); }
+    const bk = e.target.closest("[data-back]");
+    if (bk && navStack.length > 1 && navStack[navStack.length - 2] !== "home") { history.back(); return; }
     const go = e.target.closest("[data-go]");
     if (go) {
       const id = go.getAttribute("data-go");
@@ -2056,6 +2125,27 @@ html body #app>section{background:var(--v-bg)!important}
 /* 안쪽 화면: 뒤로 가기 */
 html body .back{min-height:40px;padding:0 4px!important;border:0!important;background:transparent!important;color:var(--v-sub);font:15px var(--sans);letter-spacing:.06em;cursor:pointer}
 
+
+/* 체크인 안내 (목록형) */
+.ci-times{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:8px;margin:0 0 14px}
+.ci-times>div{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 6px;border-radius:16px;background:#ebe4d6;text-align:center}
+.ci-times small{font:13px var(--sans);color:var(--v-sub)}
+.ci-times b{font:400 24px/1 var(--serif);color:var(--v-green);white-space:nowrap}
+.ci-times b i{font-style:normal;color:var(--v-sub);margin:0 2px}
+.ci-times span{font:12px var(--sans);color:var(--v-sub)}
+.ci-list{display:flex;flex-direction:column;gap:10px;margin:10px 0 16px}
+.ci-row{width:100%;display:flex;align-items:center;gap:16px;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--v-card);text-align:left;cursor:pointer;color:var(--v-ink);box-shadow:0 2px 10px rgba(60,50,30,.05)}
+.ci-row i{flex:0 0 46px;width:46px;height:46px;border-radius:50%;background:var(--v-chip);color:var(--v-chip-ink);display:grid;place-items:center}
+.ci-row i svg{width:22px;height:22px}
+.ci-row>span{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.ci-row b{font:600 18px var(--sans)}
+.ci-row small{font:14px var(--sans);color:var(--v-sub)}
+.ci-row em{font-style:normal;font-size:24px;color:var(--v-sub)}
+.ci-note{padding:18px 20px;border-radius:16px;background:#ebe4d6;font:15px/1.7 var(--sans);color:var(--v-ink)}
+.sub-lead{margin:-8px 0 18px;font:15px var(--sans);color:var(--v-sub)}
+.rich{margin:0 0 12px;font:16px/1.7 var(--sans);color:var(--v-ink)}
+.rich b{color:var(--v-green)}
+@media(max-width:380px){.ci-times b{font-size:20px}}
 </style>
 </head>
 <body>
