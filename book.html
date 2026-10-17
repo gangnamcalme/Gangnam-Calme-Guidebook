@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="ko" data-lang="kr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gangnam Calme · 예약</title>
+<meta name="description" content="Gangnam Calme (강남칼므) · Seorae Village, Seoul · Direct booking request">
+<meta property="og:title" content="Gangnam Calme · Direct booking">
+<meta property="og:description" content="A calm family home in Seorae Village, Seoul · 2 bedrooms · up to 7 guests">
+<meta property="og:image" content="og-image.jpg">
+<meta name="theme-color" content="#f4efe5">
+<link rel="icon" href="icon.png?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4efe5;--card:#fffdf8;--ink:#3b3822;--sub:#7a7162;--line:#e2d9c8;--green:#1d3b2c;--chip:#f5e9c8;--warn:#b8432e;--serif:Georgia,"Times New Roman",serif;--sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-text-size-adjust:100%}
+.kr,.en,.cn{display:none}
+html[data-lang="kr"] .kr,html[data-lang="en"] .en,html[data-lang="cn"] .cn{display:inline}
+.wrap{max-width:560px;margin:0 auto;padding-bottom:40px}
+button{font:inherit;color:inherit}
+/* 위쪽 */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(244,239,229,.94);backdrop-filter:blur(8px)}
+.brand{font:400 20px var(--serif);letter-spacing:-.01em}
+.langs{display:flex;gap:4px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--card)}
+.langs button{border:0;background:transparent;border-radius:999px;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--sub)}
+.langs button[aria-pressed="true"]{background:var(--green);color:#fff}
+/* 사진 */
+.gal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 20px 0;scrollbar-width:none}
+.gal::-webkit-scrollbar{display:none}
+.gal img{flex:0 0 86%;width:86%;aspect-ratio:4/3;object-fit:cover;border-radius:18px;scroll-snap-align:center;display:block}
+.dots{text-align:center;margin-top:8px;font-size:12px;color:var(--sub);letter-spacing:.2em}
+.sec{padding:0 20px}
+h1{margin:22px 0 4px;font:400 34px/1.15 var(--serif);letter-spacing:-.02em}
+.loc{margin:0;color:var(--sub);font-size:15px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0;padding:0;list-style:none}
+.facts li{padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);font-size:14px}
+h2{margin:34px 0 12px;font:400 24px var(--serif)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 2px 10px rgba(60,50,30,.06)}
+.rates{display:grid;grid-template-columns:1fr auto;gap:8px 12px;font-size:15px}
+.rates b{font-weight:600;text-align:right;white-space:nowrap}
+.rates .sm{color:var(--sub);font-size:13.5px}
+/* 달력 */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-head b{font:600 17px var(--sans)}
+.cal-nav{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--card);cursor:pointer;font-size:18px}
+.cal-nav:disabled{opacity:.3;cursor:default}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.grid .wd{font-size:12px;color:var(--sub);padding:4px 0}
+.grid .wd.we{color:var(--warn)}
+.day{position:relative;height:44px;border:0;background:transparent;border-radius:10px;cursor:pointer;font-size:15px;padding:0}
+.day:disabled{cursor:default;color:#c9c0b0}
+.day.blocked{text-decoration:line-through;color:#c9c0b0}
+.day.wkend:not(:disabled){color:var(--warn)}
+.day.in{background:#e8efe9;border-radius:0}
+.day.start,.day.end{background:var(--green)!important;color:#fff!important;border-radius:10px}
+.day.today:after{content:"";position:absolute;left:50%;bottom:6px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--green)}
+.cal-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12.5px;color:var(--sub)}
+.cal-legend s{color:#c9c0b0}
+.sel-line{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:#efe8da;font-size:15px}
+.sel-line.err{background:#f6e2dc;color:var(--warn)}
+.sync{margin-top:8px;font-size:12px;color:var(--sub)}
+/* 인원 */
+.guests{display:flex;align-items:center;justify-content:space-between}
+.guests small{display:block;color:var(--sub);font-size:13px}
+.step{display:flex;align-items:center;gap:14px}
+.step button{width:42px;height:42px;border:1px solid var(--line);border-radius:50%;background:var(--card);font-size:20px;cursor:pointer}
+.step button:disabled{opacity:.3}
+.step b{min-width:24px;text-align:center;font-size:20px}
+/* 요금 */
+.bill{display:grid;grid-template-columns:1fr auto;gap:8px 12px;font-size:15px}
+.bill span:nth-child(even){text-align:right;white-space:nowrap}
+.bill .tot{padding-top:12px;margin-top:4px;border-top:1px solid var(--line);font-weight:600;font-size:18px}
+.bill-empty{color:var(--sub);font-size:15px;margin:0}
+.pay{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:#e8efe9;font-size:14px;line-height:1.55}
+/* 입력 */
+label{display:block;margin:0 0 14px}
+label>span:first-child{display:block;margin-bottom:6px;font-size:14px;color:var(--sub)}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px;font:16px var(--sans);color:var(--ink);-webkit-appearance:none}
+textarea{min-height:90px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--green);outline-offset:1px}
+/* 보내기 */
+.send{display:flex;flex-direction:column;gap:10px}
+.send button,.send a{display:flex;align-items:center;justify-content:center;gap:10px;height:54px;border:0;border-radius:14px;font:600 16px var(--sans);cursor:pointer;text-decoration:none}
+.s-wa{background:#1f8f4e;color:#fff}
+.s-ka{background:#fee500;color:#191600}
+.s-li{background:#06c755;color:#fff}
+.send .off{opacity:.45;pointer-events:none}
+.send-note{margin:12px 0 0;font-size:13.5px;color:var(--sub);line-height:1.55}
+.foot{margin:34px 20px 0;font-size:12px;color:#a39a89;text-align:center}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:90%;background:#222;color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;text-align:center}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div id="toast" role="status"></div>
+<script>
+/* ===================== 설정 (여기만 바꾸면 됩니다) ===================== */
+const BOOK = {
+  weekdayPrice: 250000,        // 평일 1박 요금 (원)
+  weekendPrice: 300000,        // 주말 1박 요금 (원) — 금요일 밤, 토요일 밤
+  weekendNights: [5, 6],       // 주말로 칠 밤: 0=일 1=월 ... 5=금 6=토
+  baseGuests: 5,               // 기준 인원
+  maxGuests: 7,                // 최대 인원
+  extraPerPerson: 50000,       // 기준 인원 초과 1명당 1박 추가 요금 (원)
+  cleaningFee: 100000,         // 청소비 (1회)
+  minNights: 2,                // 최소 숙박일
+  monthsAhead: 12,             // 몇 달 뒤까지 예약 받을지
+  closed: [                    // 직접 막을 날짜 (밤 기준). 예: ["2026-12-24", "2026-12-26"] → 24·25일 밤 막힘
+  ],
+  whatsapp: "821057770876",    // WhatsApp 번호 (82로 시작, 0·하이픈 없이)
+  kakaoId: "mihoya86",         // 카카오톡 아이디
+  lineId: "",                  // LINE 아이디 (비워 두면 LINE 버튼이 안 보여요)
+  photos: ["hero.jpg", "book-bedroom.jpg", "book-rooftop.jpg"]
+};
+/* ===================================================================== */
+
+const L = {
+  title: { kr: "강남칼므", en: "Gangnam Calme", cn: "Gangnam Calme" },
+  loc: { kr: "서울 서초구 방배동 · 서래마을", en: "Seorae Village, Seocho-gu, Seoul", cn: "首尔 瑞草区 Seorae Village" },
+  facts: [
+    { kr: "침실 2개", en: "2 bedrooms", cn: "2间卧室" },
+    { kr: "최대 7명", en: "Up to 7 guests", cn: "最多7人" },
+    { kr: "무료 주차", en: "Free parking", cn: "免费停车" },
+    { kr: "엘리베이터", en: "Elevator", cn: "电梯" },
+    { kr: "루프탑", en: "Rooftop", cn: "屋顶露台" },
+    { kr: "셀프 체크인", en: "Self check-in", cn: "自助入住" }
+  ],
+  rates: { kr: "요금", en: "Rates", cn: "价格" },
+  weekday: { kr: "평일 1박 (일~목 밤)", en: "Weeknight (Sun–Thu)", cn: "平日每晚（周日~周四）" },
+  weekend: { kr: "주말 1박 (금·토 밤)", en: "Weekend night (Fri–Sat)", cn: "周末每晚（周五·周六）" },
+  base: { kr: "기준 인원", en: "Price includes", cn: "基本人数" },
+  extra: { kr: "추가 1명 (1박당, 최대 7명)", en: "Each extra guest (per night, max 7)", cn: "每加1人（每晚，最多7人）" },
+  cleaning: { kr: "청소비 (1회)", en: "Cleaning fee (once)", cn: "清洁费（一次）" },
+  min: { kr: "최소 숙박", en: "Minimum stay", cn: "最少入住" },
+  nightsN: { kr: "{n}박", en: "{n} nights", cn: "{n}晚" },
+  guestsN: { kr: "{n}명", en: "{n} guests", cn: "{n}人" },
+  dates: { kr: "날짜 선택", en: "Choose your dates", cn: "选择日期" },
+  wd: { kr: ["일","월","화","수","목","금","토"], en: ["S","M","T","W","T","F","S"], cn: ["日","一","二","三","四","五","六"] },
+  legendWe: { kr: "빨간 날짜 = 주말 요금", en: "Red = weekend rate", cn: "红色 = 周末价格" },
+  legendOff: { kr: "줄 그은 날짜 = 예약 마감", en: "Crossed out = unavailable", cn: "划线 = 已订满" },
+  pickIn: { kr: "체크인 날짜를 눌러 주세요", en: "Tap your check-in date", cn: "请点击入住日期" },
+  pickOut: { kr: "체크아웃 날짜를 눌러 주세요", en: "Now tap your check-out date", cn: "请点击退房日期" },
+  tooShort: { kr: "최소 {n}박부터 예약할 수 있어요", en: "Minimum stay is {n} nights", cn: "最少需入住{n}晚" },
+  clash: { kr: "중간에 예약이 마감된 날이 있어요. 다른 날짜를 골라 주세요", en: "Some nights in between are unavailable. Please choose other dates", cn: "中间有已订满的日期，请重新选择" },
+  syncOk: { kr: "다른 예약 사이트의 예약 현황이 자동으로 반영돼요", en: "Availability is synced automatically", cn: "其他平台的预订已自动同步" },
+  guests: { kr: "인원", en: "Guests", cn: "人数" },
+  guestsSub: { kr: "아기 포함 · 최대 7명", en: "Including babies · max 7", cn: "含婴儿 · 最多7人" },
+  price: { kr: "예상 요금", en: "Estimated price", cn: "预计费用" },
+  priceEmpty: { kr: "날짜를 고르면 요금이 계산돼요", en: "Choose dates to see the price", cn: "选择日期后会自动计算费用" },
+  lineWeekday: { kr: "평일 {n}박 × {p}", en: "{n} weeknight(s) × {p}", cn: "平日{n}晚 × {p}" },
+  lineWeekend: { kr: "주말 {n}박 × {p}", en: "{n} weekend night(s) × {p}", cn: "周末{n}晚 × {p}" },
+  lineExtra: { kr: "추가 인원 {g}명 × {n}박 × {p}", en: "{g} extra guest(s) × {n} night(s) × {p}", cn: "加{g}人 × {n}晚 × {p}" },
+  total: { kr: "합계", en: "Total", cn: "合计" },
+  pay: { kr: "💳 결제는 <b>원화 계좌이체</b>로만 받고 있어요. 예약 요청을 보내 주시면 호스트가 날짜를 확인한 뒤 입금 방법을 따로 안내해 드려요. 입금이 확인되면 예약이 확정돼요.", en: "💳 Payment is by <b>bank transfer in Korean won (KRW) only</b>. After you send a request, the host will confirm your dates and send payment details. Your booking is confirmed once payment is received.", cn: "💳 仅接受<b>韩元银行转账</b>。发送预订请求后，房主确认日期并另行告知付款方式，收到款项后预订即确认。" },
+  you: { kr: "예약자 정보", en: "Your details", cn: "预订人信息" },
+  name: { kr: "이름", en: "Name", cn: "姓名" },
+  contact: { kr: "연락처 (전화번호 또는 이메일)", en: "Phone or email", cn: "联系方式（电话或邮箱）" },
+  memo: { kr: "요청 사항 (선택)", en: "Message to host (optional)", cn: "备注（可选）" },
+  memoPh: { kr: "예: 아이 2명(5살, 3살), 아기침대 필요, 도착 예정 시간 등", en: "e.g. 2 kids (5 and 3), need a baby cot, arrival time…", cn: "例如：2个孩子（5岁、3岁）、需要婴儿床、预计到达时间等" },
+  sendH: { kr: "예약 요청 보내기", en: "Send booking request", cn: "发送预订请求" },
+  sendWa: { kr: "WhatsApp으로 보내기", en: "Send on WhatsApp", cn: "用WhatsApp发送" },
+  sendKa: { kr: "카카오톡으로 보내기", en: "Send on KakaoTalk", cn: "用KakaoTalk发送" },
+  sendLi: { kr: "LINE으로 보내기", en: "Send on LINE", cn: "用LINE发送" },
+  sendNote: { kr: "버튼을 누르면 예약 내용이 담긴 메시지가 만들어져요. 메신저에서 그대로 보내 주세요. 예약은 호스트가 확인한 뒤 확정돼요.", en: "Tapping a button prepares a message with your booking details — just send it. Your booking is confirmed after the host replies.", cn: "点击按钮会自动生成包含预订内容的消息，直接发送即可。房主确认后预订才生效。" },
+  needDates: { kr: "먼저 날짜를 골라 주세요", en: "Please choose your dates first", cn: "请先选择日期" },
+  needName: { kr: "이름을 적어 주세요", en: "Please enter your name", cn: "请填写姓名" },
+  kaCopied: { kr: "메시지가 복사됐어요. 카카오톡에서 ID '{id}'를 친구 추가한 뒤 붙여넣어 주세요.", en: "Message copied. Add KakaoTalk ID '{id}' as a friend, then paste it.", cn: "消息已复制。请在KakaoTalk添加ID“{id}”为好友后粘贴发送。" },
+  liCopied: { kr: "메시지가 복사됐어요. LINE 대화창에 붙여넣어 주세요.", en: "Message copied. Paste it in the LINE chat.", cn: "消息已复制，请粘贴到LINE对话中。" },
+  kaId: { kr: "카카오톡 ID", en: "KakaoTalk ID", cn: "KakaoTalk ID" }
+};
+
+/* ---------- 언어 ---------- */
+const LANG_KEY = "gc-book-lang";
+function detectLang() {
+  try { const s = localStorage.getItem(LANG_KEY); if (s === "kr" || s === "en" || s === "cn") return s; } catch (e) {}
+  const list = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""]).map(x => String(x).toLowerCase());
+  for (const l of list) { if (l.indexOf("ko") === 0) return "kr"; if (l.indexOf("zh") === 0) return "cn"; if (l.indexOf("en") === 0) return "en"; }
+  return "en";
+}
+let LANG = detectLang();
+function setLang(k) {
+  LANG = k;
+  document.documentElement.dataset.lang = k;
+  document.documentElement.lang = k === "kr" ? "ko" : k === "cn" ? "zh-CN" : "en";
+  try { localStorage.setItem(LANG_KEY, k); } catch (e) {}
+  render();
+}
+function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function pick(v) { return v && typeof v === "object" && !Array.isArray(v) ? (v[LANG] != null ? v[LANG] : v.en) : v; }
+function fill(s, o) { return String(s).replace(/\{(\w+)\}/g, (m, k) => o[k] != null ? o[k] : m); }
+function T(key, o) { return fill(pick(L[key]), o || {}); }
+function won(n) { return "₩" + Number(n).toLocaleString("en-US"); }
+
+/* ---------- 날짜 ---------- */
+function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function addDays(s, n) { const d = new Date(s + "T12:00:00"); d.setDate(d.getDate() + n); return iso(d); }
+function dow(s) { return new Date(s + "T12:00:00").getDay(); }
+function nightsBetween(a, b) { const out = []; for (let d = a; d < b; d = addDays(d, 1)) out.push(d); return out; }
+const TODAY = iso(new Date());
+const LAST = (function () { const d = new Date(); d.setMonth(d.getMonth() + BOOK.monthsAhead); return iso(d); })();
+
+const blocked = new Set();
+(BOOK.closed || []).forEach(r => { if (Array.isArray(r) && r.length === 2) nightsBetween(r[0], r[1]).forEach(d => blocked.add(d)); else if (typeof r === "string") blocked.add(r); });
+let synced = false;
+
+const S = { month: TODAY.slice(0, 7), cin: null, cout: null, guests: 2, err: "", name: "", contact: "", memo: "" };
+
+function nightFree(d) { return !blocked.has(d) && d >= TODAY && d < LAST; }
+function rangeFree(a, b) { return nightsBetween(a, b).every(nightFree); }
+
+function quote() {
+  if (!S.cin || !S.cout) return null;
+  const ns = nightsBetween(S.cin, S.cout);
+  const we = ns.filter(d => BOOK.weekendNights.indexOf(dow(d)) !== -1).length;
+  const wd = ns.length - we;
+  const extraG = Math.max(0, S.guests - BOOK.baseGuests);
+  const extra = extraG * ns.length * BOOK.extraPerPerson;
+  const total = wd * BOOK.weekdayPrice + we * BOOK.weekendPrice + extra + BOOK.cleaningFee;
+  return { n: ns.length, wd, we, extraG, extra, total };
+}
+
+function clickDay(d) {
+  S.err = "";
+  if (!S.cin || S.cout || d <= S.cin) {
+    if (!nightFree(d)) return;
+    S.cin = d; S.cout = null;
+  } else {
+    if (!rangeFree(S.cin, d)) { S.err = T("clash"); S.cin = nightFree(d) ? d : null; S.cout = null; }
+    else if (nightsBetween(S.cin, d).length < BOOK.minNights) { S.err = T("tooShort", { n: BOOK.minNights }); }
+    else S.cout = d;
+  }
+  render();
+}
+
+/* ---------- 화면 ---------- */
+function calendar() {
+  const [y, m] = S.month.split("-").map(Number);
+  const first = new Date(y, m - 1, 1), days = new Date(y, m, 0).getDate();
+  const minMonth = TODAY.slice(0, 7), maxMonth = LAST.slice(0, 7);
+  const title = LANG === "en" ? first.toLocaleString("en-US", { month: "long", year: "numeric" }) : y + (LANG === "kr" ? "년 " : "年") + m + (LANG === "kr" ? "월" : "月");
+  let h = '<div class="cal-head"><button class="cal-nav" data-mv="-1" aria-label="prev"' + (S.month <= minMonth ? " disabled" : "") + '>‹</button><b>' + esc(title) + '</b><button class="cal-nav" data-mv="1" aria-label="next"' + (S.month >= maxMonth ? " disabled" : "") + '>›</button></div><div class="grid">';
+  pick(L.wd).forEach((w, i) => { h += '<span class="wd' + (BOOK.weekendNights.indexOf(i) !== -1 ? " we" : "") + '">' + w + '</span>'; });
+  for (let i = 0; i < first.getDay(); i++) h += '<span></span>';
+  /* 체크인을 고른 상태라면, 다음 막힌 날까지는 체크아웃으로 고를 수 있어요 */
+  let limit = null;
+  if (S.cin && !S.cout) { limit = S.cin; while (nightFree(limit) && limit < LAST) limit = addDays(limit, 1); }
+  for (let dd = 1; dd <= days; dd++) {
+    const d = S.month + "-" + String(dd).padStart(2, "0");
+    const free = nightFree(d);
+    const asCheckout = limit && d > S.cin && d <= limit;
+    const off = d < TODAY || d > LAST || (!free && !asCheckout);
+    const cls = ["day"];
+    if (!free && d >= TODAY) cls.push("blocked");
+    if (BOOK.weekendNights.indexOf(dow(d)) !== -1) cls.push("wkend");
+    if (d === TODAY) cls.push("today");
+    if (d === S.cin) cls.push("start");
+    if (d === S.cout) cls.push("end");
+    if (S.cin && S.cout && d > S.cin && d < S.cout) cls.push("in");
+    h += '<button type="button" class="' + cls.join(" ") + '" data-day="' + d + '"' + (off ? " disabled" : "") + '>' + dd + '</button>';
+  }
+  h += '</div><div class="cal-legend"><span style="color:var(--warn)">' + T("legendWe") + '</span><span><s>15</s> ' + T("legendOff") + '</span></div>';
+  const fmt = s => s.slice(5).replace("-", "/") + " (" + pick(L.wd)[dow(s)] + ")";
+  if (S.err) h += '<p class="sel-line err">' + esc(S.err) + '</p>';
+  else if (!S.cin) h += '<p class="sel-line">' + T("pickIn") + '</p>';
+  else if (!S.cout) h += '<p class="sel-line">' + fmt(S.cin) + ' → … · ' + T("pickOut") + '</p>';
+  else h += '<p class="sel-line"><b>' + fmt(S.cin) + ' → ' + fmt(S.cout) + '</b> · ' + T("nightsN", { n: nightsBetween(S.cin, S.cout).length }) + '</p>';
+  if (synced) h += '<p class="sync">✓ ' + T("syncOk") + '</p>';
+  return h;
+}
+
+function bill() {
+  const q = quote();
+  if (!q) return '<p class="bill-empty">' + T("priceEmpty") + '</p>';
+  let h = '<div class="bill">';
+  if (q.wd) h += '<span>' + T("lineWeekday", { n: q.wd, p: won(BOOK.weekdayPrice) }) + '</span><span>' + won(q.wd * BOOK.weekdayPrice) + '</span>';
+  if (q.we) h += '<span>' + T("lineWeekend", { n: q.we, p: won(BOOK.weekendPrice) }) + '</span><span>' + won(q.we * BOOK.weekendPrice) + '</span>';
+  if (q.extraG) h += '<span>' + T("lineExtra", { g: q.extraG, n: q.n, p: won(BOOK.extraPerPerson) }) + '</span><span>' + won(q.extra) + '</span>';
+  h += '<span>' + T("cleaning") + '</span><span>' + won(BOOK.cleaningFee) + '</span>';
+  h += '<span class="tot">' + T("total") + '</span><span class="tot">' + won(q.total) + '</span></div>';
+  return h;
+}
+
+function render() {
+  const ready = !!quote();
+  document.getElementById("app").innerHTML =
+    '<header class="top"><span class="brand">Gangnam Calme</span><div class="langs">' +
+      [["kr", "한국어"], ["en", "EN"], ["cn", "中文"]].map(x => '<button type="button" data-lang="' + x[0] + '" aria-pressed="' + (LANG === x[0]) + '">' + x[1] + '</button>').join("") +
+    '</div></header>' +
+    '<div class="gal" id="gal">' + BOOK.photos.map(p => '<img src="' + esc(p) + '" alt="">').join("") + '</div>' +
+    '<p class="dots">' + BOOK.photos.map(() => "•").join(" ") + '</p>' +
+    '<section class="sec">' +
+      '<h1>' + T("title") + '</h1><p class="loc">' + T("loc") + '</p>' +
+      '<ul class="facts">' + L.facts.map(f => '<li>' + esc(pick(f)) + '</li>').join("") + '</ul>' +
+
+      '<h2>' + T("rates") + '</h2><div class="card rates">' +
+        '<span>' + T("weekday") + '</span><b>' + won(BOOK.weekdayPrice) + '</b>' +
+        '<span>' + T("weekend") + '</span><b>' + won(BOOK.weekendPrice) + '</b>' +
+        '<span>' + T("base") + '</span><b>' + T("guestsN", { n: BOOK.baseGuests }) + '</b>' +
+        '<span>' + T("extra") + '</span><b>+' + won(BOOK.extraPerPerson) + '</b>' +
+        '<span>' + T("cleaning") + '</span><b>' + won(BOOK.cleaningFee) + '</b>' +
+        '<span>' + T("min") + '</span><b>' + T("nightsN", { n: BOOK.minNights }) + '</b>' +
+      '</div>' +
+
+      '<h2>' + T("dates") + '</h2><div class="card" id="cal">' + calendar() + '</div>' +
+
+      '<h2>' + T("guests") + '</h2><div class="card guests"><div><b>' + T("guestsN", { n: S.guests }) + '</b><small>' + T("guestsSub") + '</small></div>' +
+        '<div class="step"><button type="button" data-g="-1" aria-label="-"' + (S.guests <= 1 ? " disabled" : "") + '>−</button><b>' + S.guests + '</b><button type="button" data-g="1" aria-label="+"' + (S.guests >= BOOK.maxGuests ? " disabled" : "") + '>+</button></div></div>' +
+
+      '<h2>' + T("price") + '</h2><div class="card">' + bill() + '<p class="pay">' + T("pay") + '</p></div>' +
+
+      '<h2>' + T("you") + '</h2><div class="card">' +
+        '<label><span>' + T("name") + '</span><input id="fName" autocomplete="name" value="' + esc(S.name) + '"></label>' +
+        '<label><span>' + T("contact") + '</span><input id="fContact" autocomplete="tel" value="' + esc(S.contact) + '"></label>' +
+        '<label style="margin:0"><span>' + T("memo") + '</span><textarea id="fMemo" placeholder="' + esc(T("memoPh")) + '">' + esc(S.memo) + '</textarea></label>' +
+      '</div>' +
+
+      '<h2>' + T("sendH") + '</h2><div class="send">' +
+        (BOOK.whatsapp ? '<button type="button" class="s-wa' + (ready ? "" : " off") + '" data-send="wa">' + T("sendWa") + '</button>' : '') +
+        (BOOK.kakaoId ? '<button type="button" class="s-ka' + (ready ? "" : " off") + '" data-send="ka">' + T("sendKa") + '</button>' : '') +
+        (BOOK.lineId ? '<button type="button" class="s-li' + (ready ? "" : " off") + '" data-send="li">' + T("sendLi") + '</button>' : '') +
+      '</div><p class="send-note">' + T("sendNote") + (BOOK.kakaoId ? '<br>' + T("kaId") + ': <b>' + esc(BOOK.kakaoId) + '</b>' : '') + '</p>' +
+    '</section>' +
+    '<p class="foot">© Gangnam Calme · Seorae Village, Seoul</p>';
+}
+
+/* ---------- 메시지 ---------- */
+function message() {
+  const q = quote();
+  const wdn = ["일","월","화","수","목","금","토"], wde = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const f = s => s + " (" + wdn[dow(s)] + "/" + wde[dow(s)] + ")";
+  return [
+    "[강남칼므 예약 요청 · Booking request]",
+    "체크인 Check-in: " + f(S.cin),
+    "체크아웃 Check-out: " + f(S.cout) + " · " + q.n + "박/nights",
+    "인원 Guests: " + S.guests,
+    "예상 요금 Estimate: " + won(q.total),
+    "이름 Name: " + S.name.trim(),
+    S.contact.trim() ? "연락처 Contact: " + S.contact.trim() : "",
+    S.memo.trim() ? "요청 Message: " + S.memo.trim() : ""
+  ].filter(Boolean).join("\n");
+}
+function toast(msg) { const el = document.getElementById("toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("show"), 4200); }
+function copy(text) {
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text).catch(fallback);
+  fallback(); return Promise.resolve();
+  function fallback() { const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (e) {} ta.remove(); }
+}
+function send(kind) {
+  if (!quote()) { toast(T("needDates")); document.getElementById("cal").scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+  if (!S.name.trim()) { toast(T("needName")); const n = document.getElementById("fName"); n.focus(); return; }
+  const msg = message();
+  if (kind === "wa") { window.open("https://wa.me/" + BOOK.whatsapp.replace(/[^0-9]/g, "") + "?text=" + encodeURIComponent(msg), "_blank"); return; }
+  if (kind === "ka") { copy(msg); toast(T("kaCopied", { id: BOOK.kakaoId })); setTimeout(() => { location.href = "kakaotalk://launch"; }, 900); return; }
+  if (kind === "li") { copy(msg); toast(T("liCopied")); setTimeout(() => { window.open("https://line.me/R/ti/p/~" + encodeURIComponent(BOOK.lineId), "_blank"); }, 900); return; }
+}
+
+/* ---------- 이벤트 ---------- */
+document.addEventListener("click", e => {
+  const l = e.target.closest("[data-lang]"); if (l && l.tagName === "BUTTON") { setLang(l.dataset.lang); return; }
+  const d = e.target.closest("[data-day]"); if (d && !d.disabled) { clickDay(d.dataset.day); return; }
+  const mv = e.target.closest("[data-mv]");
+  if (mv && !mv.disabled) { const [y, m] = S.month.split("-").map(Number); const n = new Date(y, m - 1 + Number(mv.dataset.mv), 1); S.month = n.getFullYear() + "-" + String(n.getMonth() + 1).padStart(2, "0"); render(); return; }
+  const g = e.target.closest("[data-g]"); if (g && !g.disabled) { S.guests = Math.min(BOOK.maxGuests, Math.max(1, S.guests + Number(g.dataset.g))); render(); return; }
+  const s = e.target.closest("[data-send]"); if (s) { send(s.dataset.send); return; }
+});
+document.addEventListener("input", e => {
+  if (e.target.id === "fName") S.name = e.target.value;
+  if (e.target.id === "fContact") S.contact = e.target.value;
+  if (e.target.id === "fMemo") S.memo = e.target.value;
+});
+
+setLang(LANG);
+/* 다른 예약 사이트의 예약 현황 불러오기 (연결돼 있을 때만) */
+if (location.protocol.indexOf("http") === 0) {
+  fetch("/api/availability").then(r => r.ok ? r.json() : null).then(j => {
+    if (!j || !Array.isArray(j.blocked)) return;
+    j.blocked.forEach(d => blocked.add(d));
+    synced = j.ok > 0;
+    if (S.cin && !nightFree(S.cin)) { S.cin = S.cout = null; }
+    if (S.cin && S.cout && !rangeFree(S.cin, S.cout)) { S.cout = null; }
+    render();
+  }).catch(() => {});
+}
+</script>
+</body>
+</html>
