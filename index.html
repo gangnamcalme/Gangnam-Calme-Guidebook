@@ -1279,8 +1279,11 @@ function arrivalBox() {
     '<button type="button" class="ar-done" data-arrive-again>✓ ' + t({ kr: "도착 알림을 보냈어요", en: "Arrival message sent", cn: "已发送到达通知" }) + ' <u>' + t({ kr: "다시 보내기", en: "Send again", cn: "再次发送" }) + '</u></button>' +
     '<p class="ar-t">' + t({ kr: "체크인하셨나요?", en: "Just checked in?", cn: "已经入住了吗？" }) + '</p>' +
     '<p class="ar-s">' + t({ kr: "호스트에게 도착했다고 한 번만 알려 주세요.", en: "Please let your host know you've arrived.", cn: "请告诉房主一声您已到达。" }) + '</p>' +
-    '<div class="ar-btns"><a class="btn" data-arrived href="' + esc(arrivalSmsUrl()) + '">' + t({ kr: "문자로 알리기", en: "Send a text", cn: "发短信告知" }) + '</a>' +
-    '<button class="btn line-btn" type="button" data-arrived data-copy="arrival">' + t({ kr: "카톡용 문구 복사", en: "Copy message", cn: "复制消息" }) + '</button></div>' +
+    '<div class="ar-btns">' +
+      (CONFIG.kakaoId ? '<button class="btn" type="button" data-arrived data-copy="arrival-kakao">' + t({ kr: "카카오톡", en: "KakaoTalk", cn: "KakaoTalk" }) + '</button>' : '') +
+      (CONFIG.whatsapp ? '<a class="btn" data-arrived href="https://wa.me/' + esc(CONFIG.whatsapp.replace(/[^0-9]/g, "")) + '?text=' + encodeURIComponent(CONFIG.arrivalMessage || "") + '" target="_blank" rel="noopener">WhatsApp</a>' : '') +
+      '<a class="btn" data-arrived href="' + esc(arrivalSmsUrl()) + '">' + t({ kr: "문자", en: "Text (SMS)", cn: "短信" }) + '</a>' +
+    '</div>' +
   '</div>';
 }
 
@@ -2140,6 +2143,10 @@ function start() {
       if (kind === "address") copyText(CONFIG.address);
       if (kind === "wifi") copyText(CONFIG.wifiPassword);
       if (kind === "arrival") copyText(CONFIG.arrivalMessage);
+      if (kind === "arrival-kakao") {
+        copyText(CONFIG.arrivalMessage, { kr: "메시지를 복사했어요. 카카오톡에서 " + CONFIG.kakaoId + " 를 찾아 붙여넣어 주세요.", en: "Message copied. In KakaoTalk, find " + CONFIG.kakaoId + " and paste it.", cn: "消息已复制。请在KakaoTalk中搜索 " + CONFIG.kakaoId + " 并粘贴。" });
+        setTimeout(function () { window.location.href = "kakaotalk://"; }, 1800);
+      }
       if (kind === "food") copyText(CONFIG.address + (CONFIG.addressEn ? " / " + CONFIG.addressEn : ""), CONFIG.text.foodCopied);
       if (kind === "kakao") {
         copyText(CONFIG.kakaoId, CONFIG.text.kakaoCopied);
@@ -2487,8 +2494,9 @@ a.ci-row{text-decoration:none}
 .arrive{margin:12px 0 0;padding:18px;border-radius:18px;background:var(--v-green);color:#f5e9c8}
 .ar-t{margin:0 0 4px;font:600 18px var(--sans);color:#fff}
 .ar-s{margin:0 0 12px;font:14px/1.5 var(--sans);opacity:.9}
-.ar-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ar-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .arrive .btn{background:#f5e9c8!important;color:var(--v-green)!important;border-color:#f5e9c8!important;min-height:44px;font-weight:700;font-size:14px}
+.arrive .btn{padding:0 6px}
 .arrive .btn.line-btn{background:transparent!important;color:#f5e9c8!important;border-color:rgba(245,233,200,.6)!important}
 /* 와이파이 띠 */
 .wifi-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:var(--v-card)}
