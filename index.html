@@ -224,6 +224,8 @@ const CONFIG = {
   },
   /* 콜밴(대형 택시) 전화 버튼. 첫 화면 VAN 칸과 체크아웃 화면에 나옵니다. 다른 업체를 쓰시면 번호만 바꾸세요. 비워 두면("") 버튼이 사라집니다 */
   callVanPhone: "1644-2255",                  // 지금은 '인터내셔널 택시' (외국어 가능 기사, 대형 차량, 공항 정액 요금, 예약 가능)
+  coupangEatsIos: "https://apps.apple.com/kr/app/id1445504255",                 // 쿠팡이츠 (아이폰)
+  coupangEatsAndroid: "intent://#Intent;package=com.coupang.mobile.eats;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.coupang.mobile.eats;end", // 쿠팡이츠 (안드로이드: 앱이 있으면 바로 열림)
   foodOrderLink: "https://www.koreaorder.com/",            // 첫 화면 '음식 주문' 카드를 누르면 열리는 주소. 호스트 전용 링크를 받으시면 이 주소만 바꿔 주세요. 비워 두면("") 카드가 보이지 않습니다
   reviewLink: "https://www.airbnb.com/trips",              // 후기 단추를 누르면 열리는 주소. 에어비앤비 여행 목록입니다. 휴대폰에 에어비앤비 앱이 있으면 보통 앱으로 열립니다
   reviewButton: { kr: "에어비앤비에서 후기 쓰기", en: "Write a review on Airbnb", cn: "在 Airbnb 上写评价" },   // 후기 단추 글자
@@ -1092,7 +1094,7 @@ function renderStay() {
       tile('data-go="trash"', "trash", { kr: "쓰레기 · 분리수거", en: "Trash · recycling", cn: "垃圾 · 分类回收" }, { kr: "봉투 위치 · 버리는 곳", en: "Bags · where to put it", cn: "垃圾袋 · 投放地点" }) +
       tile('data-go="parking"', "car", { kr: "주차 안내", en: "Parking", cn: "停车指南" }, { kr: "자리 · 일렬주차 · 방문 차량", en: "Spaces · two cars · visitors", cn: "车位 · 两辆车 · 访客车辆" }) +
       tile('href="' + uberUrl() + '" target="_blank" rel="noopener"', "taxi", { kr: "택시 호출", en: "Call a taxi", cn: "叫出租车" }, { kr: "Uber · 숙소에서 출발", en: "Uber · pickup at the house", cn: "Uber · 从住处出发" }) +
-      (CONFIG.foodOrderLink ? tile('href="' + esc(CONFIG.foodOrderLink) + '" target="_blank" rel="noopener" data-copy="food"', "food", { kr: "음식 배달", en: "Food delivery", cn: "外卖" }, { kr: "주소 자동 복사 · 바로가기", en: "Address copied · order", cn: "自动复制地址 · 下单" }) : '') +
+      tile('data-go="food"', "food", { kr: "음식 배달", en: "Food delivery", cn: "外卖" }, { kr: "쿠팡이츠 · KoreaOrder", en: "Coupang Eats · KoreaOrder", cn: "Coupang Eats · KoreaOrder" }) +
       tile('data-go="phrases"', "chat", { kr: "급할 때 쓰는 한국어", en: "Handy Korean", cn: "应急韩语" }, { kr: "택시 주소 · 식당 · 약국", en: "Taxi · restaurants · pharmacy", cn: "出租车 · 餐厅 · 药店" }) +
       tile('data-go="walk"', "map", { kr: "반나절 산책 코스", en: "Half-day walk", cn: "半日散步路线" }, { kr: "공원 · 카페 · 점심 · 디저트", en: "Parks · café · lunch · dessert", cn: "公园 · 咖啡 · 午餐 · 甜点" }) +
       tile('data-go="sos"', "sos", { kr: "비상시 안내", en: "Emergency", cn: "紧急情况" }, { kr: "긴급 연락처 · 병원 · 약국", en: "Numbers · hospital · pharmacy", cn: "紧急电话 · 医院 · 药店" }) +
@@ -1114,7 +1116,7 @@ function renderStay() {
 }
 
 /* 아래 탭 */
-const TAB_OF = { home: "home", checkin: "home", "ci-address": "home", "ci-luggage": "home", "ci-extra": "home", co: "home", "co-van": "home", "co-airport": "home", "co-late": "home", "ci-early": "home", phrases: "stay", walk: "stay", trash: "stay", stay: "stay", house: "stay", wifi: "stay", parking: "stay", checkout: "stay", sos: "stay", nearby: "nearby", faq: "faq", contact: "contact" };
+const TAB_OF = { home: "home", checkin: "home", "ci-address": "home", "ci-luggage": "home", "ci-extra": "home", co: "home", "co-van": "home", "co-airport": "home", "co-late": "home", "ci-early": "home", phrases: "stay", walk: "stay", food: "stay", trash: "stay", stay: "stay", house: "stay", wifi: "stay", parking: "stay", checkout: "stay", sos: "stay", nearby: "nearby", faq: "faq", contact: "contact" };
 function renderTabbar() {
   const tab = (id, ic, label) => '<button type="button" data-go="' + id + '" data-tab="' + id + '">' + v2i(ic) + '<span>' + t(label) + '</span></button>';
   return '<nav class="tabbar" aria-label="Menu">' +
@@ -1192,6 +1194,7 @@ function renderCo() {
       '<div><small>' + t({ kr: "체크아웃", en: "Check-out", cn: "退房" }) + '</small><b>' + esc(CONFIG.checkoutTime) + '</b><span>' + t({ kr: "까지", en: "until", cn: "前" }) + '</span></div>' +
       (van ? '<div><small>' + t({ kr: "대형 콜밴", en: "Large taxi", cn: "大型出租车" }) + '</small><b>' + esc(CONFIG.callVanPhone) + '</b><span>' + t({ kr: "공항 예약 가능", en: "airport booking", cn: "可预约机场" }) + '</span></div>' : '') +
     '</div>' +
+    '<button class="co-review" type="button" data-review-open><span class="stars" aria-hidden="true">★★★★★</span><b>' + t({ kr: "즐거우셨다면 후기를 부탁드려요", en: "Enjoyed your stay? Please leave a review", cn: "如果住得愉快，请留下评价" }) + '</b><small>' + t({ kr: "에어비앤비에서는 5점이 '좋았어요'의 기준이에요. 작은 숙소에 큰 힘이 돼요.", en: "On Airbnb, 5 stars means 'it was good'. It means a lot to a small home like ours.", cn: "在Airbnb上，5星代表“满意”。这对我们这样的小民宿意义重大。" }) + '</small><em>' + t({ kr: "후기 남기기 →", en: "Write a review →", cn: "写评价 →" }) + '</em></button>' +
     '<p class="hint">' + t({ kr: "필요한 항목을 눌러 자세히 보세요.", en: "Tap an item for details.", cn: "点击项目查看详情。" }) + '</p>' +
     '<div class="ci-list">' +
       ciRow("checkout", "doc", { kr: "체크아웃 체크리스트", en: "Check-out checklist", cn: "退房清单" }, { kr: "퇴실 전 확인할 것", en: "Things to check before you leave", cn: "离开前需要确认的事项" }) +
@@ -1399,6 +1402,25 @@ function openAcc(id) {
   if (d) { d.hidden = false; d.open = true; setTimeout(() => d.scrollIntoView({ behavior: "smooth", block: "start" }), 30); }
 }
 
+function coupangUrl() {
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  return ios ? CONFIG.coupangEatsIos : CONFIG.coupangEatsAndroid;
+}
+function renderFood() {
+  const row = (href, ic, title, sub, copy) => '<a class="ci-row" href="' + esc(href) + '"' + (href.indexOf("intent:") === 0 ? '' : ' target="_blank" rel="noopener"') + (copy ? ' data-copy="' + copy + '"' : '') + '><i>' + v2i(ic) + '</i><span><b>' + t(title) + '</b><small>' + t(sub) + '</small></span><em>›</em></a>';
+  return backButton() +
+    '<h2>' + t({ kr: "음식 배달", en: "Food delivery", cn: "外卖" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "버튼을 누르면 숙소 주소가 자동으로 복사돼요. 배달 주소 칸에 붙여넣어 주세요.", en: "Tapping a button copies the house address. Paste it as your delivery address.", cn: "点击按钮会自动复制住处地址，请粘贴到配送地址栏。" }) + '</p>' +
+    '<div class="ci-list">' +
+      row(coupangUrl(), "food", { kr: "쿠팡이츠", en: "Coupang Eats", cn: "Coupang Eats" }, { kr: "한국에서 가장 많이 쓰는 배달 앱 · 앱 열기", en: "Korea's most-used delivery app · opens the app", cn: "韩国最常用的外卖App · 打开App" }, "food-addr") +
+      (CONFIG.foodOrderLink ? row(CONFIG.foodOrderLink, "food", { kr: "KoreaOrder", en: "KoreaOrder", cn: "KoreaOrder" }, { kr: "영어로 주문 · 외국 카드 결제 가능", en: "Order in English · foreign cards accepted", cn: "可用英文下单 · 可用外国卡支付" }, "food") : '') +
+    '</div>' +
+    '<div class="card"><p class="label">' + t({ kr: "배달 주소", en: "Delivery address", cn: "配送地址" }) + '</p>' +
+      '<p class="value">' + esc(CONFIG.address) + '</p>' + (CONFIG.addressEn ? '<p class="tip">' + esc(CONFIG.addressEn) + '</p>' : '') +
+      '<div class="btns"><button class="btn line-btn" type="button" data-copy="food-addr">' + t({ kr: "주소 복사", en: "Copy address", cn: "复制地址" }) + '</button></div>' +
+      '<p class="tip">' + t({ kr: "쿠팡이츠는 한국 휴대폰 번호로 가입해야 해서, 외국 번호만 있으시면 KoreaOrder가 편해요.", en: "Coupang Eats needs a Korean phone number to sign up. With a foreign number, KoreaOrder is easier.", cn: "Coupang Eats需要韩国手机号注册。如只有外国号码，使用KoreaOrder更方便。" }) + '</p>' +
+    '</div>';
+}
 function renderCiAddress() {
   const T = CONFIG.text;
   const q = encodeURIComponent(CONFIG.mapQuery || CONFIG.address);
@@ -2014,7 +2036,7 @@ function saveCheckin() {
   try { localStorage.setItem(CHECKIN_KEY, JSON.stringify(done)); } catch (e) {}
 }
 
-const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "co-van", "co-airport", "co-late", "ci-early", "phrases", "walk", "trash", "sos", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
+const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "food", "co-van", "co-airport", "co-late", "ci-early", "phrases", "walk", "trash", "sos", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
 let navStack = [];
 
 function showScreen(id) {
@@ -2058,6 +2080,7 @@ function start() {
     '<section id="screen-home">' + renderHome() + '</section>' +
     '<section id="screen-stay" hidden>' + renderStay() + '</section>' +
     '<section id="screen-checkin" hidden>' + renderCheckin() + '</section>' +
+    '<section id="screen-food" hidden>' + renderFood() + '</section>' +
     '<section id="screen-co-van" hidden>' + renderCoVan() + '</section>' +
     '<section id="screen-co-airport" hidden>' + renderCoAirport() + '</section>' +
     '<section id="screen-co-late" hidden>' + renderTimeExtra("late") + '</section>' +
@@ -2147,6 +2170,7 @@ function start() {
         copyText(CONFIG.arrivalMessage, { kr: "메시지를 복사했어요. 카카오톡의 " + CONFIG.hostName + "님 대화방에 붙여넣어 주세요.", en: "Message copied. Paste it into your KakaoTalk chat with " + CONFIG.hostName + ".", cn: "消息已复制。请粘贴到与 " + CONFIG.hostName + " 的KakaoTalk聊天中。" });
         setTimeout(function () { window.location.href = "kakaotalk://"; }, 1800);
       }
+      if (kind === "food-addr") copyText(CONFIG.address + (CONFIG.addressEn ? " / " + CONFIG.addressEn : ""), { kr: "숙소 주소를 복사했어요. 배달 주소 칸에 붙여넣어 주세요.", en: "House address copied. Paste it as your delivery address.", cn: "已复制住处地址，请粘贴到配送地址栏。" });
       if (kind === "food") copyText(CONFIG.address + (CONFIG.addressEn ? " / " + CONFIG.addressEn : ""), CONFIG.text.foodCopied);
       if (kind === "kakao") {
         copyText(CONFIG.kakaoId, CONFIG.text.kakaoCopied);
@@ -2535,6 +2559,11 @@ a.ci-row{text-decoration:none}
 .arrive[hidden]{display:none}
 .ar-done{display:none;width:100%;border:0;background:transparent;color:#f5e9c8;font:600 15px var(--sans);text-align:left;cursor:pointer;padding:0}.ar-done u{margin-left:6px;font-weight:400;opacity:.85}
 .arrive.done{padding:14px 18px}.arrive.done>*:not(.ar-done){display:none}.arrive.done .ar-done{display:block}
+.co-review{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin:0 0 16px;padding:20px;border:0;border-radius:18px;background:var(--v-green);color:#f5e9c8;text-align:left;cursor:pointer;box-shadow:0 8px 22px rgba(27,61,41,.22)}
+.co-review .stars{color:#E8C77A;font-size:22px;letter-spacing:5px;line-height:1}
+.co-review b{font:600 18px/1.4 var(--sans);color:#fff}
+.co-review small{font:14px/1.55 var(--sans);opacity:.9}
+.co-review em{margin-top:6px;padding:9px 16px;border-radius:999px;background:#E8C77A;color:var(--v-green);font:700 15px var(--sans);font-style:normal}
 </style>
 </head>
 <body>
