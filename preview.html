@@ -1012,7 +1012,6 @@ function renderStay() {
       tile('href="' + uberUrl() + '" target="_blank" rel="noopener"', "taxi", { kr: "택시 호출", en: "Call a taxi", cn: "叫出租车" }, { kr: "Uber · 숙소에서 출발", en: "Uber · pickup at the house", cn: "Uber · 从住处出发" }) +
       (CONFIG.foodOrderLink ? tile('href="' + esc(CONFIG.foodOrderLink) + '" target="_blank" rel="noopener" data-copy="food"', "food", { kr: "음식 배달", en: "Food delivery", cn: "外卖" }, { kr: "주소 자동 복사 · 바로가기", en: "Address copied · order", cn: "自动复制地址 · 下单" }) : '') +
       tile('data-go="faq"', "info", { kr: "유용한 정보", en: "Useful info", cn: "实用信息" }, { kr: "마트 · 병원 · 교통", en: "Shops · clinics · transport", cn: "超市 · 医院 · 交通" }) +
-      tile('data-go="co"', "out", { kr: "체크아웃 안내", en: "Check-out", cn: "退房指南" }, { kr: "퇴실 전 체크리스트", en: "Before you leave", cn: "退房前清单" }) +
     '</div>' +
 
     '<h2 class="st-h">' + t({ kr: "대문 밖은, 서래마을", en: "Outside the door, Seorae Village", cn: "门外，就是 Seorae Village" }) + '</h2>' +
@@ -1037,7 +1036,7 @@ function renderTabbar() {
   return '<nav class="tabbar" aria-label="Menu">' +
     tab("home", "house", { kr: "홈", en: "Home", cn: "首页" }) +
     tab("nearby", "map", { kr: "둘러보기", en: "Explore", cn: "周边" }) +
-    tab("stay", "book", { kr: "가이드", en: "Guide", cn: "指南" }) +
+    tab("stay", "book", { kr: "이용 가이드", en: "Stay guide", cn: "住宿指南" }) +
     tab("faq", "info", { kr: "유용한 정보", en: "Info", cn: "信息" }) +
     tab("contact", "chat", { kr: "호스트 연락", en: "Host", cn: "联系房主" }) +
   '</nav>';
