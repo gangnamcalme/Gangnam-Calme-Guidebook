@@ -150,6 +150,56 @@ const CONFIG = {
   moduIos: "https://apps.apple.com/kr/app/id780174422",                                         // 모두의주차장 (아이폰 앱스토어)
   moduAndroid: "https://play.google.com/store/search?q=%EB%AA%A8%EB%91%90%EC%9D%98%EC%A3%BC%EC%B0%A8%EC%9E%A5&c=apps", // 모두의주차장 (플레이스토어)
 
+  /* ---------- 얼리 체크인 / 늦은 체크아웃 ---------- */
+  earlyCheckin: [
+    { kr: "얼리 체크인은 **그날 상황에 따라 가능 여부가 달라져요.**", en: "Early check-in **depends on the day's schedule.**", cn: "能否提前入住**取决于当天的情况。**" },
+    { kr: "원하시면 **미리 호스트에게 문의**해 주세요. 가능한지 바로 알려 드릴게요.", en: "Please **ask the host in advance**, and we'll let you know.", cn: "如有需要，请**提前联系房主**，我们会尽快答复。" },
+    { kr: "비용은 **시간당 15달러(USD)** 입니다.", en: "The fee is **USD 15 per hour**.", cn: "费用为**每小时15美元（USD）**。" },
+    { kr: "얼리 체크인이 어려우면 **짐 보관**(오전 11:30부터)을 이용하실 수 있어요.", en: "If it isn't possible, you can use **luggage storage** (from 11:30 AM).", cn: "如无法提前入住，可使用**行李寄存**（上午11:30起）。" }
+  ],
+  lateCheckout: [
+    { kr: "늦은 체크아웃은 **다음 손님 일정에 따라 가능 여부가 달라져요.**", en: "Late check-out **depends on the next guest's schedule.**", cn: "能否延迟退房**取决于下一位客人的安排。**" },
+    { kr: "원하시면 **미리 호스트에게 문의**해 주세요.", en: "Please **ask the host in advance**.", cn: "如有需要，请**提前联系房主**。" },
+    { kr: "비용은 **시간당 15달러(USD)** 입니다.", en: "The fee is **USD 15 per hour**.", cn: "费用为**每小时15美元（USD）**。" }
+  ],
+
+  /* ---------- 도착 알림 문자 ---------- */
+  arrivalMessage: "[강남칼므 501호] 안녕하세요, 방금 체크인했어요! / Hi, we just checked in!",
+
+  /* ---------- 공항 가는 법 (체크아웃 안내) ---------- */
+  airportOut: [
+    { kr: "**택시·국제택시:** 짐이 많으면 가장 편해요. 외국어가 가능한 기사의 국제택시·대형 콜밴은 미리 예약하면 정해진 요금으로 갑니다(☎ 1644-2255).", en: "**Taxi / international taxi:** easiest with luggage. International taxis and large vans with English-speaking drivers run at a fixed fare if you book ahead (☎ 1644-2255).", cn: "**出租车·国际出租车：**行李多时最方便。会说外语的国际出租车·大型出租车提前预约可按固定价格(☎ 1644-2255)。" },
+    { kr: "**공항버스:** 택시로 '서래마을입구(반포)' 정류장까지 가서(약 5분) K리무진 6703번 인천공항행을 타세요. 성인 18,000원이에요. 타는 곳은 내리던 곳의 길 건너편일 수 있으니 출발 전에 시간표와 함께 확인해 주세요.", en: "**Airport bus:** Take a taxi to the 'Seorae Village entrance (Banpo)' stop (about 5 min) and ride K Limousine 6703 to Incheon Airport. Adults ₩18,000. The boarding stop may be across the road from where you got off, so please check it and the timetable before you leave.", cn: "**机场巴士：**打车到'Seorae Village入口(Banpo)'站(约5分钟)，乘坐K Limousine 6703路前往仁川机场。成人18,000韩元。上车站可能在下车站的马路对面，出发前请确认站点和时刻表。" },
+    { kr: "**지하철:** 택시로 내방역(약 5분) → 7호선 고속터미널역 → 9호선 급행 김포공항역 → 공항철도로 인천공항까지 가요. 김포공항은 9호선 급행 김포공항역에서 바로 내리시면 돼요.", en: "**Subway:** Taxi to Naebang Station (about 5 min) → Line 7 to Express Bus Terminal → Line 9 express to Gimpo Airport → AREX to Incheon Airport. For Gimpo Airport, just get off at Gimpo Airport on Line 9.", cn: "**地铁：**打车到Naebang站(约5分钟) → 7号线到高速巴士客运站 → 9号线快车到金浦机场站 → 机场铁路到仁川机场。去金浦机场的话在9号线金浦机场站下车即可。" },
+    { kr: "국제선은 **출발 3시간 전**까지 공항에 도착하시는 걸 추천해요. 체크아웃(11시) 후 여유 있게 출발하세요.", en: "For international flights, we recommend arriving **3 hours before departure**. Leave with time to spare after check-out (11:00).", cn: "国际航班建议**起飞前3小时**到达机场。退房(11:00)后请留出充足时间出发。" }
+  ],
+
+  /* ---------- 급할 때 쓰는 한국어 ---------- */
+  phrases: [
+    { ko: "여기서 내려 주세요.", en: "Please drop me off here.", cn: "请在这里停车。" },
+    { ko: "카드로 결제할게요.", en: "I'll pay by card.", cn: "我用卡付款。" },
+    { ko: "영수증 주세요.", en: "Receipt, please.", cn: "请给我收据。" },
+    { ko: "얼마예요?", en: "How much is it?", cn: "多少钱？" },
+    { ko: "포장해 주세요.", en: "To go, please.", cn: "请打包。" },
+    { ko: "맵지 않게 해 주세요.", en: "Not spicy, please.", cn: "请不要做辣的。" },
+    { ko: "견과류 알레르기가 있어요.", en: "I'm allergic to nuts.", cn: "我对坚果过敏。" },
+    { ko: "화장실이 어디예요?", en: "Where is the restroom?", cn: "洗手间在哪里？" },
+    { ko: "가까운 약국이 어디예요?", en: "Where is the nearest pharmacy?", cn: "最近的药店在哪里？" },
+    { ko: "병원에 가야 해요.", en: "I need to go to a hospital.", cn: "我需要去医院。" },
+    { ko: "도와주세요.", en: "Please help me.", cn: "请帮帮我。" },
+    { ko: "한국어를 잘 못해요. 영어 하실 수 있어요?", en: "I don't speak much Korean. Do you speak English?", cn: "我不太会说韩语。您会说英语吗？" }
+  ],
+
+  /* ---------- 서래마을 반나절 산책 (place 는 아래 가게 이름의 앞부분) ---------- */
+  walkCourse: [
+    { place: "카페 드리옹", note: { kr: "커피와 케이크로 하루 시작", en: "Start with coffee and cake", cn: "用咖啡和蛋糕开启一天" } },
+    { place: "몽마르뜨공원", note: { kr: "숲길 아침 산책", en: "Morning walk on forest trails", cn: "林间晨间散步" } },
+    { place: "누에다리", note: { kr: "두 공원을 잇는 다리 · 사진 명소", en: "The bridge linking two parks · photo spot", cn: "连接两个公园的桥 · 拍照胜地" } },
+    { place: "서리풀공원", note: { kr: "조용한 숲길을 따라 천천히", en: "A slow walk on a quiet trail", cn: "沿着安静的林间小路慢慢走" } },
+    { place: "브루클린 버거", note: { kr: "서래마을로 돌아와 점심", en: "Back in Seorae Village for lunch", cn: "回到Seorae Village吃午饭" } },
+    { place: "메종엠오", note: { kr: "프랑스 디저트로 마무리 (월·화·수 휴무)", en: "Finish with French pastries (closed Mon–Wed)", cn: "以法式甜点收尾（周一至周三休息）" } }
+  ],
+
   /* ---------- 첫 화면 글자 ---------- */
   homeText: {
     eyebrow: { kr: "서래마을의 조용한 쉼", en: "Your quiet stay in Seorae Village", cn: "在 Seorae Village 静静地休息" },            // 큰 이름 위 작은 글자
@@ -335,6 +385,24 @@ const CONFIG = {
       ],
       caution: { kr: "사용 후에는 다시 접어서 제자리에 놓아주세요.", en: "After use, please fold them and put them back.", cn: "使用后请将其折叠好放回原位。" },
       photo: "rooftop.jpg"
+    },
+    {
+      name: { kr: "우산", en: "Umbrellas", cn: "雨伞" },
+      location: { kr: "현관 신발장 안", en: "Inside the shoe cabinet by the entrance", cn: "玄关鞋柜里" },
+      usage: [
+        { kr: "비 오는 날에는 신발장 안의 우산을 자유롭게 쓰세요.", en: "On rainy days, feel free to use the umbrellas in the shoe cabinet.", cn: "下雨天请随意使用鞋柜里的雨伞。" }
+      ],
+      caution: { kr: "사용 후에는 물기를 털어 신발장 제자리에 넣어 주세요.", en: "After use, shake off the water and put them back in the shoe cabinet.", cn: "使用后请甩干雨水，放回鞋柜原处。" },
+      photo: ""
+    },
+    {
+      name: { kr: "아이 용품 (유아 의자 · 아기 침대)", en: "For kids (high chair · baby cot)", cn: "儿童用品（儿童餐椅 · 婴儿床）" },
+      location: { kr: "유아 의자는 항상 준비되어 있어요", en: "A high chair is always available", cn: "儿童餐椅随时可用" },
+      usage: [
+        { kr: "유아 의자는 숙소에 항상 비치되어 있어요.", en: "A high chair is always available in the home.", cn: "房内随时备有儿童餐椅。" },
+        { kr: "아기 침대는 요청하시면 준비해 드려요. 도착 전에 미리 호스트에게 알려 주세요.", en: "A baby cot can be set up on request. Please let the host know before you arrive.", cn: "如需婴儿床，可应要求准备。请在到达前告知房主。" }
+      ],
+      photo: ""
     },
     {
       name: { kr: "모기향 (홈매트)", en: "Mosquito repellent", cn: "电蚊香" },
@@ -813,6 +881,7 @@ function setLang(key) {
 function setSearchPh() {
   const el = document.getElementById("houseSearch");
   if (el) el.placeholder = pick(CONFIG.text.houseSearchPh);
+  document.querySelectorAll(".gs-input").forEach(g => { g.placeholder = pick({ kr: "무엇이든 검색 (예: 보일러, 약국)", en: "Search (e.g. boiler, pharmacy)", cn: "搜索（例如：锅炉、药店）" }); });
   const f = document.getElementById("faqSearch");
   if (f) f.placeholder = pick({ kr: "검색 (예: 약국, 공항, 마트)", en: "Search (e.g. pharmacy, airport, store)", cn: "搜索（例如：药店、机场、超市）" });
 }
@@ -965,6 +1034,7 @@ const V2_ICON = {
   van: '<path d="M3 16V8a2 2 0 0 1 2-2h10l4 4h1a1 1 0 0 1 1 1v5H3Z"/><path d="M3 11h18M9 6v5"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/>',
   house: '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
   sos: '<path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="M12 9v6M9 12h6"/>',
+  plane: '<path d="M2.5 13.5 21 6l-4.5 13-4-5.5-6 3z"/><path d="M12.5 13.5 21 6"/>',
   globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>'
 };
 function v2i(name) {
@@ -996,6 +1066,7 @@ function renderStay() {
   return '<div class="st">' +
     '<h1 class="st-greet" data-greet></h1>' +
     '<p class="st-date"><span data-now></span><span class="wx" id="stayWeather" hidden></span></p>' +
+    gSearchBox("gsStay") +
 
     '<div class="ticket">' +
       '<div class="tk-row">' +
@@ -1008,11 +1079,12 @@ function renderStay() {
     '</div>' +
 
     '<div class="trio">' +
-      '<button type="button" data-go="wifi"><i>' + v2i("wifi") + '</i><small>WI-FI</small><b>' + t({ kr: "와이파이", en: "Wi-Fi", cn: "无线网络" }) + '</b><span>' + t({ kr: "이름 · 비밀번호", en: "Name · password", cn: "名称 · 密码" }) + '</span></button>' +
       '<button type="button" data-go="co"><i>' + v2i("clock") + '</i><small>CHECK-OUT</small><b>' + esc(CONFIG.checkoutTime) + '</b><span>' + t({ kr: "퇴실 안내", en: "Check-out guide", cn: "退房指南" }) + '</span></button>' +
       '<button type="button" data-go="contact"><i>' + v2i("chat") + '</i><small>HOST</small><b>' + t({ kr: "문의하기", en: "Contact", cn: "联系房主" }) + '</b><span>' + t({ kr: "카카오톡 · 전화", en: "KakaoTalk · call", cn: "KakaoTalk · 电话" }) + '</span></button>' +
     '</div>' +
 
+    wifiStrip() +
+    arrivalBox() +
     '<h2 class="st-h">' + t({ kr: "머무는 동안", en: "During your stay", cn: "入住期间" }) + '</h2>' +
     '<div class="tiles">' +
       tile('data-go="house"', "book", { kr: "하우스 매뉴얼", en: "House manual", cn: "住宿指南" }, { kr: "인터폰 · 보일러 · 에어컨 등", en: "Intercom · boiler · AC and more", cn: "对讲机 · 锅炉 · 空调等" }) +
@@ -1020,6 +1092,8 @@ function renderStay() {
       tile('data-go="parking"', "car", { kr: "주차 안내", en: "Parking", cn: "停车指南" }, { kr: "자리 · 일렬주차 · 방문 차량", en: "Spaces · two cars · visitors", cn: "车位 · 两辆车 · 访客车辆" }) +
       tile('href="' + uberUrl() + '" target="_blank" rel="noopener"', "taxi", { kr: "택시 호출", en: "Call a taxi", cn: "叫出租车" }, { kr: "Uber · 숙소에서 출발", en: "Uber · pickup at the house", cn: "Uber · 从住处出发" }) +
       (CONFIG.foodOrderLink ? tile('href="' + esc(CONFIG.foodOrderLink) + '" target="_blank" rel="noopener" data-copy="food"', "food", { kr: "음식 배달", en: "Food delivery", cn: "外卖" }, { kr: "주소 자동 복사 · 바로가기", en: "Address copied · order", cn: "自动复制地址 · 下单" }) : '') +
+      tile('data-go="phrases"', "chat", { kr: "급할 때 쓰는 한국어", en: "Handy Korean", cn: "应急韩语" }, { kr: "택시 주소 · 식당 · 약국", en: "Taxi · restaurants · pharmacy", cn: "出租车 · 餐厅 · 药店" }) +
+      tile('data-go="walk"', "map", { kr: "반나절 산책 코스", en: "Half-day walk", cn: "半日散步路线" }, { kr: "공원 · 카페 · 점심 · 디저트", en: "Parks · café · lunch · dessert", cn: "公园 · 咖啡 · 午餐 · 甜点" }) +
       tile('data-go="sos"', "sos", { kr: "비상시 안내", en: "Emergency", cn: "紧急情况" }, { kr: "긴급 연락처 · 병원 · 약국", en: "Numbers · hospital · pharmacy", cn: "紧急电话 · 医院 · 药店" }) +
     '</div>' +
 
@@ -1039,7 +1113,7 @@ function renderStay() {
 }
 
 /* 아래 탭 */
-const TAB_OF = { home: "home", checkin: "home", "ci-address": "home", "ci-luggage": "home", "ci-extra": "home", co: "home", "co-van": "home", trash: "stay", stay: "stay", house: "stay", wifi: "stay", parking: "stay", checkout: "stay", sos: "stay", nearby: "nearby", faq: "faq", contact: "contact" };
+const TAB_OF = { home: "home", checkin: "home", "ci-address": "home", "ci-luggage": "home", "ci-extra": "home", co: "home", "co-van": "home", "co-airport": "home", "co-late": "home", "ci-early": "home", phrases: "stay", walk: "stay", trash: "stay", stay: "stay", house: "stay", wifi: "stay", parking: "stay", checkout: "stay", sos: "stay", nearby: "nearby", faq: "faq", contact: "contact" };
 function renderTabbar() {
   const tab = (id, ic, label) => '<button type="button" data-go="' + id + '" data-tab="' + id + '">' + v2i(ic) + '<span>' + t(label) + '</span></button>';
   return '<nav class="tabbar" aria-label="Menu">' +
@@ -1102,6 +1176,8 @@ function renderCheckin() {
       ciRow("ci-address", "pin", { kr: "주소 · 오시는 길", en: "Address & directions", cn: "地址 · 路线" }, { kr: "지도 앱 바로 열기 · 들어오는 법", en: "Open in map apps · getting in", cn: "打开地图 · 进门方法" }) +
       ciRow("ci-luggage", "bag", { kr: "짐 보관", en: "Luggage storage", cn: "行李寄存" }, { kr: "체크인 전 · 시간당 5달러", en: "Before check-in · USD 5/hour", cn: "入住前 · 每小时5美元" }) +
       ciRow("parking", "car", { kr: "주차 안내", en: "Parking", cn: "停车指南" }, { kr: "1층 주차장 · 기본 1대", en: "Ground-floor lot · 1 car", cn: "一楼停车场 · 默认1辆" }) +
+      ciRow("ci-early", "clock", { kr: "얼리 체크인", en: "Early check-in", cn: "提前入住" }, { kr: "미리 문의 · 시간당 15달러", en: "Ask first · USD 15/hour", cn: "需提前咨询 · 每小时15美元" }) +
+      '<button class="ci-row" type="button" data-taxi-card><i>' + v2i("taxi") + '</i><span><b>' + t({ kr: "택시 기사님께 주소 보여주기", en: "Show the driver our address", cn: "给司机看地址" }) + '</b><small>' + t({ kr: "큰 한국어 글씨로 주소 띄우기", en: "Shows the address in large Korean text", cn: "用大号韩文显示地址" }) + '</small></span><em>›</em></button>' +
       ciRow("ci-extra", "parkplus", { kr: "추가 주차", en: "Extra parking", cn: "额外停车" }, { kr: "자리가 없을 땐 모두의주차장", en: "If full, use Modu Parking", cn: "没有车位时用Modu停车场" }) +
     '</div>' +
     '<div class="ci-note">' + t({ kr: "서래마을의 조용한 집에서, 편안한 시간 보내시길 바랍니다.", en: "We hope you have a calm, easy stay in Seorae Village.", cn: "愿您在Seorae Village的安静住所中度过舒适的时光。" }) + '</div>';
@@ -1120,7 +1196,9 @@ function renderCo() {
       ciRow("checkout", "doc", { kr: "체크아웃 체크리스트", en: "Check-out checklist", cn: "退房清单" }, { kr: "퇴실 전 확인할 것", en: "Things to check before you leave", cn: "离开前需要确认的事项" }) +
       (van ? ciRow("co-van", "van", { kr: "대형 콜밴 호출", en: "Call a large taxi", cn: "叫大型出租车" }, { kr: "짐·인원이 많을 때 · 공항 예약", en: "Lots of luggage or people · airport", cn: "行李或人多时 · 机场预约" }) : '') +
       linkRow(uberUrl(), "taxi", { kr: "택시 호출", en: "Call a taxi", cn: "叫出租车" }, { kr: "Uber · 숙소에서 출발", en: "Uber · pickup at the house", cn: "Uber · 从住处出发" }, true) +
-      ciRow("contact", "chat", { kr: "호스트에게 연락", en: "Contact the host", cn: "联系房主" }, { kr: "늦은 퇴실 · 문의", en: "Late check-out · questions", cn: "延迟退房 · 咨询" }) +
+      ciRow("co-airport", "plane", { kr: "공항 가는 법", en: "Getting to the airport", cn: "去机场的方法" }, { kr: "택시 · 공항버스 · 지하철", en: "Taxi · airport bus · subway", cn: "出租车 · 机场巴士 · 地铁" }) +
+      ciRow("co-late", "clock", { kr: "늦은 체크아웃", en: "Late check-out", cn: "延迟退房" }, { kr: "미리 문의 · 시간당 15달러", en: "Ask first · USD 15/hour", cn: "需提前咨询 · 每小时15美元" }) +
+      ciRow("contact", "chat", { kr: "호스트에게 연락", en: "Contact the host", cn: "联系房主" }, { kr: "카카오톡 · 전화", en: "KakaoTalk · call", cn: "KakaoTalk · 电话" }) +
     '</div>';
 }
 function renderCoVan() {
@@ -1163,6 +1241,159 @@ function renderSos() {
     (med ? '<div class="card"><p class="label">' + t({ kr: "가까운 병원 · 약국", en: "Nearby hospital & pharmacies", cn: "附近的医院 · 药店" }) + '</p>' + faqList(med.a) + '</div>' : '') +
     (kids.length ? '<div class="card"><p class="label">' + t({ kr: "아이가 아플 때 (소아과)", en: "If a child is sick (pediatrics)", cn: "孩子生病时（儿科）" }) + '</p>' + faqList(kids) + '</div>' : '');
 }
+/* ================= 추가 화면: 큰 글씨 카드 · 도착 알림 · 공항 · 한국어 문장 · 산책 · 얼리/늦은 · 통합 검색 ================= */
+
+/* 화면 가득 큰 글씨 카드 (택시 기사님께 보여주기, 한국어 문장) */
+function showBigCard(html) {
+  let el = document.getElementById("bigCard");
+  if (!el) {
+    el = document.createElement("div"); el.id = "bigCard"; el.setAttribute("role", "dialog");
+    document.body.appendChild(el);
+    el.addEventListener("click", function () { el.hidden = true; document.body.classList.remove("rv-lock"); });
+  }
+  el.innerHTML = '<div class="bc-box">' + html + '</div><p class="bc-hint">' + t({ kr: "화면을 누르면 닫혀요", en: "Tap anywhere to close", cn: "点击任意处关闭" }) + '</p>';
+  el.hidden = false; document.body.classList.add("rv-lock");
+}
+function showTaxiCard() {
+  showBigCard('<p class="bc-ko">이 주소로 가 주세요</p>' +
+    '<p class="bc-addr">' + esc(CONFIG.mapQuery || CONFIG.address) + '</p>' +
+    '<p class="bc-sub">방배하이빌 11차 · 501호</p>' +
+    '<p class="bc-tr">' + esc(pick({ kr: "Please take me to this address.", en: "Please take me to this address.", cn: "请带我去这个地址。" })) + '</p>');
+}
+function showPhrase(i) {
+  const p = (CONFIG.phrases || [])[i]; if (!p) return;
+  showBigCard('<p class="bc-ko">' + esc(p.ko) + '</p><p class="bc-tr">' + esc(LANG === "cn" ? p.cn : p.en) + '</p>');
+}
+
+/* 도착 알림 */
+function arrivalSmsUrl() {
+  const num = (CONFIG.phone || "").replace(/[^0-9+]/g, "");
+  const body = encodeURIComponent(CONFIG.arrivalMessage || "");
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  return "sms:" + num + (ios ? "&" : "?") + "body=" + body;
+}
+function arrivalBox() {
+  if (!CONFIG.phone) return "";
+  return '<div class="arrive">' +
+    '<p class="ar-t">' + t({ kr: "체크인하셨나요?", en: "Just checked in?", cn: "已经入住了吗？" }) + '</p>' +
+    '<p class="ar-s">' + t({ kr: "호스트에게 도착했다고 한 번만 알려 주세요.", en: "Please let your host know you've arrived.", cn: "请告诉房主一声您已到达。" }) + '</p>' +
+    '<div class="ar-btns"><a class="btn" href="' + esc(arrivalSmsUrl()) + '">' + t({ kr: "문자로 알리기", en: "Send a text", cn: "发短信告知" }) + '</a>' +
+    '<button class="btn line-btn" type="button" data-copy="arrival">' + t({ kr: "카톡용 문구 복사", en: "Copy for KakaoTalk", cn: "复制KakaoTalk消息" }) + '</button></div>' +
+  '</div>';
+}
+
+/* 공항 가는 법 */
+function renderCoAirport() {
+  return backButton("co") +
+    '<h2>' + t({ kr: "공항 가는 법", en: "Getting to the airport", cn: "去机场的方法" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "인천공항까지 차로 약 1시간~1시간 30분", en: "About 1–1.5 hours to Incheon Airport by car", cn: "开车到仁川机场约1~1.5小时" }) + '</p>' +
+    '<div class="card">' + richLines(CONFIG.airportOut) +
+      '<div class="btns">' +
+        (CONFIG.callVanPhone ? '<a class="btn" href="tel:' + esc(CONFIG.callVanPhone.replace(/[^0-9+]/g, "")) + '">☎ ' + t({ kr: "대형 콜밴·국제택시 예약", en: "Book a large / international taxi", cn: "预约大型·国际出租车" }) + '</a>' : '') +
+        '<a class="btn line-btn" href="' + uberUrl() + '" target="_blank" rel="noopener">' + t({ kr: "택시 호출 (Uber)", en: "Call a taxi (Uber)", cn: "叫出租车 (Uber)" }) + '</a>' +
+      '</div>' +
+    '</div>';
+}
+
+/* 얼리 체크인 / 늦은 체크아웃 */
+function renderTimeExtra(kind) {
+  const early = kind === "early";
+  return backButton(early ? "checkin" : "co") +
+    '<h2>' + t(early ? { kr: "얼리 체크인", en: "Early check-in", cn: "提前入住" } : { kr: "늦은 체크아웃", en: "Late check-out", cn: "延迟退房" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "미리 문의 필수 · 시간당 15달러", en: "Ask in advance · USD 15/hour", cn: "需提前咨询 · 每小时15美元" }) + '</p>' +
+    '<div class="card">' + richLines(early ? CONFIG.earlyCheckin : CONFIG.lateCheckout) +
+      '<div class="btns"><button class="btn" type="button" data-go="contact">' + t({ kr: "호스트에게 미리 문의하기", en: "Ask the host", cn: "提前咨询房主" }) + '</button></div>' +
+    '</div>';
+}
+
+/* 급할 때 쓰는 한국어 */
+function renderPhrases() {
+  return backButton() +
+    '<h2>' + t({ kr: "급할 때 쓰는 한국어", en: "Handy Korean phrases", cn: "应急韩语" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "문장을 누르면 크게 보여요. 상대에게 화면을 보여 주세요.", en: "Tap a phrase to show it large, then show your screen.", cn: "点击句子会放大显示，请把屏幕给对方看。" }) + '</p>' +
+    '<button class="phr phr-taxi" type="button" data-taxi-card><b>이 주소로 가 주세요</b><small>' + t({ kr: "택시 기사님께 숙소 주소 보여주기", en: "Show the driver our address", cn: "给司机看住处地址" }) + '</small></button>' +
+    (CONFIG.phrases || []).map((p, i) => '<button class="phr" type="button" data-phrase="' + i + '"><b>' + esc(p.ko) + '</b><small>' + t({ kr: p.en, en: p.en, cn: p.cn }) + '</small></button>').join("");
+}
+
+/* 서래마을 반나절 산책 */
+function renderWalk() {
+  const places = CONFIG.places || [];
+  const stops = (CONFIG.walkCourse || []).map((w, i) => {
+    const pl = places.find(p => p.name && p.name.kr && p.name.kr.indexOf(w.place) === 0) || {};
+    const q = encodeURIComponent(pl.name ? pl.name.kr : w.place);
+    return '<li class="wk">' +
+      '<span class="wk-no">' + (i + 1) + '</span>' +
+      '<div class="wk-body">' +
+        (pl.photo ? '<img src="' + esc(pl.photo) + '" alt="" loading="lazy">' : '') +
+        '<b>' + t(pl.name || { kr: w.place, en: w.place, cn: w.place }) + '</b>' +
+        '<small>' + t(w.note) + (pl.walk ? ' · ' + t(pl.walk) : '') + '</small>' +
+        (pl.hours ? '<small class="wk-h">' + t(pl.hours) + '</small>' : '') +
+        '<a class="wk-map" href="https://map.naver.com/p/search/' + q + '" target="_blank" rel="noopener">' + t({ kr: "지도에서 보기", en: "Open in map", cn: "在地图中查看" }) + ' ↗</a>' +
+      '</div></li>';
+  }).join("");
+  return backButton() +
+    '<h2>' + t({ kr: "서래마을 반나절 산책", en: "Half-day Seorae walk", cn: "Seorae Village 半日散步" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "아침 커피부터 공원 산책, 점심, 디저트까지 · 약 3~4시간", en: "Morning coffee, park trails, lunch and dessert · about 3–4 hours", cn: "从早晨咖啡到公园散步、午餐和甜点 · 约3~4小时" }) + '</p>' +
+    '<ol class="walk">' + stops + '</ol>' +
+    '<div class="btns"><button class="btn line-btn" type="button" data-go="nearby">' + t({ kr: "전체 지도에서 둘러보기", en: "See everything on the map", cn: "在完整地图上查看" }) + '</button></div>';
+}
+
+/* 와이파이 바로 보기 (이용 가이드 위쪽) */
+function wifiStrip() {
+  if (!CONFIG.wifiPassword) return "";
+  return '<div class="wifi-strip"><span class="ws-l">' + v2i("wifi") + '<span><small>Wi-Fi · ' + esc(CONFIG.wifiName || "") + '</small><b>' + esc(CONFIG.wifiPassword) + '</b></span></span>' +
+    '<button type="button" data-copy="wifi">' + t({ kr: "복사", en: "Copy", cn: "复制" }) + '</button></div>';
+}
+
+/* 통합 검색 */
+let gIndex = null;
+function buildIndex() {
+  gIndex = [];
+  let n = 0;
+  document.querySelectorAll("#app>section").forEach(sec => {
+    const scr = sec.id.replace("screen-", "");
+    if (scr === "home" || scr === "stay") return;
+    const h = sec.querySelector("h2");
+    const accs = sec.querySelectorAll("details.acc");
+    if (accs.length) {
+      accs.forEach(d => {
+        if (!d.id) d.id = "acc-auto-" + (n++);
+        gIndex.push({ scr: scr, acc: d.id, el: d.querySelector(".acc-title"), screenTitle: h, text: d.textContent.toLowerCase() });
+      });
+    } else {
+      gIndex.push({ scr: scr, el: h, text: sec.textContent.toLowerCase() });
+    }
+  });
+}
+function visText(el) {
+  if (!el) return "";
+  const c = el.querySelector("." + LANG);
+  return (c ? c.textContent : el.textContent).trim();
+}
+function gSearch(input) {
+  if (!gIndex) buildIndex();
+  const box = document.getElementById(input.getAttribute("data-gsearch"));
+  const words = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!words.length) { box.hidden = true; box.innerHTML = ""; return; }
+  const titleOf = x => (x.el ? x.el.textContent.toLowerCase() : "");
+  const hits = gIndex.filter(x => words.every(w => x.text.indexOf(w) !== -1))
+    .map(x => ({ x: x, score: words.filter(w => titleOf(x).indexOf(w) !== -1).length }))
+    .sort((a, b) => b.score - a.score).map(o => o.x).slice(0, 8);
+  box.innerHTML = hits.length ? hits.map(x =>
+    '<button type="button" class="gs-hit" data-go="' + x.scr + '"' + (x.acc ? ' data-open-acc="' + x.acc + '"' : '') + '><b>' + esc(visText(x.el)) + '</b>' +
+      (x.acc && x.screenTitle ? '<small>' + esc(visText(x.screenTitle)) + '</small>' : '') + '<em>›</em></button>').join("")
+    : '<p class="gs-none">' + t({ kr: "찾는 내용이 없어요. 호스트에게 편하게 물어봐 주세요.", en: "Nothing found. Feel free to ask your host.", cn: "没有找到。请随时询问房主。" }) + '</p>';
+  box.hidden = false;
+}
+function gSearchBox(id) {
+  return '<div class="gsearch"><div class="house-search"><span class="hs-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span>' +
+    '<input type="search" class="gs-input" data-gsearch="' + id + '" autocomplete="off" enterkeyhint="search"></div><div class="gs-results" id="' + id + '" hidden></div></div>';
+}
+function openAcc(id) {
+  const d = document.getElementById(id);
+  if (d) { d.hidden = false; d.open = true; setTimeout(() => d.scrollIntoView({ behavior: "smooth", block: "start" }), 30); }
+}
+
 function renderCiAddress() {
   const T = CONFIG.text;
   const q = encodeURIComponent(CONFIG.mapQuery || CONFIG.address);
@@ -1271,6 +1502,8 @@ function renderContact() {
   }
   return backButton() +
     '<h2>' + t(T.menuContact) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "물어보시기 전에 검색해 보세요. 앱에 답이 있을 수 있어요.", en: "Try a quick search first — the answer may already be here.", cn: "咨询前可以先搜索一下，答案可能就在应用里。" }) + '</p>' +
+    gSearchBox("gsContact") +
     '<div class="card">' +
       '<p class="big">' + esc(CONFIG.hostName) + '</p>' +
       '<p class="value">' + t(T.contactIntro) + '</p>' +
@@ -1776,7 +2009,7 @@ function saveCheckin() {
   try { localStorage.setItem(CHECKIN_KEY, JSON.stringify(done)); } catch (e) {}
 }
 
-const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "co-van", "trash", "sos", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
+const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "co-van", "co-airport", "co-late", "ci-early", "phrases", "walk", "trash", "sos", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
 let navStack = [];
 
 function showScreen(id) {
@@ -1821,6 +2054,11 @@ function start() {
     '<section id="screen-stay" hidden>' + renderStay() + '</section>' +
     '<section id="screen-checkin" hidden>' + renderCheckin() + '</section>' +
     '<section id="screen-co-van" hidden>' + renderCoVan() + '</section>' +
+    '<section id="screen-co-airport" hidden>' + renderCoAirport() + '</section>' +
+    '<section id="screen-co-late" hidden>' + renderTimeExtra("late") + '</section>' +
+    '<section id="screen-ci-early" hidden>' + renderTimeExtra("early") + '</section>' +
+    '<section id="screen-phrases" hidden>' + renderPhrases() + '</section>' +
+    '<section id="screen-walk" hidden>' + renderWalk() + '</section>' +
     '<section id="screen-trash" hidden>' + renderTrash() + '</section>' +
     '<section id="screen-sos" hidden>' + renderSos() + '</section>' +
     '<section id="screen-co" hidden>' + renderCo() + '</section>' +
@@ -1856,6 +2094,7 @@ function start() {
   app.addEventListener("input", function (e) {
     if (e.target.id === "houseSearch") filterHouse(e.target.value);
     if (e.target.id === "faqSearch") filterHouse(e.target.value, "faq");
+    if (e.target.classList.contains("gs-input")) gSearch(e.target);
   });
 
   app.addEventListener("click", function (e) {
@@ -1867,6 +2106,9 @@ function start() {
     const lb = e.target.closest("[data-lang-btn]");
     if (lb) { setLang(lb.getAttribute("data-lang-btn")); const f = document.querySelector(".lang-fab"); if (f) f.classList.remove("open"); return; }
     if (!lf) { const f = document.querySelector(".lang-fab.open"); if (f) f.classList.remove("open"); }
+    if (e.target.closest("[data-taxi-card]")) { showTaxiCard(); return; }
+    const ph = e.target.closest("[data-phrase]");
+    if (ph) { showPhrase(Number(ph.getAttribute("data-phrase"))); return; }
     const bk = e.target.closest("[data-back]");
     if (bk && navStack.length > 1 && navStack[navStack.length - 2] !== "home") { history.back(); return; }
     const go = e.target.closest("[data-go]");
@@ -1875,6 +2117,7 @@ function start() {
       if (id === "nearby") pendingPreset = go.getAttribute("data-preset") || defaultFilter();
       if (go.hasAttribute("data-open-fac")) setTimeout(openIntercom, 60);
       if (go.hasAttribute("data-open-trash")) setTimeout(openTrash, 60);
+      if (go.hasAttribute("data-open-acc")) { const acc = go.getAttribute("data-open-acc"); setTimeout(() => openAcc(acc), 80); document.querySelectorAll(".gs-input").forEach(i => { i.value = ""; }); document.querySelectorAll(".gs-results").forEach(r => { r.hidden = true; }); }
       if (id === "home") {
         history.replaceState(null, "", location.pathname + location.search);
         showScreen("home");
@@ -1891,6 +2134,7 @@ function start() {
       const kind = cp.getAttribute("data-copy");
       if (kind === "address") copyText(CONFIG.address);
       if (kind === "wifi") copyText(CONFIG.wifiPassword);
+      if (kind === "arrival") copyText(CONFIG.arrivalMessage);
       if (kind === "food") copyText(CONFIG.address + (CONFIG.addressEn ? " / " + CONFIG.addressEn : ""), CONFIG.text.foodCopied);
       if (kind === "kakao") {
         copyText(CONFIG.kakaoId, CONFIG.text.kakaoCopied);
@@ -2154,7 +2398,7 @@ html body #app>section{background:var(--v-bg)!important}
 .tk-bot{padding:16px 22px 20px}
 .tk-bot small{display:block;font:13px var(--sans);color:var(--v-sub)}
 .tk-bot b{display:block;margin-top:6px;font:400 15px var(--serif);letter-spacing:.14em}
-.trio{display:grid;grid-template-columns:repeat(3,1fr);border-radius:18px;background:var(--v-card);border:1px solid var(--line);overflow:hidden;margin-bottom:8px;box-shadow:0 2px 10px rgba(60,50,30,.06)}
+.trio{display:grid;grid-template-columns:repeat(2,1fr);border-radius:18px;background:var(--v-card);border:1px solid var(--line);overflow:hidden;margin-bottom:8px;box-shadow:0 2px 10px rgba(60,50,30,.06)}
 .trio button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:18px 6px;border:0;border-right:1px solid var(--line);background:transparent;cursor:pointer;color:var(--v-ink);text-align:center}
 .trio button:last-child{border-right:0}
 .trio i{width:42px;height:42px;border-radius:50%;background:var(--v-chip);color:var(--v-chip-ink);display:grid;place-items:center}
@@ -2224,6 +2468,57 @@ html body .back{min-height:40px;padding:0 4px!important;border:0!important;backg
 .co-times{grid-template-columns:1fr 1fr}
 a.ci-row{text-decoration:none}
 .trash-card .pic{display:block;width:100%;border-radius:12px;margin-top:8px}
+
+/* 큰 글씨 카드 */
+#bigCard{position:fixed;inset:0;z-index:2000;background:#fffdf8;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;cursor:pointer}
+#bigCard[hidden]{display:none}
+.bc-box{width:100%;max-width:520px;border:4px solid var(--v-green);border-radius:22px;padding:34px 20px;background:#fff}
+.bc-ko{margin:0 0 16px;font:700 clamp(30px,9vw,46px)/1.3 var(--sans);color:#111;word-break:keep-all}
+.bc-addr{margin:0 0 8px;font:700 clamp(26px,7.5vw,38px)/1.35 var(--sans);color:var(--v-green);word-break:keep-all}
+.bc-sub{margin:0 0 14px;font:600 20px var(--sans);color:#333}
+.bc-tr{margin:0;font:17px/1.5 var(--sans);color:#666}
+.bc-hint{margin-top:18px;font:14px var(--sans);color:#8a8275}
+/* 도착 알림 */
+.arrive{margin:12px 0 0;padding:18px;border-radius:18px;background:var(--v-green);color:#f5e9c8}
+.ar-t{margin:0 0 4px;font:600 18px var(--sans);color:#fff}
+.ar-s{margin:0 0 12px;font:14px/1.5 var(--sans);opacity:.9}
+.ar-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.arrive .btn{background:#f5e9c8!important;color:var(--v-green)!important;border-color:#f5e9c8!important;min-height:44px;font-weight:700;font-size:14px}
+.arrive .btn.line-btn{background:transparent!important;color:#f5e9c8!important;border-color:rgba(245,233,200,.6)!important}
+/* 와이파이 띠 */
+.wifi-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:var(--v-card)}
+.ws-l{display:flex;align-items:center;gap:12px;min-width:0}
+.ws-l>svg{flex:0 0 22px;width:22px;height:22px;color:var(--v-green)}
+.ws-l>span{display:flex;flex-direction:column;min-width:0}
+.ws-l small{font:12px var(--sans);color:var(--v-sub)}
+.ws-l b{font:700 17px var(--sans);letter-spacing:.02em;word-break:break-all}
+.wifi-strip button{flex:0 0 auto;height:40px;padding:0 16px;border:0;border-radius:999px;background:var(--v-green);color:#fff;font:600 14px var(--sans);cursor:pointer}
+/* 한국어 문장 */
+.phr{width:100%;display:flex;flex-direction:column;gap:4px;margin:0 0 10px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:var(--v-card);text-align:left;cursor:pointer;color:var(--v-ink)}
+.phr b{font:700 19px var(--sans)}
+.phr small{font:14px var(--sans);color:var(--v-sub)}
+.phr-taxi{background:var(--v-green);border-color:var(--v-green)}
+.phr-taxi b{color:#fff}.phr-taxi small{color:#f5e9c8}
+/* 산책 코스 */
+.walk{list-style:none;margin:0 0 18px;padding:0;position:relative}
+.walk:before{content:"";position:absolute;left:15px;top:10px;bottom:10px;border-left:2px dashed var(--line)}
+.wk{position:relative;display:flex;gap:14px;margin:0 0 14px}
+.wk-no{flex:0 0 32px;width:32px;height:32px;border-radius:50%;background:var(--v-green);color:#f5e9c8;display:grid;place-items:center;font:700 15px var(--sans);position:relative;z-index:1}
+.wk-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--v-card)}
+.wk-body img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;margin-bottom:6px}
+.wk-body b{font:700 16px var(--sans)}
+.wk-body small{font:13px/1.45 var(--sans);color:var(--v-sub)}
+.wk-map{margin-top:6px;font:600 13px var(--sans);color:var(--v-green);text-decoration:none}
+/* 통합 검색 */
+.gsearch{position:relative;margin:0 0 4px}
+.gs-results{margin-top:6px;border:1px solid var(--line);border-radius:16px;background:var(--v-card);overflow:hidden;box-shadow:0 8px 20px rgba(60,50,30,.1)}
+.gs-results[hidden]{display:none}
+.gs-hit{width:100%;display:flex;align-items:center;gap:10px;padding:14px 16px;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;cursor:pointer;color:var(--v-ink)}
+.gs-hit:last-child{border-bottom:0}
+.gs-hit b{flex:1;font:600 15px var(--sans)}
+.gs-hit small{font:12px var(--sans);color:var(--v-sub)}
+.gs-hit em{font-style:normal;color:var(--v-sub)}
+.gs-none{margin:0;padding:14px 16px;font:14px var(--sans);color:var(--v-sub)}
 </style>
 </head>
 <body>
