@@ -93,6 +93,10 @@ const CONFIG = {
     { number: "119", tel: "119", label: { kr: "화재 · 구급차", en: "Fire · Ambulance", cn: "火警 · 急救车" } },
     { number: "1330", tel: "+8221330", label: { kr: "관광 안내·통역 (외국 번호는 +82-2-1330)", en: "Korea Travel Hotline: help & interpretation (foreign phone: +82-2-1330)", cn: "旅游咨询·翻译热线(海外号码：+82-2-1330)" } }
   ],
+  /* 비상시 안내: 구급상자·소화기 위치. { } 한 줄이 한 항목. 비워 두면 화면에 안 나옵니다 */
+  safetyItems: [
+    // { kr: "구급상자: (위치)", en: "First-aid kit: (location)", cn: "急救箱：(位置)" },
+  ],
   carCardReady: true,                          // 신발장 서랍에 '방문 차량' 안내지를 두었으면 true(안내지 사용 안내), false면 손님에게 종이에 직접 적어 두라고 안내합니다
   carPhone: "1599-3489",                      // 차량 안내 카드에 나오는 안심번호 (호스트 휴대폰으로 연결됩니다)
   unit: "501호",                              // 호수. 차량 안내 카드에 크게 나옵니다
@@ -809,10 +813,13 @@ function setLang(key) {
 function setSearchPh() {
   const el = document.getElementById("houseSearch");
   if (el) el.placeholder = pick(CONFIG.text.houseSearchPh);
+  const f = document.getElementById("faqSearch");
+  if (f) f.placeholder = pick({ kr: "검색 (예: 약국, 공항, 마트)", en: "Search (e.g. pharmacy, airport, store)", cn: "搜索（例如：药店、机场、超市）" });
 }
-function filterHouse(q) {
+function filterHouse(q, scr) {
+  scr = scr || "house";
   const words = q.toLowerCase().split(/\s+/).filter(Boolean);
-  const items = document.querySelectorAll("#screen-house details.acc");
+  const items = document.querySelectorAll("#screen-" + scr + " details.acc");
   let shown = [];
   items.forEach(d => {
     const ok = !words.length || words.every(w => d.textContent.toLowerCase().indexOf(w) !== -1);
@@ -820,7 +827,7 @@ function filterHouse(q) {
     if (ok) shown.push(d);
   });
   if (words.length && shown.length === 1) shown[0].open = true;
-  const empty = document.getElementById("houseSearchEmpty");
+  const empty = document.getElementById(scr + "SearchEmpty");
   if (empty) empty.hidden = !(words.length && !shown.length);
 }
 
@@ -956,6 +963,7 @@ const V2_ICON = {
   parkplus: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 17V7h4a3 3 0 0 1 0 6H8"/><path d="M17 8v4M15 10h4"/>',
   van: '<path d="M3 16V8a2 2 0 0 1 2-2h10l4 4h1a1 1 0 0 1 1 1v5H3Z"/><path d="M3 11h18M9 6v5"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/>',
   house: '<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+  sos: '<path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="M12 9v6M9 12h6"/>',
   globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>'
 };
 function v2i(name) {
@@ -1011,7 +1019,7 @@ function renderStay() {
       tile('data-go="parking"', "car", { kr: "주차 안내", en: "Parking", cn: "停车指南" }, { kr: "자리 · 일렬주차 · 방문 차량", en: "Spaces · two cars · visitors", cn: "车位 · 两辆车 · 访客车辆" }) +
       tile('href="' + uberUrl() + '" target="_blank" rel="noopener"', "taxi", { kr: "택시 호출", en: "Call a taxi", cn: "叫出租车" }, { kr: "Uber · 숙소에서 출발", en: "Uber · pickup at the house", cn: "Uber · 从住处出发" }) +
       (CONFIG.foodOrderLink ? tile('href="' + esc(CONFIG.foodOrderLink) + '" target="_blank" rel="noopener" data-copy="food"', "food", { kr: "음식 배달", en: "Food delivery", cn: "外卖" }, { kr: "주소 자동 복사 · 바로가기", en: "Address copied · order", cn: "自动复制地址 · 下单" }) : '') +
-      tile('data-go="faq"', "info", { kr: "유용한 정보", en: "Useful info", cn: "实用信息" }, { kr: "마트 · 병원 · 교통", en: "Shops · clinics · transport", cn: "超市 · 医院 · 交通" }) +
+      tile('data-go="sos"', "sos", { kr: "비상시 안내", en: "Emergency", cn: "紧急情况" }, { kr: "긴급 연락처 · 병원 · 약국", en: "Numbers · hospital · pharmacy", cn: "紧急电话 · 医院 · 药店" }) +
     '</div>' +
 
     '<h2 class="st-h">' + t({ kr: "대문 밖은, 서래마을", en: "Outside the door, Seorae Village", cn: "门外，就是 Seorae Village" }) + '</h2>' +
@@ -1030,7 +1038,7 @@ function renderStay() {
 }
 
 /* 아래 탭 */
-const TAB_OF = { home: "home", checkin: "home", "ci-address": "home", "ci-luggage": "home", "ci-extra": "home", co: "home", stay: "stay", house: "stay", wifi: "stay", parking: "stay", checkout: "stay", nearby: "nearby", faq: "faq", contact: "contact" };
+const TAB_OF = { home: "home", checkin: "home", "ci-address": "home", "ci-luggage": "home", "ci-extra": "home", co: "home", stay: "stay", house: "stay", wifi: "stay", parking: "stay", checkout: "stay", sos: "stay", nearby: "nearby", faq: "faq", contact: "contact" };
 function renderTabbar() {
   const tab = (id, ic, label) => '<button type="button" data-go="' + id + '" data-tab="' + id + '">' + v2i(ic) + '<span>' + t(label) + '</span></button>';
   return '<nav class="tabbar" aria-label="Menu">' +
@@ -1114,6 +1122,24 @@ function renderCo() {
       ciRow("contact", "chat", { kr: "호스트에게 연락", en: "Contact the host", cn: "联系房主" }, { kr: "늦은 퇴실 · 문의", en: "Late check-out · questions", cn: "延迟退房 · 咨询" }) +
     '</div>' +
     (van ? '<div class="ci-note">' + t(CONFIG.homeText.vanHint) + '</div>' : '');
+}
+function renderSos() {
+  const T = CONFIG.text;
+  const med = (CONFIG.faq || []).find(f => f.q && /약국/.test(f.q.kr || ""));
+  const kids = [];
+  (CONFIG.faq || []).forEach(f => (f.a || []).forEach(a => { if (a.name && /소아/.test(a.name.kr || "")) kids.push(a); }));
+  const phone = CONFIG.phone ? CONFIG.phone.replace(/[^0-9+]/g, "") : "";
+  return backButton() +
+    '<h2>' + t({ kr: "비상시 안내", en: "Emergency", cn: "紧急情况" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "긴급 연락처 · 가까운 병원과 약국", en: "Emergency numbers · nearby hospital & pharmacies", cn: "紧急电话 · 附近医院和药店" }) + '</p>' +
+    ((CONFIG.emergency || []).length ?
+      '<div class="card emergency"><p class="label">' + t(T.emergencyTitle) + '</p>' +
+      CONFIG.emergency.map(e => '<a class="em-row" href="tel:' + esc(e.tel) + '"><b>' + esc(e.number) + '</b><span>' + t(e.label) + '</span><i aria-hidden="true">›</i></a>').join("") +
+      (phone ? '<div class="btns"><a class="btn" href="tel:' + esc(phone) + '">' + t({ kr: "호스트에게 전화하기", en: "Call the host", cn: "给房主打电话" }) + '</a></div>' : '') +
+      '</div>' : '') +
+    ((CONFIG.safetyItems || []).length ? '<div class="card"><p class="label">' + t({ kr: "구급상자 · 소화기 위치", en: "First-aid kit & fire extinguisher", cn: "急救箱 · 灭火器位置" }) + '</p>' + faqList(CONFIG.safetyItems) + '</div>' : '') +
+    (med ? '<div class="card"><p class="label">' + t({ kr: "가까운 병원 · 약국", en: "Nearby hospital & pharmacies", cn: "附近的医院 · 药店" }) + '</p>' + faqList(med.a) + '</div>' : '') +
+    (kids.length ? '<div class="card"><p class="label">' + t({ kr: "아이가 아플 때 (소아과)", en: "If a child is sick (pediatrics)", cn: "孩子生病时（儿科）" }) + '</p>' + faqList(kids) + '</div>' : '');
 }
 function renderCiAddress() {
   const T = CONFIG.text;
@@ -1373,7 +1399,10 @@ function renderFaq() {
     '</details>'
   ).join("");
   return backButton() +
-    '<h2>' + t(T.menuFaq) + '</h2>' +
+    '<h2>' + t({ kr: "유용한 정보", en: "Useful info", cn: "实用信息" }) + '</h2>' +
+    '<div class="house-search"><span class="hs-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span>' +
+      '<input type="search" id="faqSearch" autocomplete="off" enterkeyhint="search"></div>' +
+    '<p class="hint search-empty" id="faqSearchEmpty" hidden>' + t(T.houseSearchEmpty) + '</p>' +
     '<p class="hint">' + t(T.faqHint) + '</p>' +
     '<div class="acc-list">' + transitItem + items + '</div>';
 }
@@ -1725,7 +1754,7 @@ function saveCheckin() {
   try { localStorage.setItem(CHECKIN_KEY, JSON.stringify(done)); } catch (e) {}
 }
 
-const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
+const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "sos", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
 let navStack = [];
 
 function showScreen(id) {
@@ -1769,6 +1798,7 @@ function start() {
     '<section id="screen-home">' + renderHome() + '</section>' +
     '<section id="screen-stay" hidden>' + renderStay() + '</section>' +
     '<section id="screen-checkin" hidden>' + renderCheckin() + '</section>' +
+    '<section id="screen-sos" hidden>' + renderSos() + '</section>' +
     '<section id="screen-co" hidden>' + renderCo() + '</section>' +
     '<section id="screen-ci-address" hidden>' + renderCiAddress() + '</section>' +
     '<section id="screen-ci-luggage" hidden>' + renderCiLuggage() + '</section>' +
@@ -1801,6 +1831,7 @@ function start() {
   setSearchPh();
   app.addEventListener("input", function (e) {
     if (e.target.id === "houseSearch") filterHouse(e.target.value);
+    if (e.target.id === "faqSearch") filterHouse(e.target.value, "faq");
   });
 
   app.addEventListener("click", function (e) {
