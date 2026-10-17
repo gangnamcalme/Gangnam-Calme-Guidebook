@@ -832,6 +832,43 @@ function detectLang() {
   return "en";
 }
 let LANG = detectLang();
+/* ---------- 그 밖의 언어: 구글 번역으로 화면 안에서 바로 번역 (주소는 그대로) ---------- */
+const TR_KEY = "gc-tr";
+function detectTr() {
+  if (location.protocol.indexOf("http") !== 0 || /translate\.goog$/.test(location.hostname)) return "";
+  let s = null; try { s = localStorage.getItem(TR_KEY); } catch (e) {}
+  if (s !== null) return s;            /* 손님이 직접 고른 적 있으면 그대로 ("" = 한국어·영어·중국어 원문) */
+  let saved = null; try { saved = localStorage.getItem(LANG_KEY); } catch (e) {}
+  if (saved) return "";
+  return otherDeviceLang();            /* 휴대폰 언어가 한국어·영어·중국어가 아니면 그 언어로 자동 번역 */
+}
+const TR = detectTr();
+if (TR) LANG = "en";
+function trCookie(val) {
+  const exp = val ? "" : ";expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  const v = "googtrans=" + (val || "") + exp + ";path=/";
+  document.cookie = v;
+  if (location.hostname.indexOf(".") > 0) document.cookie = v + ";domain=." + location.hostname;
+}
+function startTr(code) {
+  trCookie("/en/" + code);
+  document.documentElement.removeAttribute("translate");
+  const m = document.querySelector('meta[name="google"]'); if (m) m.remove();
+  const box = document.createElement("div"); box.id = "gtEl"; document.body.appendChild(box);
+  window.gcTrInit = function () {
+    try { new google.translate.TranslateElement({ pageLanguage: "en", autoDisplay: false }, "gtEl"); } catch (e) {}
+  };
+  const sc = document.createElement("script");
+  sc.src = "https://translate.google.com/translate_a/element.js?cb=gcTrInit";
+  sc.async = true;
+  document.body.appendChild(sc);
+}
+function chooseTr(code) {
+  try { localStorage.setItem(TR_KEY, code || ""); if (!code) {} } catch (e) {}
+  if (!code) trCookie("");
+  location.reload();
+}
+if (!TR) { try { trCookie(""); } catch (e) {} }
 document.documentElement.setAttribute("data-lang", LANG);
 document.documentElement.setAttribute("lang", langAttr(LANG));
 
@@ -848,7 +885,8 @@ function t(v, fn) {
   if (v == null) return "";
   const f = fn || (x => esc(x));
   if (isPair(v)) {
-    return '<span class="kr">' + f(v.kr == null ? "" : v.kr) + '</span><span class="en">' + f(v.en == null ? "" : v.en) + '</span><span class="cn">' + f(v.cn == null ? "" : v.cn) + '</span>';
+    const nt = TR ? ' translate="no"' : '';
+    return '<span class="kr"' + nt + '>' + f(v.kr == null ? "" : v.kr) + '</span><span class="en">' + f(v.en == null ? "" : v.en) + '</span><span class="cn"' + nt + '>' + f(v.cn == null ? "" : v.cn) + '</span>';
   }
   return f(v);
 }
@@ -994,10 +1032,10 @@ function showToast(msg) {
 function renderLangBar(more) {
   return '<div class="langbar" role="group">' +
     (CONFIG.languages || []).map(l =>
-      '<button class="lang-btn" type="button" data-lang-btn="' + esc(l.key) + '" aria-pressed="' + (l.key === LANG) + '" lang="' + langAttr(l.key) + '">' + esc(l.label) + '</button>'
+      '<button class="lang-btn" type="button" data-lang-btn="' + esc(l.key) + '" aria-pressed="' + (!TR && l.key === LANG) + '" translate="no" lang="' + langAttr(l.key) + '">' + esc(l.label) + '</button>'
     ).join("") +
     (more ? '<p class="lang-more-t">' + t({ kr: "다른 언어 (자동 번역)", en: "Other languages (auto-translate)", cn: "其他语言（自动翻译）" }) + '</p>' +
-      '<div class="lang-more">' + MORE_LANGS.map(c => '<a class="lang-btn" href="' + esc(translateUrl(c)) + '" lang="' + c + '">' + esc(langName(c)) + '</a>').join("") + '</div>' : '') +
+      '<div class="lang-more">' + MORE_LANGS.concat(TR && MORE_LANGS.indexOf(TR) === -1 ? [TR] : []).map(c => '<button type="button" class="lang-btn" data-tr="' + esc(c) + '" aria-pressed="' + (c === TR) + '" lang="' + c + '" translate="no">' + esc(langName(c)) + '</button>').join("") + '</div>' : '') +
   '</div>';
 }
 
@@ -1161,10 +1199,11 @@ function otherDeviceLang() {
 }
 function renderLangFab() {
   const more = location.protocol.indexOf("http") === 0 && !/translate\.goog$/.test(location.hostname);
-  return '<div class="lang-fab"><button type="button" class="lf-btn" data-lang-toggle aria-label="Language">' + v2i("globe") +
-    '<span>' + t({ kr: "한국어", en: "EN", cn: "中文" }) + '</span></button>' + renderLangBar(more) + '</div>';
+  return '<div class="lang-fab" translate="no"><button type="button" class="lf-btn" data-lang-toggle aria-label="Language">' + v2i("globe") +
+    '<span>' + (TR ? esc(langName(TR)) : t({ kr: "한국어", en: "EN", cn: "中文" })) + '</span></button>' + renderLangBar(more) + '</div>';
 }
 function translateBanner() {
+  return "";
   const code = otherDeviceLang();
   if (!code || location.protocol.indexOf("http") !== 0 || /translate\.goog$/.test(location.hostname)) return "";
   try { if (localStorage.getItem("gc-tr-dismiss") === code) return ""; } catch (e) {}
@@ -1382,7 +1421,7 @@ function renderWalk() {
 /* 와이파이 바로 보기 (이용 가이드 위쪽) */
 function wifiStrip() {
   if (!CONFIG.wifiPassword) return "";
-  return '<div class="wifi-strip"><span class="ws-l">' + v2i("wifi") + '<span><small>Wi-Fi · ' + esc(CONFIG.wifiName || "") + '</small><b>' + esc(CONFIG.wifiPassword) + '</b></span></span>' +
+  return '<div class="wifi-strip"><span class="ws-l">' + v2i("wifi") + '<span><small>Wi-Fi · ' + esc(CONFIG.wifiName || "") + '</small><b translate="no">' + esc(CONFIG.wifiPassword) + '</b></span></span>' +
     '<button type="button" data-copy="wifi">' + t({ kr: "복사", en: "Copy", cn: "复制" }) + '</button></div>';
 }
 
@@ -1537,7 +1576,7 @@ function renderWifi() {
       '<p class="big">' + esc(CONFIG.wifiName) + '</p>' +
       second +
       '<p class="label">' + t(T.wifiPasswordLabel) + '</p>' +
-      '<p class="big mono">' + esc(CONFIG.wifiPassword) + '</p>' +
+      '<p class="big mono" translate="no">' + esc(CONFIG.wifiPassword) + '</p>' +
       '<div class="btns">' +
         '<button class="btn" type="button" data-copy="wifi">' + t(T.copyPassword) + '</button>' +
       '</div>' +
@@ -2167,6 +2206,9 @@ function start() {
     const lf = e.target.closest(".lang-fab");
     if (e.target.closest("[data-lang-toggle]")) { lf.classList.toggle("open"); return; }
     const lb = e.target.closest("[data-lang-btn]");
+    const trb = e.target.closest("[data-tr]");
+    if (trb) { chooseTr(trb.getAttribute("data-tr")); return; }
+    if (lb && TR) { try { localStorage.setItem(LANG_KEY, lb.getAttribute("data-lang-btn")); } catch (er) {} chooseTr(""); return; }
     if (lb) { setLang(lb.getAttribute("data-lang-btn")); const f = document.querySelector(".lang-fab"); if (f) f.classList.remove("open"); return; }
     if (!lf) { const f = document.querySelector(".lang-fab.open"); if (f) f.classList.remove("open"); }
     if (e.target.closest("[data-arrived]")) { try { localStorage.setItem("gc-arrived", String(Date.now())); } catch (er) {} setTimeout(function () { const a = document.getElementById("arriveBox"); if (a) a.classList.add("done"); }, 1500); }
@@ -2284,6 +2326,7 @@ function setupInstall() {
 }
 
 document.addEventListener("DOMContentLoaded", start);
+document.addEventListener("DOMContentLoaded", function () { if (TR) setTimeout(function () { startTr(TR); }, 0); });
 document.addEventListener("DOMContentLoaded", setupInstall);
 document.addEventListener("DOMContentLoaded", loadWeather);
 </script>
@@ -2609,6 +2652,10 @@ a.ci-row{text-decoration:none}
 .tr-banner a{flex:1;color:#fff;font:600 15px var(--sans);text-decoration:none}
 .tr-banner small{font-weight:400;opacity:.8}
 .tr-banner button{width:32px;height:32px;border:0;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:18px;cursor:pointer}
+/* 구글 번역 막대·말풍선 숨기기 */
+#gtEl,.goog-te-banner-frame,iframe.skiptranslate,#goog-gt-tt,.goog-te-balloon-frame,.goog-tooltip,.VIpgJd-ZVi9od-ORHb-OEVmcd,.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,.VIpgJd-yAWNEb-L7lbkb{display:none!important}
+html body{top:0!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
 </style>
 </head>
 <body>
