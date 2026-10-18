@@ -510,6 +510,7 @@ const CONFIG = {
     {
       q: { kr: "주변 약국이나 병원이 있나요?", en: "Is there a pharmacy or hospital nearby?", cn: "附近有药店或医院吗？" },
       a: [
+        { kr: "간단한 구급용품은 주방 상부장 맨 오른쪽 칸의 파란 구급상자에 있어요. 약국에 가기 전에 필요한 게 있는지 먼저 확인해 보세요.", en: "Basic first-aid supplies are in the blue first-aid box in the far-right upper kitchen cabinet. Check there first before heading to a pharmacy.", cn: "简单的急救用品在厨房上柜最右边那格的蓝色急救箱里。去药店之前，请先看看里面有没有需要的东西。" },
         { name: { kr: "서울성모병원 응급실 (24시간)", en: "Seoul St. Mary's Hospital ER (24 hours)", cn: "Seoul St. Mary's Hospital 急诊室（24小时）" }, ko: "서울 서초구 반포대로 222", addrEn: "222, Banpo-daero, Seocho-gu, Seoul",
           info: { kr: "☎ 1588-1511 · 응급실 02-2258-1511 · 차로 약 10분 · 가장 가까운 대학병원 응급실", en: "☎ 1588-1511 · ER 02-2258-1511 · about 10 min by car · The nearest major hospital ER", cn: "☎ 1588-1511 · 急诊 02-2258-1511 · 车程约10分钟 · 最近的大医院急诊室" } },
         { name: { kr: "이수리더스내과의원 (평일 야간 진료)", en: "Isu Leaders Internal Medicine (weeknights)", cn: "Isu Leaders Internal Medicine（平日夜间门诊）" }, ko: "서울 서초구 동작대로 114, 유문빌딩 3층", addrEn: "3F, 114, Dongjak-daero, Seocho-gu, Seoul",
@@ -1326,7 +1327,7 @@ function renderSos() {
       CONFIG.emergency.map(e => '<a class="em-row" href="tel:' + esc(e.tel) + '"><b>' + esc(e.number) + '</b><span>' + t(e.label) + '</span><i aria-hidden="true">›</i></a>').join("") +
       (phone ? '<div class="btns"><a class="btn" href="tel:' + esc(phone) + '">' + t({ kr: "호스트에게 전화하기", en: "Call the host", cn: "给房主打电话" }) + '</a></div>' : '') +
       '</div>' : '') +
-    ((CONFIG.safetyItems || []).length ? '<div class="card"><p class="label">' + t({ kr: "구급상자 · 소화기 위치", en: "First-aid kit & fire extinguisher", cn: "急救箱 · 灭火器位置" }) + '</p>' + richLines(CONFIG.safetyItems) + '</div>' : '') +
+    ((CONFIG.safetyItems || []).length ? '<div class="card"><p class="label">' + t({ kr: "구급상자 · 소화기 위치", en: "First-aid kit & fire extinguisher", cn: "急救箱 · 灭火器位置" }) + '</p>' + richLines(CONFIG.safetyItems) + photoTag("firstaid.jpg", { kr: "구급상자", en: "First-aid kit", cn: "急救箱" }) + '</div>' : '') +
     (med ? '<div class="card"><p class="label">' + t({ kr: "가까운 병원 · 약국", en: "Nearby hospital & pharmacies", cn: "附近的医院 · 药店" }) + '</p>' + faqList(med.a) + '</div>' : '') +
     (kids.length ? '<div class="card"><p class="label">' + t({ kr: "아이가 아플 때 (소아과)", en: "If a child is sick (pediatrics)", cn: "孩子生病时（儿科）" }) + '</p>' + faqList(kids) + '</div>' : '');
 }
