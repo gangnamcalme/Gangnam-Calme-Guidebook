@@ -567,6 +567,13 @@ const CONFIG = {
         { name: { kr: "KB국민은행 서래지점", en: "KB Kookmin Bank Seorae", cn: "KB Kookmin Bank Seorae" }, ko: "서울 서초구 반포동 91-1", addrEn: "91-1 Banpo-dong, Seocho-gu, Seoul",
           info: { kr: "평일 09:00–16:00 · 해외 카드 현금 인출은 '한국 여행 팁' 참고", en: "Weekdays 09:00–16:00 · For cash with a foreign card, see the Korea tips", cn: "平日09:00–16:00 · 海外卡取现请参考'韩国旅行提示'" } }
       ]
+    },
+    {
+      q: { kr: "여분의 멀티탭이 있나요?", en: "Is there a spare power strip?", cn: "有备用的插线板吗？" },
+      a: [
+        { kr: "네, 침실2 옷걸이(행거) 아래 왼쪽 바구니에 3구 멀티탭이 있어요. 필요하면 꺼내서 사용해 주세요.", en: "Yes — there's a 3-outlet power strip in the left basket under the clothes rack in Bedroom 2. Feel free to use it.", cn: "有的，卧室2衣架下方左边的篮子里有一个三孔插线板，需要时可以取出使用。" }
+      ],
+      photo: "multitap.jpg"
     }
   ],
 
@@ -1772,7 +1779,7 @@ function renderFaq() {
         '<span class="acc-head"><span class="acc-title">' + t(f.q) + '</span></span>' +
         '<span class="acc-mark" aria-hidden="true"></span>' +
       '</summary>' +
-      '<div class="acc-body">' + (f.fromParking ? faqList((CONFIG.parking || []).filter(okWhen)) : f.fromFacility ? facilityGuide(f.fromFacility) : faqList(f.a)) + '</div>' +
+      '<div class="acc-body">' + (f.fromParking ? faqList((CONFIG.parking || []).filter(okWhen)) : f.fromFacility ? facilityGuide(f.fromFacility) : faqList(f.a)) + (f.photo ? photoTag(f.photo, f.q) : '') + '</div>' +
     '</details>'
   ).join("");
   return backButton() +
