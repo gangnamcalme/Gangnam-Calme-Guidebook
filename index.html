@@ -350,6 +350,16 @@ const CONFIG = {
       photo: "bodydryer.jpg"
     },
     {
+      name: { kr: "드라이기 · 고데기 · 다리미", en: "Hair dryers · straightener · iron", cn: "吹风机 · 直发器 · 熨斗" },
+      location: { kr: "드라이기 2개 – 침실1 거울장 안, 화장실 상부장 왼쪽 윗칸", en: "2 hair dryers – inside the mirror cabinet in Bedroom 1, and the top-left shelf of the bathroom upper cabinet", cn: "共2个吹风机 – 卧室1镜柜内，以及卫生间上柜左侧最上层" },
+      usage: [
+        { kr: "침실1 거울장 안: 드라이기, 고데기, 다리미, 면봉이 준비되어 있습니다.", en: "Bedroom 1 mirror cabinet: a hair dryer, a hair straightener, an iron and cotton swabs.", cn: "卧室1镜柜内：备有吹风机、直发器、熨斗和棉签。" },
+        { kr: "화장실 상부장 왼쪽 윗칸: 드라이기가 하나 더 있습니다.", en: "Bathroom upper cabinet, top-left shelf: a second hair dryer.", cn: "卫生间上柜左侧最上层：还有一个吹风机。" }
+      ],
+      caution: { kr: "사용 후에는 전원을 뽑고, 열이 식은 뒤 제자리에 넣어 주세요.", en: "After use, please unplug and let it cool down before putting it back.", cn: "使用后请拔掉电源，待冷却后放回原处。" },
+      photos: ["dryer-room1.jpg", "dryer-bath.jpg"]
+    },
+    {
       name: { kr: "주방 수납", en: "Kitchen drawers", cn: "厨房收纳" },
       location: { kr: "인덕션 바로 아래 서랍", en: "The drawers right under the induction stove", cn: "电磁炉下方的抽屉" },
       usage: [
@@ -1672,7 +1682,7 @@ function renderHouse() {
         (f.markers ? guidePhoto(f) :
           '<p class="label">' + t(T.usageLabel) + '</p>' + lines(f.usage)) +
         (f.caution ? '<div class="caution"><p class="label">' + t(T.cautionLabel) + '</p><p class="line">' + t(f.caution) + '</p></div>' : '') +
-        (f.markers ? '' : photoTag(f.photo, f.name)) +
+        (f.markers ? '' : (f.photos ? f.photos.map(p => photoTag(p, f.name)).join("") : photoTag(f.photo, f.name))) +
       '</div>' +
     '</details>';
   const rules = '<ol class="rules">' + (CONFIG.houseRules || []).map(r => '<li>' + t(r) + '</li>').join("") + '</ol>';
