@@ -1131,7 +1131,7 @@ function renderHome() {
       '<button class="jr" type="button" data-go="checkin"><i>' + v2i("doc") + '</i><span><b>' + t({ kr: "체크인 전", en: "Before check-in", cn: "入住前" }) + '</b><small>' + t({ kr: "주소 · 오시는 길 · 체크인 시간", en: "Address · directions · check-in time", cn: "地址 · 路线 · 入住时间" }) + '</small></span><em>→</em></button>' +
       '<button class="jr" type="button" data-go="stay"><i>' + v2i("key") + '</i><span><b>' + t({ kr: "체크인 후", en: "After check-in", cn: "入住后" }) + '</b><small>' + t({ kr: "하우스 허브 · 머무는 동안 필요한 모든 것", en: "House hub · everything for your stay", cn: "住宿中心 · 入住期间所需的一切" }) + '</small></span><em>→</em></button>' +
       '<button class="jr" type="button" data-go="co"><i>' + v2i("out") + '</i><span><b>' + t({ kr: "체크아웃 전", en: "Before check-out", cn: "退房前" }) + '</b><small>' + t({ kr: "퇴실 체크리스트 · 대형 콜밴", en: "Check-out list · large taxi", cn: "退房清单 · 大型出租车" }) + '</small></span><em>→</em></button>' +
-      (CONFIG.homeHelp ? '<button class="help-row" type="button" data-go="trouble"><span><b>' + t(CONFIG.homeHelp.title) + '</b><small>' + t(CONFIG.homeHelp.body) + '</small></span><em>›</em></button>' : '') +
+      (CONFIG.homeHelp ? '<button class="help-row" type="button" data-go="contact"><span><b>' + t(CONFIG.homeHelp.title) + '</b><small>' + t(CONFIG.homeHelp.body) + '</small></span><em>›</em></button>' : '') +
       '<p class="st-credit">Weather: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></p>' +
     '</div>' +
   '</div>';
@@ -1643,12 +1643,12 @@ function renderContact() {
     '<h2>' + t(T.menuContact) + '</h2>' +
     '<p class="sub-lead">' + t({ kr: "궁금한 건 뭐든 검색해 주시거나 편하게 물어봐 주세요.", en: "Search for anything you're curious about, or just ask us.", cn: "有任何疑问，都可以搜索或随时询问我们。" }) + '</p>' +
     gSearchBox("gsContact") +
-    '<div class="ci-list" style="margin-bottom:12px">' + ciRow("trouble", "sos", { kr: "불편한 점이 있나요?", en: "Is something not right?", cn: "有什么不方便吗？" }, { kr: "온수 · 에어컨 · 인터넷 … 상황별 해결 방법", en: "Hot water · AC · Wi-Fi … quick fixes", cn: "热水 · 空调 · 网络 … 按情况查看解决方法" }) + '</div>' +
     '<div class="card">' +
       '<p class="big">' + esc(CONFIG.hostName) + '</p>' +
       '<p class="value">' + t(T.contactIntro) + '</p>' +
       '<div class="btns stack">' + btns + '</div>' +
     '</div>' +
+    '<div class="ci-list" style="margin-bottom:12px">' + ciRow("trouble", "sos", { kr: "무슨 문제인지 모르겠다면: 상황별 해결 방법", en: "Not sure what's wrong? Quick fixes by situation", cn: "不确定问题？按情况查看解决方法" }, { kr: "온수 · 에어컨 · 인터넷 …", en: "Hot water · AC · Wi-Fi …", cn: "热水 · 空调 · 网络 …" }) + '</div>' +
     ((CONFIG.emergency || []).length ?
       '<div class="card emergency"><p class="label">' + t(T.emergencyTitle) + '</p>' +
       CONFIG.emergency.map(e => '<a class="em-row" href="tel:' + esc(e.tel) + '"><b>' + esc(e.number) + '</b><span>' + t(e.label) + '</span><i aria-hidden="true">›</i></a>').join("") +
@@ -2572,6 +2572,11 @@ function renderTrouble() {
   return backButton() +
     '<h2>' + t({ kr: "불편한 점이 있나요?", en: "Is something not right?", cn: "有什么不方便吗？" }) + '</h2>' +
     '<p class="sub-lead">' + t({ kr: "상황을 고르면 해결 방법을 먼저 안내해 드리고, 그래도 안 되면 호스트에게 바로 알릴 수 있어요. 작은 일이라도 괜찮아요.", en: "Pick what's happening — we'll show you the fix first, and you can reach your host right away if it still doesn't work. Small things are fine too.", cn: "选择遇到的情况，我们会先告诉您解决方法；仍无法解决时，可立即联系房主。再小的事也没关系。" }) + '</p>' +
+    '<div class="card"><p class="label">' + t({ kr: "바로 연락하기", en: "Contact the host now", cn: "立即联系房主" }) + '</p><div class="btns stack">' +
+      (num ? '<a class="btn" href="tel:' + esc(num) + '" data-track="trouble_tel:top">' + t({ kr: "전화하기", en: "Call the host", cn: "拨打电话" }) + '</a>' : '') +
+      (CONFIG.kakaoId ? '<button class="btn line-btn" type="button" data-copy="kakao">' + t(CONFIG.text.kakaoButton) + '</button>' : '') +
+    '</div></div>' +
+    '<h3>' + t({ kr: "또는 상황을 골라 보세요", en: "Or pick what's happening", cn: "或选择具体情况" }) + '</h3>' +
     '<div class="acc-list">' + items + '</div>' +
     '<div class="card tr-sos"><p class="label">' + t({ kr: "위급한 상황이라면", en: "In an emergency", cn: "紧急情况" }) + '</p>' +
       '<div class="btns"><button class="btn line-btn" type="button" data-go="sos">' + t({ kr: "비상시 안내 열기", en: "Open emergency info", cn: "打开紧急情况指南" }) + '</button></div></div>';
