@@ -250,8 +250,13 @@ const CONFIG = {
   checkoutList: [
     { kr: "숙박이 마음에 드셨다면 경험을 리뷰로 나눠주세요. 에어비앤비에서는 별 5개가 '만족'의 기준이라, 별 4개도 저희에게는 아쉬운 점수로 반영돼요. 편안하셨다면 별 5개로 응원해 주시면 큰 힘이 됩니다.", en: "If you enjoyed your stay, we'd love it if you shared your experience in a review. On Airbnb, 5 stars is the standard for a good stay, so even 4 stars counts against us. If you felt at home, 5 stars would mean a lot to us.", cn: "如果您喜欢这次入住，欢迎留下评价，分享您的体验。在Airbnb上，五星才代表'满意'，四星对我们来说也是偏低的分数。如果您住得舒适，希望能给我们五星支持，这对我们意义重大。", star: true },
     { kr: "보일러, 전등, 에어컨을 모두 꺼주세요.", en: "Please turn off the boiler, lights and AC.", cn: "请关闭锅炉、灯和空调。" },
+    { kr: "충전기·여권·지갑 같은 소지품을 놓고 가는 게 없는지 확인해 주세요. 침대 밑, 욕실, 콘센트 주변도 한 번 더 봐 주세요.", en: "Check that you haven't left chargers, your passport, wallet or other belongings — under the beds, in the bathroom and by the outlets, too.", cn: "请确认没有遗落充电器、护照、钱包等物品，床下、浴室和插座附近也请再看一遍。" },
+    { kr: "냉장고에 넣어 둔 음식과 음료를 확인해 주세요.", en: "Please check the fridge for any food or drinks you've left.", cn: "请检查冰箱里是否还有您放入的食物和饮料。" },
+    { kr: "쓰레기는 쓰레기 안내에 따라 분리해서 버려 주세요.", en: "Please sort and dispose of your trash as shown in the trash guide.", cn: "请按垃圾指南分类丢弃垃圾。", go: "trash" },
+    { kr: "나가실 때 현관문이 잘 닫혔는지 확인해 주세요.", en: "Make sure the front door is closed properly when you leave.", cn: "离开时请确认房门已关好。" },
     { kr: "호스트에게 체크아웃한다고 말씀해주세요!", en: "Please let your host know you're checking out!", cn: "请告诉房主您要退房了！" }
   ],
+  checkoutMessage: "[강남칼므 501호] 지금 체크아웃합니다. 머물게 해주셔서 감사해요! / We're checking out now. Thank you for having us!",
 
   /* ---------- 집 안에서: 시설 사용법 ---------- */
   /* 칸 하나가 { } 한 덩어리입니다. 덩어리를 복사해 붙이면 칸이 늘어납니다
@@ -1119,12 +1124,14 @@ function renderHome() {
       '<p class="lp-tag">' + t(HT.eyebrow) + '</p>' +
       '<h1 class="lp-title">' + t({ kr: "강남칼므", en: "Gangnam Calme", cn: "Gangnam Calme" }) + '</h1>' +
       '<p class="lp-date"><span data-now></span><span class="wx" id="stayWeather" hidden></span></p>' +
+      '<p class="off-ready" data-offready hidden>📶 ' + t({ kr: "인터넷이 없어도 이 안내는 열려요", en: "This guide also opens without internet", cn: "没有网络也能打开本指南" }) + '</p>' +
       '<div class="install" id="installBox" hidden><p><span aria-hidden="true">📲</span> ' + t(CONFIG.text.installTitle) + '</p><button type="button" class="install-btn" data-install>' + t(CONFIG.text.installButton) + '</button><p class="install-help" id="installHelp" hidden></p></div>' +
+      '<div data-smart></div>' +
       '<h2 class="lp-q">' + t({ kr: "지금, 여정의 어디쯤인가요?", en: "Where are you on your trip?", cn: "您现在在旅程的哪一步？" }) + '</h2>' +
       '<button class="jr" type="button" data-go="checkin"><i>' + v2i("doc") + '</i><span><b>' + t({ kr: "체크인 전", en: "Before check-in", cn: "入住前" }) + '</b><small>' + t({ kr: "주소 · 오시는 길 · 체크인 시간", en: "Address · directions · check-in time", cn: "地址 · 路线 · 入住时间" }) + '</small></span><em>→</em></button>' +
       '<button class="jr" type="button" data-go="stay"><i>' + v2i("key") + '</i><span><b>' + t({ kr: "체크인 후", en: "After check-in", cn: "入住后" }) + '</b><small>' + t({ kr: "하우스 허브 · 머무는 동안 필요한 모든 것", en: "House hub · everything for your stay", cn: "住宿中心 · 入住期间所需的一切" }) + '</small></span><em>→</em></button>' +
       '<button class="jr" type="button" data-go="co"><i>' + v2i("out") + '</i><span><b>' + t({ kr: "체크아웃 전", en: "Before check-out", cn: "退房前" }) + '</b><small>' + t({ kr: "퇴실 체크리스트 · 대형 콜밴", en: "Check-out list · large taxi", cn: "退房清单 · 大型出租车" }) + '</small></span><em>→</em></button>' +
-      (CONFIG.homeHelp ? '<button class="help-row" type="button" data-go="contact"><span><b>' + t(CONFIG.homeHelp.title) + '</b><small>' + t(CONFIG.homeHelp.body) + '</small></span><em>›</em></button>' : '') +
+      (CONFIG.homeHelp ? '<button class="help-row" type="button" data-go="trouble"><span><b>' + t(CONFIG.homeHelp.title) + '</b><small>' + t(CONFIG.homeHelp.body) + '</small></span><em>›</em></button>' : '') +
       '<p class="st-credit">Weather: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></p>' +
     '</div>' +
   '</div>';
@@ -1140,6 +1147,7 @@ function renderStay() {
     '<h1 class="st-greet" data-greet></h1>' +
     '<p class="st-date"><span data-now></span></p>' +
     gSearchBox("gsStay") +
+    '<div data-smart></div>' +
 
     '<div class="ticket">' +
       '<div class="tk-row">' +
@@ -1158,6 +1166,7 @@ function renderStay() {
 
     wifiStrip() +
     arrivalBox() +
+    '<button class="help-row" type="button" data-go="trouble" style="margin-top:12px"><span><b>' + t({ kr: "불편한 점이 있나요?", en: "Is something not right?", cn: "有什么不方便吗？" }) + '</b><small>' + t({ kr: "온수 · 에어컨 · 인터넷 … 해결 방법과 바로 연락", en: "Hot water · AC · Wi-Fi … fixes and quick contact", cn: "热水 · 空调 · 网络 … 解决方法与快速联系" }) + '</small></span><em>›</em></button>' +
     '<h2 class="st-h">' + t({ kr: "머무는 동안", en: "During your stay", cn: "入住期间" }) + '</h2>' +
     '<div class="tiles">' +
       tile('data-go="house"', "book", { kr: "하우스 매뉴얼", en: "House manual", cn: "住宿指南" }, { kr: "인터폰 · 보일러 · 에어컨 등", en: "Intercom · boiler · AC and more", cn: "对讲机 · 锅炉 · 空调等" }) +
@@ -1183,7 +1192,7 @@ function renderStay() {
 }
 
 /* 아래 탭 */
-const TAB_OF = { home: "home", checkin: "home", "ci-address": "home", "ci-luggage": "home", "ci-extra": "home", co: "home", "co-van": "home", "co-airport": "home", "co-late": "home", "ci-early": "home", phrases: "stay", walk: "stay", food: "stay", trash: "stay", stay: "stay", house: "stay", wifi: "stay", parking: "stay", checkout: "stay", sos: "stay", nearby: "nearby", faq: "faq", contact: "contact" };
+const TAB_OF = { home: "home", checkin: "home", "ci-address": "home", "ci-luggage": "home", "ci-extra": "home", co: "home", "co-van": "home", "co-airport": "home", "co-late": "home", "ci-early": "home", phrases: "stay", walk: "stay", food: "stay", trash: "stay", stay: "stay", house: "stay", wifi: "stay", parking: "stay", checkout: "stay", sos: "stay", nearby: "nearby", faq: "faq", contact: "contact", trouble: "contact" };
 function renderTabbar() {
   const tab = (id, ic, label) => '<button type="button" data-go="' + id + '" data-tab="' + id + '">' + v2i(ic) + '<span>' + t(label) + '</span></button>';
   return '<nav class="tabbar" aria-label="Menu">' +
@@ -1246,6 +1255,7 @@ function updateClock() {
     : h >= 17 && h < 22 ? { kr: "편안한 저녁 되세요", en: "Good evening", cn: "晚上好" }
     : { kr: "편안한 밤 되세요", en: "Have a restful night", cn: "晚安" };
   document.querySelectorAll("[data-greet]").forEach(el => { el.textContent = pick(g); });
+  if (typeof refreshSmart === "function") refreshSmart();
 }
 function openTrash() {
   const d = document.getElementById("acc-trash");
@@ -1633,6 +1643,7 @@ function renderContact() {
     '<h2>' + t(T.menuContact) + '</h2>' +
     '<p class="sub-lead">' + t({ kr: "궁금한 건 뭐든 검색해 주시거나 편하게 물어봐 주세요.", en: "Search for anything you're curious about, or just ask us.", cn: "有任何疑问，都可以搜索或随时询问我们。" }) + '</p>' +
     gSearchBox("gsContact") +
+    '<div class="ci-list" style="margin-bottom:12px">' + ciRow("trouble", "sos", { kr: "불편한 점이 있나요?", en: "Is something not right?", cn: "有什么不方便吗？" }, { kr: "온수 · 에어컨 · 인터넷 … 상황별 해결 방법", en: "Hot water · AC · Wi-Fi … quick fixes", cn: "热水 · 空调 · 网络 … 按情况查看解决方法" }) + '</div>' +
     '<div class="card">' +
       '<p class="big">' + esc(CONFIG.hostName) + '</p>' +
       '<p class="value">' + t(T.contactIntro) + '</p>' +
@@ -1682,7 +1693,7 @@ function renderHouse() {
   const T = CONFIG.text;
   const facs = (CONFIG.facilities || []).filter(f => !f.hidden).sort((a, b) => (b.photo === "intercom2.jpg") - (a.photo === "intercom2.jpg")); // 인터폰을 맨 위로
   const facHtml = f =>
-    '<details class="acc"' + (f.photo === "intercom2.jpg" ? ' id="acc-intercom"' : '') + '>' +
+    '<details class="acc"' + (f.photo === "intercom2.jpg" ? ' id="acc-intercom"' : (f.photo ? ' id="acc-' + String(f.photo).replace(/\.\w+$/, "") + '"' : '')) + '>' +
       '<summary>' +
         '<span class="acc-head">' +
           '<span class="acc-title">' + t(f.name) + '</span>' +
@@ -1791,6 +1802,11 @@ function renderFaq() {
     '<div class="acc-list">' + transitItem + items + '</div>';
 }
 
+function checkoutSmsUrl() {
+  const num = (CONFIG.phone || "").replace(/[^0-9+]/g, "");
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  return "sms:" + num + (ios ? "&" : "?") + "body=" + encodeURIComponent(CONFIG.checkoutMessage || "");
+}
 function renderCheckout() {
   const T = CONFIG.text;
   const list = (CONFIG.checkoutList || []).map((c, i) =>
@@ -1798,14 +1814,20 @@ function renderCheckout() {
     : c.star
       ? '<li class="star-li"><label class="check star"><input type="checkbox" data-check="' + i + '"><span><b class="stars" aria-hidden="true">★★★★★</b>' + t(c) + '</span></label>' +
           '<button class="review-btn" type="button" data-review-open>' + t(CONFIG.reviewButton) + ' →</button>' + '</li>'
-      : '<li><label class="check"><input type="checkbox" data-check="' + i + '"><span>' + t(c) + '</span></label></li>'
+      : '<li><label class="check"><input type="checkbox" data-check="' + i + '"><span>' + t(c) + (c.go ? ' <button type="button" class="co-link" data-go="' + c.go + '">' + t({ kr: "안내 보기 ›", en: "See guide ›", cn: "查看指南 ›" }) + '</button>' : '') + '</span></label></li>'
   ).join("");
   return backButton("back") +
     '<h2>' + t(T.menuCheckout) + '</h2>' +
     '<div class="card todo">' +
       '<p class="todo-title">' + t(T.checkoutListTitle) + '</p>' +
       '<ul class="checks">' + list + '</ul>' +
+      '<div class="co-bar"><i id="checkBar"></i></div>' +
       '<p class="tip" id="checkProgress"></p>' +
+      '<div class="co-notify"><p class="label">' + t({ kr: "나가실 때 호스트에게 알려 주세요", en: "Let your host know when you leave", cn: "离开时请告知房主" }) + '</p>' +
+        '<div class="btns stack">' +
+          '<a class="btn" href="' + esc(checkoutSmsUrl()) + '" data-track="checkout_sms">' + t({ kr: "문자로 알리기 (내용 자동 입력)", en: "Text the host (message pre-filled)", cn: "发短信（内容已填好）" }) + '</a>' +
+          (CONFIG.kakaoId ? '<button class="btn line-btn" type="button" data-copy="checkout-kakao">' + t({ kr: "카카오톡으로 알리기", en: "Message on KakaoTalk", cn: "通过 KakaoTalk 联系" }) + '</button>' : '') +
+        '</div></div>' +
       '<div class="btns"><button class="btn line-btn" type="button" data-go="contact">' + t(T.checkoutContact) + '</button></div>' +
     '</div>' +
     '<div class="card">' +
@@ -1833,7 +1855,7 @@ function renderNearby() {
     return '<div class="card place" id="place-' + i + '" data-type="' + esc(p.type) + '">' +
       (p.photo ? '<img class="place-photo" src="' + esc(p.photo) + '" alt="" loading="lazy">' : '') +
       '<p class="place-type">' + t(typeLabel[p.type]) + '</p>' +
-      '<p class="place-name">' + t(p.name) + '</p>' +
+      '<p class="place-name">' + t(p.name) + '</p>' + openBadgeHtml() +
       (isPair(p.name) && p.name.kr ? '<p class="place-ko not-kr">' + esc(p.name.kr) + '</p>' : '') +
       '<p class="place-line">' + t(p.line) + '</p>' +
       '<p class="place-meta">' + t(p.walk) + '</p>' +
@@ -1847,6 +1869,7 @@ function renderNearby() {
     '<p class="hint not-kr">' + t(T.naverTip) + '</p>' +
     '<div class="map-wrap" id="mapWrap" hidden><div id="map"></div></div>' +
     '<div class="chips">' + chips + '</div>' +
+    renderSpecialChips() +
     '<div id="placeList">' + cards + '</div>' +
     '<p class="hint" id="placesEmpty" hidden>' + t(T.placesEmpty) + '</p>';
 }
@@ -1974,11 +1997,11 @@ function initMap() {
       const startKey = mapState.filter || defaultFilter();
       withCoord.forEach(o => {
         const m = L.marker([o.p.lat, o.p.lng], { icon: placeMapIcon(o.p.type) });
-        if (o.p.type === startKey) m.addTo(map);
+        if (placeMatchKey(o.p, startKey)) m.addTo(map);
         m.bindTooltip(t(o.p.name), { direction: "top", offset: [0, -6] });
         m.on("click", () => goToPlace(o.i));
-        mapState.markers.push({ marker: m, type: o.p.type });
-        if (o.p.type === startKey) pts.push([o.p.lat, o.p.lng]);
+        mapState.markers.push({ marker: m, type: o.p.type, i: o.i });
+        if (placeMatchKey(o.p, startKey)) pts.push([o.p.lat, o.p.lng]);
       });
       if (typeof CONFIG.homeLat === "number" && typeof CONFIG.homeLng === "number") {
         L.marker([CONFIG.homeLat, CONFIG.homeLng], { icon: homeMapIcon(), zIndexOffset: 1000 })
@@ -2029,17 +2052,20 @@ function setFilter(key) {
     b.setAttribute("aria-pressed", on);
   });
   let shown = 0;
+  const nowD = kstDate();
   document.querySelectorAll("#placeList .place").forEach(c => {
-    const show = c.getAttribute("data-type") === key;
+    const pl = (CONFIG.places || [])[Number(c.id.replace("place-", ""))];
+    const show = !!pl && placeMatchKey(pl, key);
     c.hidden = !show;
     if (show) shown++;
   });
+  updatePlaceExtras(key);
   const empty = document.getElementById("placesEmpty");
   if (empty) empty.hidden = shown > 0;
   if (mapState.map) {
     const pts = [];
     mapState.markers.forEach(o => {
-      const show = o.type === key;
+      const show = placeMatchKey((CONFIG.places || [])[o.i], key);
       if (show) { o.marker.addTo(mapState.map); const ll = o.marker.getLatLng(); pts.push([ll.lat, ll.lng]); }
       else { o.marker.remove(); }
     });
@@ -2110,10 +2136,14 @@ function initTransitMap() {
 /* ---------- 체크아웃 확인 목록 ---------- */
 const CHECK_KEY = "guestapp-checkout";
 function loadChecks() {
-  try { return JSON.parse(localStorage.getItem(CHECK_KEY) || "[]"); } catch (e) { return []; }
+  try {
+    const ts = Number(localStorage.getItem(CHECK_KEY + "-t") || 0);
+    if (ts && Date.now() - ts > 3 * 864e5) { localStorage.removeItem(CHECK_KEY); localStorage.removeItem(CHECK_KEY + "-t"); return []; } // 지난 숙박의 체크는 지웁니다
+    return JSON.parse(localStorage.getItem(CHECK_KEY) || "[]");
+  } catch (e) { return []; }
 }
 function saveChecks(arr) {
-  try { localStorage.setItem(CHECK_KEY, JSON.stringify(arr)); } catch (e) {}
+  try { localStorage.setItem(CHECK_KEY, JSON.stringify(arr)); if (arr.length) { if (!localStorage.getItem(CHECK_KEY + "-t")) localStorage.setItem(CHECK_KEY + "-t", String(Date.now())); } else localStorage.removeItem(CHECK_KEY + "-t"); } catch (e) {}
 }
 function updateChecks() {
   const boxes = document.querySelectorAll("[data-check]");
@@ -2121,6 +2151,9 @@ function updateChecks() {
   boxes.forEach(b => { if (b.checked) done.push(Number(b.getAttribute("data-check"))); });
   saveChecks(done);
   const T = CONFIG.text;
+  const bar = document.getElementById("checkBar");
+  if (bar) bar.style.width = (boxes.length ? Math.round(done.length / boxes.length * 100) : 0) + "%";
+  if (boxes.length && done.length === boxes.length && !updateChecks.sent) { updateChecks.sent = true; track("act", "checkout_all_done"); }
   const el = document.getElementById("checkProgress");
   if (!el) return;
   const fillCount = s => String(s).replace("{total}", boxes.length).replace("{done}", done.length);
@@ -2139,7 +2172,7 @@ function saveCheckin() {
   try { localStorage.setItem(CHECKIN_KEY, JSON.stringify(done)); } catch (e) {}
 }
 
-const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "food", "co-van", "co-airport", "co-late", "ci-early", "phrases", "walk", "trash", "sos", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking"];
+const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "food", "co-van", "co-airport", "co-late", "ci-early", "phrases", "walk", "trash", "sos", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking", "trouble"];
 let navStack = [];
 
 function showScreen(id) {
@@ -2152,6 +2185,7 @@ function showScreen(id) {
   if (navStack.length > 1 && navStack[navStack.length - 2] === id) navStack.pop(); else if (navStack[navStack.length - 1] !== id) navStack.push(id);
   setActiveTab(id);
   updateClock();
+  trackScreen(id);
   if (id === "nearby") {
     setFilter(pendingPreset || mapState.filter || defaultFilter()); pendingPreset = null;
     initMap();
@@ -2203,6 +2237,8 @@ function start() {
     '<section id="screen-checkout" hidden>' + renderCheckout() + '</section>' +
     '<section id="screen-contact" hidden>' + renderContact() + '</section>' +
     '<section id="screen-parking" hidden>' + renderParking() + '</section>' +
+    '<section id="screen-trouble" hidden>' + renderTrouble() + '</section>' +
+    '<div id="offBar" class="off-bar" hidden>' + t({ kr: "인터넷이 연결되지 않았어요. 저장된 안내를 보여드리고 있어요 (지도·날씨는 인터넷이 필요해요)", en: "You're offline. Showing the saved guide (maps and weather need internet).", cn: "当前无网络，正在显示已保存的指南（地图和天气需要联网）。" }) + '</div>' +
     renderReviewSheet() + renderTabbar();
   updateClock(); setInterval(updateClock, 30000);
   try { const at = Number(localStorage.getItem("gc-arrived") || 0); const ab = document.getElementById("arriveBox"); if (ab && at && Date.now() - at < 14 * 864e5) ab.classList.add("done"); } catch (er) {}
@@ -2227,9 +2263,18 @@ function start() {
     if (e.target.id === "houseSearch") filterHouse(e.target.value);
     if (e.target.id === "faqSearch") filterHouse(e.target.value, "faq");
     if (e.target.classList.contains("gs-input")) gSearch(e.target);
+    if (e.target.classList.contains("gs-input") || e.target.id === "houseSearch" || e.target.id === "faqSearch") trackSearch(e.target);
   });
 
   app.addEventListener("click", function (e) {
+    const tk = e.target.closest("[data-track]"); if (tk) track("act", tk.getAttribute("data-track"));
+    const telA = e.target.closest('a[href^="tel:"]'); if (telA && !telA.hasAttribute("data-track")) track("act", "tel");
+    const tkb = e.target.closest("[data-trouble-kakao]");
+    if (tkb) {
+      const tr = TROUBLES.filter(x => x.id === tkb.getAttribute("data-trouble-kakao"))[0];
+      if (tr) { copyText(troubleMsg(tr), { kr: "메시지를 복사했어요. 카카오톡의 " + CONFIG.hostName + "님 대화방에 붙여넣어 주세요.", en: "Message copied. Paste it into your KakaoTalk chat with " + CONFIG.hostName + ".", cn: "消息已复制。请粘贴到与 " + CONFIG.hostName + " 的KakaoTalk聊天中。" }); setTimeout(function () { window.location.href = "kakaotalk://"; }, 1800); }
+      return;
+    }
     if (e.target.closest("[data-review-open]")) { openReviewSheet(); return; }
     if (e.target.closest("[data-review-close]") || e.target.id === "reviewSheet") { closeReviewSheet(); return; }
     if (e.target.closest("#reviewGo")) { copyReviewText(); setTimeout(closeReviewSheet, 300); return; }
@@ -2274,6 +2319,11 @@ function start() {
       if (kind === "address") copyText(CONFIG.address);
       if (kind === "wifi") copyText(CONFIG.wifiPassword);
       if (kind === "arrival") copyText(CONFIG.arrivalMessage);
+      if (kind === "checkout-kakao") {
+        copyText(CONFIG.checkoutMessage, { kr: "메시지를 복사했어요. 카카오톡의 " + CONFIG.hostName + "님 대화방에 붙여넣어 주세요.", en: "Message copied. Paste it into your KakaoTalk chat with " + CONFIG.hostName + ".", cn: "消息已复制。请粘贴到与 " + CONFIG.hostName + " 的KakaoTalk聊天中。" });
+        setTimeout(function () { window.location.href = "kakaotalk://"; }, 1800);
+      }
+      track("act", "copy_" + kind);
       if (kind === "arrival-kakao") {
         copyText(CONFIG.arrivalMessage, { kr: "메시지를 복사했어요. 카카오톡의 " + CONFIG.hostName + "님 대화방에 붙여넣어 주세요.", en: "Message copied. Paste it into your KakaoTalk chat with " + CONFIG.hostName + ".", cn: "消息已复制。请粘贴到与 " + CONFIG.hostName + " 的KakaoTalk聊天中。" });
         setTimeout(function () { window.location.href = "kakaotalk://"; }, 1800);
@@ -2293,6 +2343,7 @@ function start() {
   });
   if (location.hash === "#review") { showScreen("checkout"); openReviewSheet(); }
   else showScreen(location.hash.replace("#", "") || "home");
+  v3Init();
 }
 
 /* ---------- 오늘 날씨 (Open-Meteo, 무료·키 없음). 못 불러오면 칸이 아예 안 보입니다 ---------- */
@@ -2353,6 +2404,345 @@ function setupInstall() {
     help.innerHTML = '<span class="ih-step">1. ' + t(CONFIG.text.installInApp) + '</span><span class="ih-step">2. ' + t(ios ? CONFIG.text.installIos : CONFIG.text.installAndroid) + '</span>';
     help.hidden = !help.hidden;
   });
+}
+
+/* ================= v3: 오프라인 · 맞춤 카드 · 불편해요 · 상황별 추천 · 이용 통계 ================= */
+
+/* ---------- 도착·체크아웃 날짜 (예약 메일의 링크에 ?in=…&out=… 로 들어옵니다) ---------- */
+const TRIP_KEY = "gc-trip";
+(function readTrip() {
+  try {
+    const q = new URLSearchParams(location.search);
+    const a = q.get("in"), b = q.get("out");
+    if (/^\d{4}-\d{2}-\d{2}$/.test(a || "") && /^\d{4}-\d{2}-\d{2}$/.test(b || "") && a < b) {
+      localStorage.setItem(TRIP_KEY, JSON.stringify({ in: a, out: b }));
+    }
+    if (q.has("in") || q.has("out")) history.replaceState(null, "", location.pathname + location.hash);
+    if (q.get("notrack")) localStorage.setItem("gc-notrack", "1");
+  } catch (e) {}
+})();
+function kstDate() { return new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" })); }
+function dstr(d) { const p = n => (n < 10 ? "0" : "") + n; return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()); }
+function dayDiff(a, b) { return Math.round((Date.parse(b + "T00:00:00Z") - Date.parse(a + "T00:00:00Z")) / 864e5); }
+function loadTrip() { try { return JSON.parse(localStorage.getItem(TRIP_KEY) || "null"); } catch (e) { return null; } }
+function arrivedRecently() { try { const at = Number(localStorage.getItem("gc-arrived") || 0); return !!at && Date.now() - at < 14 * 864e5; } catch (e) { return false; } }
+function hhmm(s) { const m = String(s || "").match(/(\d{1,2}):(\d{2})/); return m ? Number(m[1]) + Number(m[2]) / 60 : null; }
+
+/* ---------- 지금 상황에 맞는 안내 카드 ---------- */
+function stayStage(h) { return (h >= 22 || h < 7) ? { id: "quiet" } : { id: "stay" }; }
+function smartStage() {
+  const now = kstDate(), h = now.getHours() + now.getMinutes() / 60, today = dstr(now);
+  const trip = loadTrip();
+  const coH = hhmm(CONFIG.checkoutTime) || 11;
+  if (trip) {
+    const toIn = dayDiff(today, trip.in), toOut = dayDiff(today, trip.out);
+    if (toIn > 1) return { id: "pre" };
+    if (toIn === 1) return { id: "eve" };
+    if (toIn === 0) return arrivedRecently() ? stayStage(h) : { id: "arrive" };
+    if (toOut > 1) return stayStage(h);
+    if (toOut === 1) return h >= 17 ? { id: "coeve" } : stayStage(h);
+    if (toOut === 0) return h < coH + 3 ? { id: "coday" } : { id: "after" };
+    return { id: "after" };
+  }
+  if (arrivedRecently()) return stayStage(h);
+  return { id: "none" };
+}
+function smartCardHtml(st) {
+  const ci = CONFIG.checkinTime, co = CONFIG.checkoutTime;
+  const box = (ic, title, body, go, label) =>
+    '<div class="smart"><i aria-hidden="true">' + ic + '</i><div><b>' + t(title) + '</b><p>' + t(body) + '</p>' +
+    (go ? '<button class="btn sm-btn" type="button" data-go="' + go + '" data-track="smart_' + st.id + '">' + t(label) + '</button>' : '') + '</div></div>';
+  switch (st.id) {
+    case "eve":
+      return box("🧳", { kr: "내일 도착이시네요", en: "See you tomorrow", cn: "明天见" },
+        { kr: "체크인은 " + ci + "부터예요. 오시는 길과 들어오는 방법을 미리 확인해 두세요.", en: "Check-in starts at " + ci + ". Have a look at the directions and how to get in.", cn: "入住从 " + ci + " 开始。请提前查看路线和进入方式。" },
+        "checkin", { kr: "체크인 안내 보기", en: "Check-in guide", cn: "查看入住指南" });
+    case "arrive":
+      return box("🔑", { kr: "오늘 도착이시네요", en: "You arrive today", cn: "今天入住" },
+        { kr: "체크인은 " + ci + "부터예요. 주소와 오시는 길을 확인하세요.", en: "Check-in starts at " + ci + ". Here are the address and directions.", cn: "入住从 " + ci + " 开始。请查看地址和路线。" },
+        "checkin", { kr: "체크인 안내 보기", en: "Check-in guide", cn: "查看入住指南" });
+    case "coeve":
+      return box("🌙", { kr: "내일은 체크아웃이에요", en: "Check-out is tomorrow", cn: "明天退房" },
+        { kr: "체크아웃은 " + co + "까지예요. 나가기 전 확인 목록을 미리 살펴보세요.", en: "Check-out is by " + co + ". Take a look at the list of things to check before you go.", cn: "退房时间为 " + co + " 前。请提前查看离开前的确认清单。" },
+        "checkout", { kr: "확인 목록 보기", en: "See the list", cn: "查看清单" });
+    case "coday":
+      return box("🧺", { kr: "오늘 체크아웃이에요", en: "Check-out today", cn: "今天退房" },
+        { kr: co + "까지 퇴실해 주세요. 나가기 전 확인 목록을 체크해 보세요.", en: "Please check out by " + co + ". Tick through the list before you leave.", cn: "请在 " + co + " 前退房。离开前请逐项确认清单。" },
+        "checkout", { kr: "확인 목록 열기", en: "Open the list", cn: "打开清单" });
+    case "quiet":
+      return box("🌙", { kr: "조용한 시간이에요", en: "Quiet hours", cn: "安静时段" },
+        { kr: "오후 10시 이후에는 이웃을 위해 조용히 이용해 주세요.", en: "Please keep noise to a minimum after 10 PM out of consideration for the neighbors.", cn: "晚上10点以后请保持安静，以免影响邻居。" });
+    default: return "";
+  }
+}
+function refreshSmart() {
+  const st = smartStage();
+  const html = smartCardHtml(st);
+  document.querySelectorAll("[data-smart]").forEach(el => {
+    if (el.getAttribute("data-sid") === st.id) return;
+    el.setAttribute("data-sid", st.id);
+    el.innerHTML = html;
+  });
+  const rec = { pre: "checkin", eve: "checkin", arrive: "checkin", stay: "stay", quiet: "stay", coeve: "co", coday: "co" }[st.id] || "";
+  document.querySelectorAll(".jr").forEach(b => b.classList.toggle("rec", !!rec && b.getAttribute("data-go") === rec));
+}
+
+/* ---------- 오프라인: 한 번 열어 본 안내는 인터넷이 없어도 열립니다 ---------- */
+function collectAssetUrls() {
+  const set = {};
+  const add = u => { if (u && !/^(data:|https?:|\/\/)/i.test(u)) { set[u.charAt(0) === "/" ? u : "/" + u] = 1; } };
+  (JSON.stringify(CONFIG).match(/[A-Za-z0-9_\-\/.]+\.(?:jpe?g|png|webp|gif|svg)/gi) || []).forEach(add);
+  document.querySelectorAll("img[src]").forEach(i => add(i.getAttribute("src")));
+  ["hero2.jpg", "logo.png", "logo-mark.png", "icon-192.png?v=3", "manifest.webmanifest?v=3"].forEach(add);
+  return Object.keys(set);
+}
+function refreshOfflineBadge() {
+  let ready = false;
+  try { ready = !!localStorage.getItem("gc-offline"); } catch (e) {}
+  document.querySelectorAll("[data-offready]").forEach(el => { el.hidden = !ready; });
+  const bar = document.getElementById("offBar");
+  if (bar) bar.hidden = navigator.onLine !== false;
+}
+function setupOffline() {
+  refreshOfflineBadge();
+  window.addEventListener("online", refreshOfflineBadge);
+  window.addEventListener("offline", refreshOfflineBadge);
+  if (!("serviceWorker" in navigator)) return;
+  navigator.serviceWorker.addEventListener("message", function (e) {
+    if (e.data && e.data.type === "cached") {
+      try { localStorage.setItem("gc-offline", String(e.data.n || 1)); } catch (er) {}
+      refreshOfflineBadge();
+    }
+  });
+  navigator.serviceWorker.register("/sw.js").then(function () { return navigator.serviceWorker.ready; }).then(function (reg) {
+    const target = reg.active || navigator.serviceWorker.controller;
+    if (target) target.postMessage({ type: "precache", urls: collectAssetUrls() });
+  }).catch(function () {});
+}
+
+/* ---------- 불편해요 ---------- */
+const TROUBLES = [
+  { id: "hotwater", ic: "🚿", t: { kr: "온수·난방이 안 나와요", en: "No hot water or heating", cn: "没有热水或暖气" },
+    msg: { kr: "온수 또는 난방이 안 나와요", en: "There is no hot water or heating" }, fix: { go: "house", acc: "acc-boiler", label: { kr: "보일러 사용법 보기", en: "See how the boiler works", cn: "查看锅炉使用方法" } } },
+  { id: "aircon", ic: "❄️", t: { kr: "에어컨이 안 켜져요", en: "The AC won't work", cn: "空调打不开" },
+    msg: { kr: "에어컨이 작동하지 않아요", en: "The AC is not working" }, fix: { go: "house", acc: "acc-aircon", label: { kr: "에어컨 리모컨 안내 보기", en: "See the AC remote guide", cn: "查看空调遥控器说明" } } },
+  { id: "wifi", ic: "📶", t: { kr: "인터넷(Wi-Fi)이 안 돼요", en: "Wi-Fi isn't working", cn: "Wi-Fi 连不上" },
+    msg: { kr: "Wi-Fi가 연결되지 않아요", en: "The Wi-Fi is not connecting" }, fix: { go: "wifi", label: { kr: "Wi-Fi 이름·비밀번호 보기", en: "See Wi-Fi name & password", cn: "查看 Wi-Fi 名称和密码" } } },
+  { id: "intercom", ic: "🔔", t: { kr: "1층 공동현관 문을 못 열어요", en: "Can't open the street-level door", cn: "打不开一楼大门" },
+    msg: { kr: "1층 공동현관 문을 열지 못하고 있어요", en: "We cannot open the street-level entrance door" }, fix: { go: "house", acc: "acc-intercom", label: { kr: "인터폰 사용법 보기", en: "See the intercom guide", cn: "查看对讲机使用方法" } } },
+  { id: "door", ic: "🚪", t: { kr: "현관문이 안 열려요", en: "Can't open the front door", cn: "打不开房门" },
+    msg: { kr: "현관문이 열리지 않아요", en: "We cannot open the front door" }, fix: { go: "ci-address", label: { kr: "현관 여는 방법 보기", en: "See how to open the door", cn: "查看开门方法" } } },
+  { id: "toilet", ic: "🚽", t: { kr: "변기·비데에 문제가 있어요", en: "Toilet or bidet problem", cn: "马桶或洗净器有问题" },
+    msg: { kr: "변기 또는 비데에 문제가 있어요", en: "There is a problem with the toilet or bidet" }, fix: { go: "house", acc: "acc-bidet", label: { kr: "비데 사용 안내 보기", en: "See the bidet guide", cn: "查看洗净器说明" } } },
+  { id: "leak", ic: "💧", t: { kr: "물이 새거나 막혀요", en: "A leak or blocked drain", cn: "漏水或堵塞" },
+    msg: { kr: "물이 새거나 배수가 막혔어요", en: "There is a leak or a blocked drain" } },
+  { id: "bug", ic: "🦟", t: { kr: "모기·벌레가 있어요", en: "Mosquitoes or bugs", cn: "有蚊子或虫子" },
+    msg: { kr: "모기 또는 벌레가 있어요", en: "There are mosquitoes or bugs" }, fix: { go: "house", acc: "acc-mosquito", label: { kr: "모기향(홈매트) 안내 보기", en: "See the mosquito repellent guide", cn: "查看蚊香说明" } } },
+  { id: "noise", ic: "🔊", t: { kr: "소음이 신경 쓰여요", en: "Noise bothers us", cn: "噪音困扰" },
+    msg: { kr: "소음이 있어서 불편해요", en: "We are bothered by noise" } },
+  { id: "parking", ic: "🚗", t: { kr: "주차에 문제가 있어요", en: "A parking problem", cn: "停车有问题" },
+    msg: { kr: "주차에 문제가 있어요", en: "We have a parking problem" }, fix: { go: "parking", label: { kr: "주차 안내 보기", en: "See the parking guide", cn: "查看停车说明" } } },
+  { id: "other", ic: "💬", t: { kr: "그 밖의 불편한 점", en: "Something else", cn: "其他问题" },
+    msg: { kr: "불편한 점이 있어요", en: "We have an issue" } }
+];
+function troubleMsg(tr) {
+  return "[강남칼므 501호] " + tr.msg.kr + " / " + tr.msg.en + "\n확인 부탁드려요. Could you please check?";
+}
+function troubleSmsUrl(tr) {
+  const num = (CONFIG.phone || "").replace(/[^0-9+]/g, "");
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  return "sms:" + num + (ios ? "&" : "?") + "body=" + encodeURIComponent(troubleMsg(tr));
+}
+function renderTrouble() {
+  const num = (CONFIG.phone || "").replace(/[^0-9+]/g, "");
+  const items = TROUBLES.map(tr =>
+    '<details class="acc" id="tr-' + tr.id + '">' +
+      '<summary data-track="trouble_open:' + tr.id + '"><span class="acc-head"><span class="acc-title"><span class="tr-ic" aria-hidden="true">' + tr.ic + '</span>' + t(tr.t) + '</span></span><span class="acc-mark" aria-hidden="true"></span></summary>' +
+      '<div class="acc-body">' +
+        (tr.fix ? '<p class="label">' + t({ kr: "먼저 이 안내를 확인해 보세요", en: "Please check this first", cn: "请先查看此说明" }) + '</p>' +
+          '<button class="btn line-btn tr-fix" type="button" data-go="' + tr.fix.go + '"' + (tr.fix.acc ? ' data-open-acc="' + tr.fix.acc + '"' : '') + ' data-track="trouble_fix:' + tr.id + '">' + t(tr.fix.label) + ' →</button>' : '') +
+        '<p class="label">' + t({ kr: "그래도 해결이 안 되면 바로 알려 주세요", en: "Still not working? Tell us right away", cn: "仍无法解决？请立即告诉我们" }) + '</p>' +
+        '<div class="btns stack">' +
+          '<a class="btn" href="' + esc(troubleSmsUrl(tr)) + '" data-track="trouble_sms:' + tr.id + '">' + t({ kr: "문자로 알리기 (내용 자동 입력)", en: "Text the host (message pre-filled)", cn: "发短信（内容已填好）" }) + '</a>' +
+          (CONFIG.kakaoId ? '<button class="btn line-btn" type="button" data-trouble-kakao="' + tr.id + '" data-track="trouble_kakao:' + tr.id + '">' + t({ kr: "카카오톡으로 알리기", en: "Message on KakaoTalk", cn: "通过 KakaoTalk 联系" }) + '</button>' : '') +
+          (num ? '<a class="btn line-btn" href="tel:' + esc(num) + '" data-track="trouble_tel:' + tr.id + '">' + t({ kr: "전화하기", en: "Call the host", cn: "拨打电话" }) + '</a>' : '') +
+        '</div>' +
+      '</div>' +
+    '</details>').join("");
+  return backButton() +
+    '<h2>' + t({ kr: "불편한 점이 있나요?", en: "Is something not right?", cn: "有什么不方便吗？" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "상황을 고르면 해결 방법을 먼저 안내해 드리고, 그래도 안 되면 호스트에게 바로 알릴 수 있어요. 작은 일이라도 괜찮아요.", en: "Pick what's happening — we'll show you the fix first, and you can reach your host right away if it still doesn't work. Small things are fine too.", cn: "选择遇到的情况，我们会先告诉您解决方法；仍无法解决时，可立即联系房主。再小的事也没关系。" }) + '</p>' +
+    '<div class="acc-list">' + items + '</div>' +
+    '<div class="card tr-sos"><p class="label">' + t({ kr: "위급한 상황이라면", en: "In an emergency", cn: "紧急情况" }) + '</p>' +
+      '<div class="btns"><button class="btn line-btn" type="button" data-go="sos">' + t({ kr: "비상시 안내 열기", en: "Open emergency info", cn: "打开紧急情况指南" }) + '</button></div></div>';
+}
+
+/* ---------- 동네 추천: 상황별 묶음 + 지금 영업 중 ---------- */
+const SPECIALS = [
+  { key: "s:now", label: { kr: "지금 열린 곳", en: "Open now", cn: "正在营业" }, hint: { kr: "표시된 영업시간 기준이에요. 공휴일에는 다를 수 있어요.", en: "Based on the listed hours — holidays may differ.", cn: "按标注的营业时间判断，节假日可能不同。" } },
+  { key: "s:morning", label: { kr: "이른 아침", en: "Early bird", cn: "早起" }, hint: { kr: "오전 9시까지는 문을 여는 곳이에요.", en: "Places that open by 9 AM.", cn: "上午9点前（含9点）开门的地方。" } },
+  { key: "s:late", label: { kr: "밤늦게", en: "Late night", cn: "深夜" }, hint: { kr: "자정까지, 또는 그 이후까지 문을 열어요.", en: "Open until midnight or later.", cn: "营业到午夜或更晚。" } },
+  { key: "s:rain", label: { kr: "비 오는 날", en: "Rainy day", cn: "雨天" }, hint: { kr: "실내에서 즐길 수 있는 곳이에요. (카페와 전시)", en: "Indoor spots — cafés and exhibitions.", cn: "室内可享受的地方（咖啡厅和展览）。" } },
+  { key: "s:walk", label: { kr: "산책", en: "A stroll", cn: "散步" }, hint: { kr: "걸으며 즐기기 좋은 공원과 산책로예요.", en: "Parks and paths that are lovely on foot.", cn: "适合边走边逛的公园和步道。" } }
+];
+const PLACE_TAGS = {
+  "국립중앙박물관": ["rain"], "예술의전당": ["rain"],
+  "몽마르뜨공원": ["walk"], "서리풀공원": ["walk"], "누에다리": ["walk"], "반포한강공원": ["walk"]
+};
+function placeName(p) { return isPair(p.name) ? (p.name.kr || p.name.en || "") : String(p.name || ""); }
+function placeTags(p) { return (PLACE_TAGS[placeName(p)] || []).concat(p.type === "cafe" ? ["rain"] : []); }
+const DOW = { "일": 0, "월": 1, "화": 2, "수": 3, "목": 4, "금": 5, "토": 6 };
+function dowList(s) { return (String(s).match(/[월화수목금토일]/g) || []).map(c => DOW[c]); }
+const _hoursCache = {};
+function parseHours(str) {
+  const s = String(str || "");
+  if (_hoursCache[s]) return _hoursCache[s];
+  const H = { always: false, off: [], unknown: [], base: null, wk: null, we: null, ext: {}, brk: null };
+  if (/상시|24시간|종일/.test(s)) H.always = true;
+  const offM = s.match(/([월화수목금토일](?:[·,~][월화수목금토일])*)(?:요일)?\s*휴무/);
+  if (offM && s.indexOf("마지막") === -1) H.off = dowList(offM[1]);
+  const unkM = s.match(/([월화수목금토일])요일\s*문의/);
+  if (unkM) H.unknown = dowList(unkM[1]);
+  const num = (a, b) => Number(a) + Number(b) / 60;
+  const re = /(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/g;
+  let m;
+  while ((m = re.exec(s))) {
+    const pre = s.slice(Math.max(0, m.index - 8), m.index);
+    const span = [num(m[1], m[2]), num(m[3], m[4])];
+    if (span[1] <= span[0]) span[1] += 24;
+    if (/브레이크\s*$/.test(pre)) H.brk = span;
+    else if (/평일\s*$/.test(pre)) H.wk = span;
+    else if (/주말\s*$/.test(pre)) H.we = span;
+    else if (!H.base) H.base = span;
+  }
+  const ext = s.match(/([월화수목금토일](?:[·,][월화수목금토일])*)\s*(\d{1,2}):(\d{2})까지/);
+  if (ext) dowList(ext[1]).forEach(d => { H.ext[d] = num(ext[2], ext[3]); });
+  if (!H.always && !H.base && !H.wk && !H.we) H.bad = true;
+  _hoursCache[s] = H;
+  return H;
+}
+function daySpan(H, d) {
+  let sp = H.base;
+  if (H.wk || H.we) sp = (d === 0 || d === 6) ? (H.we || H.wk) : (H.wk || H.we);
+  if (sp && H.ext[d]) sp = [sp[0], H.ext[d]];
+  return sp;
+}
+/* 반환: "open" | "closed" | null(알 수 없음) */
+function openState(p, now) {
+  const H = parseHours(p.hours && (p.hours.kr || p.hours));
+  if (H.bad) return null;
+  const d = now.getDay(), prev = (d + 6) % 7, h = now.getHours() + now.getMinutes() / 60;
+  if (H.unknown.indexOf(d) !== -1) return null;
+  if (H.always) return H.off.indexOf(d) !== -1 ? "closed" : "open";
+  const inBreak = x => H.brk && x >= H.brk[0] && x < H.brk[1];
+  if (H.off.indexOf(d) === -1) {
+    const sp = daySpan(H, d);
+    if (sp && h >= sp[0] && h < sp[1] && !inBreak(h)) return "open";
+  }
+  if (H.off.indexOf(prev) === -1) {
+    const sp = daySpan(H, prev);
+    if (sp && sp[1] > 24 && h + 24 < sp[1]) return "open";
+  }
+  return "closed";
+}
+function placeOpensEarly(p) { const H = parseHours(p.hours && (p.hours.kr || p.hours)); return !H.bad && !H.always && ((H.base || H.wk || H.we || [99])[0] <= 9); }
+function placeOpenLate(p) { const H = parseHours(p.hours && (p.hours.kr || p.hours)); return !H.bad && ((H.base && H.base[1] >= 24) || (H.we && H.we[1] >= 24) || (H.wk && H.wk[1] >= 24)); }
+function placeMatchKey(p, key) {
+  if (key.indexOf("s:") !== 0) return p.type === key;
+  const k = key.slice(2);
+  if (k === "now") return openState(p, kstDate()) === "open";
+  if (k === "morning") return placeOpensEarly(p);
+  if (k === "late") return placeOpenLate(p);
+  return placeTags(p).indexOf(k) !== -1;
+}
+function walkMin(p) { const m = String((p.walk && p.walk.kr) || "").match(/(\d+)\s*분/); return m ? Number(m[1]) : 999; }
+function renderSpecialChips() {
+  return '<div class="chips chips-sp" role="group" aria-label="special"><span class="chips-label">' + t({ kr: "상황별", en: "By mood", cn: "按场景" }) + '</span>' +
+    SPECIALS.map(x => '<button class="chip" type="button" data-filter="' + x.key + '" aria-pressed="false" data-track="nearby_' + x.key.slice(2) + '">' + t(x.label) + '</button>').join("") +
+    '</div><p class="hint" id="spHint" hidden></p>';
+}
+function openBadgeHtml() { return '<p class="place-open" data-open hidden></p>'; }
+function updatePlaceExtras(key) {
+  const now = kstDate();
+  const list = document.getElementById("placeList");
+  if (!list) return;
+  const cards = Array.prototype.slice.call(list.querySelectorAll(".place"));
+  cards.forEach(c => {
+    const p = (CONFIG.places || [])[Number(c.id.replace("place-", ""))];
+    const el = c.querySelector("[data-open]");
+    if (!p || !el) return;
+    const st = openState(p, now);
+    el.hidden = !st;
+    el.className = "place-open " + (st || "");
+    el.innerHTML = st === "open" ? t({ kr: "● 지금 영업 중", en: "● Open now", cn: "● 营业中" }) : st === "closed" ? t({ kr: "○ 지금은 영업 종료", en: "○ Closed right now", cn: "○ 目前未营业" }) : "";
+  });
+  const special = key.indexOf("s:") === 0;
+  cards.sort((a, b) => {
+    const ia = Number(a.id.replace("place-", "")), ib = Number(b.id.replace("place-", ""));
+    if (!special) return ia - ib;
+    const pa = (CONFIG.places || [])[ia], pb = (CONFIG.places || [])[ib];
+    return (walkMin(pa) - walkMin(pb)) || (ia - ib);
+  });
+  cards.forEach(c => list.appendChild(c));
+  const hint = document.getElementById("spHint");
+  if (hint) {
+    const sp = SPECIALS.filter(x => x.key === key)[0];
+    hint.hidden = !sp;
+    hint.innerHTML = sp ? t(sp.hint) : "";
+  }
+}
+
+/* ---------- 이용 통계 (개인정보 없이 숫자만 · 관리 앱에서 확인) ---------- */
+const TRACK_URL = "https://book.gangnamcalme.com/api/track";
+const trackQ = [];
+let trackTimer = null, lastScreen = "";
+function trackOn() {
+  try { if (localStorage.getItem("gc-notrack")) return false; } catch (e) {}
+  return !/preview/i.test(location.pathname) && location.hostname !== "localhost" && location.hostname !== "127.0.0.1";
+}
+function track(k, v) {
+  if (!trackOn()) return;
+  trackQ.push({ k: String(k).slice(0, 12), v: String(v == null ? "" : v).slice(0, 40) });
+  clearTimeout(trackTimer);
+  trackTimer = setTimeout(flushTrack, 2500);
+}
+function flushTrack() {
+  if (!trackQ.length) return;
+  const body = JSON.stringify({ e: trackQ.splice(0, 20) });
+  try {
+    if (navigator.sendBeacon) navigator.sendBeacon(TRACK_URL, new Blob([body], { type: "text/plain" }));
+    else fetch(TRACK_URL, { method: "POST", body: body, keepalive: true, mode: "no-cors" });
+  } catch (e) {}
+}
+function trackScreen(id) { if (id !== lastScreen) { lastScreen = id; track("screen", id); } }
+function trackVisit() {
+  try {
+    const d = dstr(kstDate());
+    if (localStorage.getItem("gc-vday") === d) return;
+    localStorage.setItem("gc-vday", d);
+  } catch (e) {}
+  track("visit", LANG);
+  if (isStandalone()) track("act", "pwa_open");
+}
+function trackSearch(input) {
+  clearTimeout(input._tt);
+  input._tt = setTimeout(function () {
+    const q = input.value.trim().toLowerCase().replace(/\s+/g, " ").slice(0, 30);
+    if (q.length < 2) return;
+    let none = false;
+    if (input.classList.contains("gs-input")) { const box = document.getElementById(input.getAttribute("data-gsearch")); none = !!(box && box.querySelector(".gs-none")); }
+    else if (input.id === "houseSearch") { const e = document.getElementById("houseSearchEmpty"); none = !!(e && !e.hidden); }
+    else if (input.id === "faqSearch") { const e = document.getElementById("faqSearchEmpty"); none = !!(e && !e.hidden); }
+    track(none ? "nohit" : "search", q);
+  }, 1600);
+}
+
+function v3Init() {
+  refreshSmart();
+  setupOffline();
+  trackVisit();
+  document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") flushTrack(); });
+  window.addEventListener("pagehide", flushTrack);
 }
 
 document.addEventListener("DOMContentLoaded", start);
@@ -2688,6 +3078,30 @@ html body{top:0!important}
 .goog-text-highlight{background:none!important;box-shadow:none!important}
 .lp .install{margin:22px 0 0}.lp .help-row{margin-top:8px}
 .lp-date{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+
+/* ===== v3 ===== */
+#screen-trouble{width:min(760px,calc(100% - 40px));margin:0 auto;padding:28px 0 60px}
+.smart{display:flex;gap:12px;align-items:flex-start;margin:12px 0 4px;padding:14px 16px;border-radius:18px;background:var(--v-card);border:1px solid var(--v-line);border-left:5px solid var(--v-green);box-shadow:0 2px 10px rgba(60,50,30,.06)}
+.smart>i{font-style:normal;font-size:26px;line-height:1.1}
+.smart b{display:block;font:700 16px var(--sans);color:var(--v-ink)}
+.smart p{margin:4px 0 0;font:14px/1.55 var(--sans);color:var(--v-sub)}
+.smart .sm-btn{margin-top:10px;min-height:42px;padding:0 16px;background:var(--v-green)!important;color:#f5e9c8!important;border-color:var(--v-green)!important;font-weight:700;font-size:14px}
+.jr.rec{border-color:var(--v-green);box-shadow:0 0 0 2px rgba(29,59,44,.18),0 2px 10px rgba(60,50,30,.07)}
+.off-ready{margin:6px 0 0;font:600 12px var(--sans);color:var(--v-sub)}
+.off-bar{position:fixed;left:0;right:0;top:0;z-index:90;padding:8px 14px;background:#3b3822;color:#f5e9c8;font:600 13px/1.4 var(--sans);text-align:center}
+.off-bar[hidden]{display:none}
+.tr-ic{display:inline-block;width:1.7em}
+.tr-fix{width:100%;margin:0 0 14px;text-align:left}
+.tr-sos{margin-top:18px}
+.chips.chips-sp{margin-top:0;flex-wrap:wrap;overflow:visible;padding-top:2px}
+.chips-label{flex:0 0 100%;font:700 12px var(--sans);color:var(--v-sub);letter-spacing:.06em}
+.place-open{margin:2px 0 6px;font:700 12px var(--sans)}
+.place-open.open{color:#2f6b3f}
+.place-open.closed{color:#8a8274}
+.co-bar{height:8px;border-radius:99px;background:rgba(0,0,0,.08);overflow:hidden;margin:12px 0 0}
+.co-bar i{display:block;height:100%;width:0;background:var(--v-green);border-radius:99px;transition:width .25s}
+.co-link{margin-left:8px;border:0;background:none;padding:0;font:600 13px var(--sans);color:var(--v-green);text-decoration:underline;cursor:pointer}
+.co-notify{margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,0,0,.08)}
 </style>
 </head>
 <body>
