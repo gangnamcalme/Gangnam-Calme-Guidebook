@@ -607,6 +607,44 @@ const CONFIG = {
       lat: 37.4876417, lng: 126.9936240 }
   },
 
+  /* ---------- 골목길 투어 (동네 안내 화면 아래 카드) ----------
+     stops: 아래 places에 있는 가게·장소 이름의 앞부분을 걷는 순서대로 적습니다. 숙소에서 출발해 숙소로 돌아오는 길로 그려집니다 */
+  tours: [
+    { id: "A", short: { kr: "A코스", en: "Route A", cn: "A路线" }, name: { kr: "서래마을 한 바퀴", en: "Seorae Village loop", cn: "Seorae Village 一圈" },
+      stops: ["서래마을 스퀘어가든", "피노키오", "르 므니에", "카페 드리옹", "투르뒤뱅"] },
+    { id: "B", short: { kr: "B코스", en: "Route B", cn: "B路线" }, name: { kr: "숲길과 누에다리", en: "Forest trail & Nuedari Bridge", cn: "林间小路与Nuedari桥" },
+      stops: ["몽마르뜨공원", "누에다리", "서리풀공원"] }
+  ],
+
+  /* ---------- 주요 관광지 가는 방법 (동네 안내 화면 아래 카드) ----------
+     모든 길은 내방역(7호선)에서 시작합니다. mins는 내방역에서 목적지까지 대략 걸리는 분, transfers는 환승 횟수입니다 */
+  sights: [
+    { ic: "🏯", name: { kr: "경복궁", en: "Gyeongbokgung Palace", cn: "Gyeongbokgung" }, q: "경복궁역", transfers: 1, mins: 35,
+      steps: ["A1", "N3", { kr: "'경복궁역'에서 내려요 (12정거장)", en: "Get off at Gyeongbokgung Station (12 stops)", cn: "在Gyeongbokgung站下车（12站）" }] },
+    { ic: "🏘", name: { kr: "인사동 · 북촌", en: "Insadong · Bukchon", cn: "Insadong · Bukchon" }, q: "안국역", transfers: 1, mins: 35,
+      steps: ["A1", "N3", { kr: "'안국역'에서 내려요 (11정거장). 인사동과 북촌은 역에서 걸어서 갈 수 있어요", en: "Get off at Anguk Station (11 stops). Insadong and Bukchon are both a walk from the station", cn: "在Anguk站下车（11站）。从车站步行可到Insadong和Bukchon" }] },
+    { ic: "🥘", name: { kr: "광장시장", en: "Gwangjang Market", cn: "Gwangjang Market" }, q: "광장시장", transfers: 2, mins: 40,
+      steps: ["A1", "N3", { kr: "'종로3가역'에서 내려 1호선 청량리 방면으로 갈아타요", en: "Get off at Jongno 3-ga Station and change to Line 1 toward Cheongnyangni", cn: "在Jongno 3-ga站下车，换乘1号线（往Cheongnyangni方向）" },
+        { kr: "'종로5가역'에서 내려요 (1정거장). 시장이 바로 근처예요", en: "Get off at Jongno 5-ga Station (1 stop). The market is right nearby", cn: "在Jongno 5-ga站下车（1站），市场就在附近" }] },
+    { ic: "🛍", name: { kr: "명동", en: "Myeongdong", cn: "Myeongdong" }, q: "명동역", transfers: 2, mins: 35,
+      steps: ["A1", "N3", { kr: "'충무로역'에서 내려 4호선 오이도 방면으로 갈아타요", en: "Get off at Chungmuro Station and change to Line 4 toward Oido", cn: "在Chungmuro站下车，换乘4号线（往Oido方向）" },
+        { kr: "'명동역'에서 내려요 (1정거장)", en: "Get off at Myeongdong Station (1 stop)", cn: "在Myeongdong站下车（1站）" }] },
+    { ic: "🏛", name: { kr: "동대문 · DDP", en: "Dongdaemun · DDP", cn: "Dongdaemun · DDP" }, q: "동대문역사문화공원역", transfers: 2, mins: 35,
+      steps: ["A1", "N3", { kr: "'충무로역'에서 내려 4호선 진접 방면으로 갈아타요", en: "Get off at Chungmuro Station and change to Line 4 toward Jinjeop", cn: "在Chungmuro站下车，换乘4号线（往Jinjeop方向）" },
+        { kr: "'동대문역사문화공원역'에서 내려요 (1정거장)", en: "Get off at Dongdaemun History & Culture Park Station (1 stop)", cn: "在Dongdaemun History & Culture Park站下车（1站）" }] },
+    { ic: "🍸", name: { kr: "이태원", en: "Itaewon", cn: "Itaewon" }, q: "이태원역", transfers: 2, mins: 35,
+      steps: ["A1", "N3", { kr: "'약수역'에서 내려 6호선 응암 방면으로 갈아타요 (6정거장)", en: "Get off at Yaksu Station (6 stops) and change to Line 6 toward Eungam", cn: "在Yaksu站下车（6站），换乘6号线（往Eungam方向）" },
+        { kr: "'이태원역'에서 내려요 (3정거장)", en: "Get off at Itaewon Station (3 stops)", cn: "在Itaewon站下车（3站）" }] },
+    { ic: "🏙", name: { kr: "롯데월드타워", en: "Lotte World Tower", cn: "Lotte World Tower" }, q: "롯데월드타워", transfers: 2, mins: 35,
+      steps: ["A1", { kr: "고속터미널역에서 3호선 오금 방면으로 갈아타요", en: "At Express Bus Terminal Station change to Line 3 toward Ogeum", cn: "在Express Bus Terminal站换乘3号线（往Ogeum方向）" },
+        { kr: "'교대역'에서 내려 2호선 잠실 방면으로 갈아타요 (1정거장)", en: "Get off at Gyodae Station (1 stop) and change to Line 2 toward Jamsil", cn: "在Gyodae站下车（1站），换乘2号线（往Jamsil方向）" },
+        { kr: "'잠실역'에서 내려요 (7정거장). 타워는 역과 지하로 이어져 있어요", en: "Get off at Jamsil Station (7 stops). The tower connects to the station underground", cn: "在Jamsil站下车（7站）。塔楼与车站地下相连" }] },
+    { ic: "🎸", name: { kr: "홍대", en: "Hongdae", cn: "Hongdae" }, q: "홍대입구역", transfers: 2, mins: 40,
+      steps: ["A1", { kr: "고속터미널역에서 9호선 개화 방면으로 갈아타요 (급행이 빨라요)", en: "At Express Bus Terminal Station change to Line 9 toward Gaehwa (the express train is faster)", cn: "在Express Bus Terminal站换乘9号线（往Gaehwa方向，快车更快）" },
+        { kr: "'당산역'에서 내려 2호선 합정·홍대입구 방면으로 갈아타요", en: "Get off at Dangsan Station and change to Line 2 toward Hapjeong and Hongik Univ.", cn: "在Dangsan站下车，换乘2号线（往Hapjeong·Hongik Univ.方向）" },
+        { kr: "'홍대입구역'에서 내려요 (2정거장)", en: "Get off at Hongik Univ. Station (2 stops)", cn: "在Hongik Univ.站下车（2站）" }] }
+  ],
+
   /* 갈래 단추입니다. key는 아래 가게의 type과 짝이 맞아야 합니다. all은 전체 보기입니다 */
   placeTypes: [
     { key: "all",  label: { kr: "전체", en: "All", cn: "全部" } },
@@ -1875,8 +1913,153 @@ function renderNearby() {
     '<div class="map-wrap" id="mapWrap" hidden><div id="map"></div></div>' +
     '<div class="chips">' + chips + '</div>' +
     renderSpecialChips() +
+    '<div class="nb-links">' +
+      ciRow("tour", "map", { kr: "골목길 투어", en: "Neighborhood walks", cn: "街巷漫步路线" }, { kr: "걷는 순서까지 정해 둔 두 개의 길", en: "Two walks with the order planned", cn: "两条排好顺序的步行路线" }) +
+      ciRow("sights", "pin", { kr: "주요 관광지 가는 방법", en: "Getting to major sights", cn: "热门景点交通" }, { kr: "내방역에서 출발 · " + (CONFIG.sights || []).length + "곳", en: "From Naebang Station · " + (CONFIG.sights || []).length + " places", cn: "从Naebang站出发 · " + (CONFIG.sights || []).length + "处" }) +
+    '</div>' +
     '<div id="placeList">' + cards + '</div>' +
     '<p class="hint" id="placesEmpty" hidden>' + t(T.placesEmpty) + '</p>';
+}
+
+/* ================= 골목길 투어 · 주요 관광지 가는 방법 ================= */
+const SIGHT_STEP = {
+  A1: { kr: "내방역에서 7호선 장암 방면을 타고 '고속터미널역'에서 내려요 (1정거장)", en: "At Naebang Station take Line 7 toward Jangam and get off at Express Bus Terminal Station (1 stop)", cn: "在Naebang站乘7号线（往Jangam方向），在Express Bus Terminal站下车（1站）" },
+  N3: { kr: "고속터미널역에서 3호선 대화 방면으로 갈아타요", en: "At Express Bus Terminal Station change to Line 3 toward Daehwa", cn: "在Express Bus Terminal站换乘3号线（往Daehwa方向）" }
+};
+function kmBetween(a, b) {
+  const R = 6371, rad = Math.PI / 180;
+  const dLat = (b[0] - a[0]) * rad, dLng = (b[1] - a[1]) * rad;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a[0] * rad) * Math.cos(b[0] * rad) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+function tourStops(c) {
+  const places = CONFIG.places || [];
+  return (c.stops || []).map(k => places.find(p => p.name && p.name.kr && p.name.kr.indexOf(k) === 0)).filter(hasCoord);
+}
+function tourStats(c) {
+  const pts = [[CONFIG.homeLat, CONFIG.homeLng]].concat(tourStops(c).map(p => [p.lat, p.lng]), [[CONFIG.homeLat, CONFIG.homeLng]]);
+  let km = 0;
+  for (let i = 1; i < pts.length; i++) km += kmBetween(pts[i - 1], pts[i]);
+  km *= 1.25;                                              // 직선 거리에 골목 굽이를 더해 어림합니다
+  return { km: Math.round(km * 10) / 10, mins: Math.max(5, Math.round(km / 4.5 * 60 / 5) * 5) };
+}
+function numIconHtml(n) { return '<span class="tour-no">' + n + '</span>'; }
+
+function renderTour() {
+  const tours = CONFIG.tours || [];
+  const chips = tours.map((c, i) => '<button class="chip' + (i === 0 ? ' on' : '') + '" type="button" data-tour="' + esc(c.id) + '" aria-pressed="' + (i === 0) + '">' + t(c.short) + ' · ' + t(c.name) + '</button>').join("");
+  const lists = tours.map((c, ci) => {
+    const st = tourStats(c);
+    const items = tourStops(c).map((p, i) => {
+      const q = encodeURIComponent(p.name.kr);
+      return '<li class="wk"><span class="wk-no">' + (i + 1) + '</span><div class="wk-body" id="tour-' + esc(c.id) + '-' + (i + 1) + '">' +
+        '<b>' + t(p.name) + '</b>' +
+        '<small>' + t(p.line) + '</small>' +
+        (p.hours ? '<small class="wk-h">' + t({ kr: "영업시간", en: "Hours", cn: "营业时间" }) + t({ kr: ": ", en: ": ", cn: "：" }) + t(p.hours) + '</small>' : '') +
+        '<a class="wk-map" href="https://map.naver.com/p/search/' + q + '" target="_blank" rel="noopener">' + t({ kr: "지도에서 보기", en: "Open in map", cn: "在地图中查看" }) + ' ↗</a>' +
+      '</div></li>';
+    }).join("");
+    return '<div class="tour-list" data-tour-list="' + esc(c.id) + '"' + (ci === 0 ? '' : ' hidden') + '>' +
+      '<p class="tour-sum">' + t({ kr: "약 " + st.km + "km · 걸어서 약 " + st.mins + "분 (구경하는 시간 제외)", en: "About " + st.km + " km · about " + st.mins + " min on foot (not counting stops)", cn: "约" + st.km + "公里 · 步行约" + st.mins + "分钟（不含游览时间）" }) + '</p>' +
+      '<ol class="walk">' + items + '</ol></div>';
+  }).join("");
+  return backButton("back") +
+    '<h2>' + t({ kr: "골목길 투어", en: "Neighborhood walks", cn: "街巷漫步路线" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "걷는 순서까지 정해 둔 두 개의 길이에요. 숙소를 나서면 바로 시작해서, 숙소로 돌아와요.", en: "Two walks with the order already planned. Start right at the door and come back home.", cn: "两条已经排好顺序的步行路线，从住所出发，最后回到住所。" }) + '</p>' +
+    '<div class="chips">' + chips + '</div>' +
+    '<div class="map-wrap" id="tourMapWrap" hidden><div id="tourMap"></div></div>' +
+    '<p class="hint">' + t({ kr: "점선은 걷는 순서를 잇는 선이에요. 번호를 누르면 이름이 보여요.", en: "The dotted line shows the walking order. Tap a number to see the name.", cn: "虚线表示步行顺序，点击数字可查看名称。" }) + '</p>' +
+    lists +
+    '<div class="btns"><button class="btn line-btn" type="button" data-go="nearby">' + t({ kr: "동네 안내 지도로 돌아가기", en: "Back to the neighborhood map", cn: "返回周边指南地图" }) + '</button></div>';
+}
+let tourState = { tried: false, map: null, cur: null, layer: [], iw: null };
+function setTour(id) {
+  tourState.cur = id;
+  document.querySelectorAll("[data-tour]").forEach(b => { const on = b.getAttribute("data-tour") === id; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+  document.querySelectorAll("[data-tour-list]").forEach(l => { l.hidden = l.getAttribute("data-tour-list") !== id; });
+  drawTour();
+}
+function drawTour() {
+  const map = tourState.map; if (!map) return;
+  const c = (CONFIG.tours || []).find(x => x.id === tourState.cur) || (CONFIG.tours || [])[0]; if (!c) return;
+  try {
+    tourState.layer.forEach(o => o.setMap(null)); tourState.layer = [];
+    if (tourState.iw) tourState.iw.close();
+    const stops = tourStops(c), home = new naver.maps.LatLng(CONFIG.homeLat, CONFIG.homeLng);
+    const path = [home].concat(stops.map(p => new naver.maps.LatLng(p.lat, p.lng)), [home]);
+    tourState.layer.push(new naver.maps.Polyline({ map: map, path: path, strokeColor: "#1d3b2c", strokeWeight: 3, strokeOpacity: 0.8, strokeStyle: "shortdash" }));
+    stops.forEach((p, i) => {
+      const m = new naver.maps.Marker({ position: new naver.maps.LatLng(p.lat, p.lng), map: map, title: t(p.name), icon: { content: numIconHtml(i + 1), anchor: new naver.maps.Point(15, 15) } });
+      naver.maps.Event.addListener(m, "click", () => {
+        if (!tourState.iw) tourState.iw = new naver.maps.InfoWindow({ content: "", borderWidth: 1, anchorSize: new naver.maps.Size(10, 8) });
+        tourState.iw.setContent('<div class="tour-iw">' + esc(t(p.name)) + '</div>'); tourState.iw.open(map, m);
+        const card = document.getElementById("tour-" + c.id + "-" + (i + 1));
+        if (card) { card.scrollIntoView({ behavior: "smooth", block: "center" }); card.classList.remove("flash"); void card.offsetWidth; card.classList.add("flash"); }
+      });
+      tourState.layer.push(m);
+    });
+    const lats = path.map(x => x.lat()), lngs = path.map(x => x.lng());
+    map.fitBounds(new naver.maps.LatLngBounds(new naver.maps.LatLng(Math.min.apply(null, lats), Math.min.apply(null, lngs)), new naver.maps.LatLng(Math.max.apply(null, lats), Math.max.apply(null, lngs))), { top: 40, right: 40, bottom: 40, left: 40 });
+  } catch (e) {}
+}
+function initTourMap() {
+  if (tourState.tried) { if (tourState.map) setTimeout(() => { try { naver.maps.Event.trigger(tourState.map, "resize"); drawTour(); } catch (e) {} }, 60); return; }
+  tourState.tried = true;
+  if (!String(CONFIG.naverMapKey || "").trim() || typeof CONFIG.homeLat !== "number") return;
+  whenNaverReady(function (ok) {
+    if (!ok || mapState.failed) return;
+    try {
+      document.getElementById("tourMapWrap").hidden = false;
+      const map = new naver.maps.Map("tourMap", { center: new naver.maps.LatLng(CONFIG.homeLat, CONFIG.homeLng), zoom: 15, scrollWheel: false, mapDataControl: false });
+      new naver.maps.Marker({ position: new naver.maps.LatLng(CONFIG.homeLat, CONFIG.homeLng), map: map, zIndex: 1000, icon: { content: homeIconHtml(), anchor: new naver.maps.Point(22, 22) } });
+      tourState.map = map;
+      drawTour();
+    } catch (e) { const w = document.getElementById("tourMapWrap"); if (w) w.hidden = true; }
+  });
+}
+
+function sightMeta(sg) {
+  const tr = sg.transfers === 0 ? { kr: "환승 없음", en: "No transfer", cn: "无需换乘" }
+    : { kr: "환승 " + sg.transfers + "회", en: sg.transfers + (sg.transfers === 1 ? " transfer" : " transfers"), cn: "换乘" + sg.transfers + "次" };
+  return t({ kr: "지하철 · " + tr.kr + " · 약 " + sg.mins + "분", en: "Subway · " + tr.en + " · about " + sg.mins + " min", cn: "地铁 · " + tr.cn + " · 约" + sg.mins + "分钟" });
+}
+function renderSights() {
+  const st = (CONFIG.transit || {}).station;
+  const items = (CONFIG.sights || []).map(sg => {
+    const steps = (sg.steps || []).map(x => '<li>' + t(typeof x === "string" ? SIGHT_STEP[x] : x) + '</li>').join("");
+    const q = encodeURIComponent(sg.q || sg.name.kr);
+    return '<details class="acc sight"><summary>' +
+      '<span class="acc-head"><span class="sight-ic" aria-hidden="true">' + sg.ic + '</span><span class="sight-t"><b>' + t(sg.name) + '</b><small>' + sightMeta(sg) + '</small></span></span>' +
+      '<span class="acc-mark" aria-hidden="true"></span></summary>' +
+      '<div class="acc-body"><ol class="sight-steps">' + steps + '</ol>' +
+      '<div class="btns"><a class="btn line-btn" href="https://map.naver.com/p/search/' + q + '" target="_blank" rel="noopener">' + t({ kr: "지도에서 보기", en: "Open in map", cn: "在地图中查看" }) + ' ↗</a></div></div></details>';
+  }).join("");
+  return backButton("back") +
+    '<h2>' + t({ kr: "주요 관광지 가는 방법", en: "Getting to major sights", cn: "热门景点交通" }) + '</h2>' +
+    '<p class="sub-lead">' + t({ kr: "모든 길은 내방역(7호선)에서 시작해요. 숙소에서 내방역까지는 택시로 약 5분이에요. 시간은 환승 시간을 포함한 대략치예요.", en: "Every route starts at Naebang Station (Line 7), about 5 min from the house by taxi. Times are rough estimates, including transfers.", cn: "所有路线都从Naebang站（7号线）出发，从住所打车约5分钟。时间为含换乘的大致估计。" }) + '</p>' +
+    (st ? '<div class="map-wrap" id="sightsMapWrap" hidden><div id="sightsMap"></div></div>' : '') +
+    '<p class="hint">' + t({ kr: "숙소 대문에서 내방역까지는 '유용한 정보'의 대중교통 안내를 참고해 주세요.", en: "For the way from the house to Naebang Station, see the public transit tip in the FAQ.", cn: "从住所到Naebang站的方法，请参考常见问题中的公共交通说明。" }) + '</p>' +
+    '<div class="acc-list">' + items + '</div>';
+}
+let sightsState = { tried: false, map: null };
+function initSightsMap() {
+  if (sightsState.tried) { if (sightsState.map) setTimeout(() => { try { naver.maps.Event.trigger(sightsState.map, "resize"); } catch (e) {} }, 60); return; }
+  sightsState.tried = true;
+  const st = (CONFIG.transit || {}).station;
+  if (!st || !String(CONFIG.naverMapKey || "").trim() || typeof CONFIG.homeLat !== "number") return;
+  whenNaverReady(function (ok) {
+    if (!ok || mapState.failed) return;
+    try {
+      document.getElementById("sightsMapWrap").hidden = false;
+      const a = new naver.maps.LatLng(CONFIG.homeLat, CONFIG.homeLng), b = new naver.maps.LatLng(st.lat, st.lng);
+      const map = new naver.maps.Map("sightsMap", { center: a, zoom: 15, scrollWheel: false, mapDataControl: false });
+      new naver.maps.Polyline({ map: map, path: [a, b], strokeColor: "#1d3b2c", strokeWeight: 3, strokeOpacity: 0.8, strokeStyle: "shortdash" });
+      new naver.maps.Marker({ position: a, map: map, zIndex: 1000, icon: { content: homeIconHtml(), anchor: new naver.maps.Point(22, 22) } });
+      new naver.maps.Marker({ position: b, map: map, title: t(st.name), icon: { content: '<span class="tour-no sub">' + esc(t({ kr: "내방역", en: "Naebang", cn: "Naebang" })) + '</span>', anchor: new naver.maps.Point(30, 15) } });
+      map.fitBounds(new naver.maps.LatLngBounds(new naver.maps.LatLng(Math.min(a.lat(), b.lat()), Math.min(a.lng(), b.lng())), new naver.maps.LatLng(Math.max(a.lat(), b.lat()), Math.max(a.lng(), b.lng()))), { top: 50, right: 50, bottom: 50, left: 50 });
+      sightsState.map = map;
+    } catch (e) { const w = document.getElementById("sightsMapWrap"); if (w) w.hidden = true; }
+  });
 }
 
 /* ---------- 지도 (Leaflet). 못 불러와도 목록은 그대로 보입니다 ---------- */
@@ -2215,7 +2398,7 @@ function saveCheckin() {
   try { localStorage.setItem(CHECKIN_KEY, JSON.stringify(done)); } catch (e) {}
 }
 
-const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "food", "co-van", "co-airport", "co-late", "ci-early", "phrases", "walk", "trash", "sos", "wifi", "house", "nearby", "faq", "checkout", "contact", "parking", "trouble"];
+const SCREENS = ["home", "stay", "checkin", "ci-address", "ci-luggage", "ci-extra", "co", "food", "co-van", "co-airport", "co-late", "ci-early", "phrases", "walk", "trash", "sos", "wifi", "house", "nearby", "tour", "sights", "faq", "checkout", "contact", "parking", "trouble"];
 let navStack = [];
 
 function showScreen(id) {
@@ -2233,6 +2416,8 @@ function showScreen(id) {
     setFilter(pendingPreset || mapState.filter || defaultFilter()); pendingPreset = null;
     initMap();
   }
+  if (id === "tour") { if (!tourState.cur) tourState.cur = ((CONFIG.tours || [])[0] || {}).id; initTourMap(); }
+  if (id === "sights") initSightsMap();
 }
 let pendingPreset = null;
 let reviewAsked = false;
@@ -2276,6 +2461,8 @@ function start() {
     '<section id="screen-wifi" hidden>' + renderWifi() + '</section>' +
     '<section id="screen-house" hidden>' + renderHouse() + '</section>' +
     '<section id="screen-nearby" hidden>' + renderNearby() + '</section>' +
+    '<section id="screen-tour" hidden>' + renderTour() + '</section>' +
+    '<section id="screen-sights" hidden>' + renderSights() + '</section>' +
     '<section id="screen-faq" hidden>' + renderFaq() + '</section>' +
     '<section id="screen-checkout" hidden>' + renderCheckout() + '</section>' +
     '<section id="screen-contact" hidden>' + renderContact() + '</section>' +
@@ -2356,6 +2543,8 @@ function start() {
     if (e.target.closest("[data-car-card]")) { openCarCard(); return; }
     const fl = e.target.closest("[data-filter]");
     if (fl) { setFilter(fl.getAttribute("data-filter")); return; }
+    const tb = e.target.closest("[data-tour]");
+    if (tb) { setTour(tb.getAttribute("data-tour")); return; }
     const cp = e.target.closest("[data-copy]");
     if (cp) {
       const kind = cp.getAttribute("data-copy");
@@ -2829,7 +3018,7 @@ html[data-lang="kr"] .en,html[data-lang="kr"] .cn{display:none}html[data-lang="e
 /* Background unification only — no image files or content changed. */
 :root{--bg:#f4efe5!important;--paper:#f4efe5!important;}
 html,body,#app,.site,.site-header,.hero,.hero-copy,.content,.welcome,.explore,footer,
-#screen-home,#screen-checkin,#screen-wifi,#screen-house,#screen-nearby,#screen-faq,#screen-checkout,#screen-contact{background:#f4efe5!important;}
+#screen-home,#screen-checkin,#screen-wifi,#screen-house,#screen-nearby,#screen-tour,#screen-sights,#screen-faq,#screen-checkout,#screen-contact{background:#f4efe5!important;}
 .hero{background:#f4efe5!important;}
 .hero-image:before{background:linear-gradient(90deg,#f4efe5 0%,rgba(244,239,229,.45) 12%,transparent 28%)!important;}
 .card,.acc,.chip,.back,.utility{background:#f4efe5!important;}
@@ -3148,6 +3337,18 @@ html body{top:0!important}
 .co-link{margin-left:8px;border:0;background:none;padding:0;font:600 13px var(--sans);color:var(--v-green);text-decoration:underline;cursor:pointer}
 .co-notify{margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,0,0,.08)}
 .home-map-wrap{position:relative;width:44px;height:44px}.home-map-label{position:absolute;left:48px;top:11px;padding:2px 8px;background:#fff;border-radius:999px;font-weight:700;font-size:13px;color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.25);white-space:nowrap}
+
+.nb-links{display:flex;flex-direction:column;gap:12px;margin:6px 0 18px}
+.tour-no{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#1d3b2c;color:#fff;border:2px solid #fff;font:700 14px var(--sans);box-shadow:0 2px 8px rgba(40,35,25,.35)}
+.tour-no.sub{width:auto;min-width:60px;height:30px;padding:0 10px;border-radius:999px;font-size:13px;white-space:nowrap}
+.tour-iw{padding:6px 10px;font:600 13px var(--sans);color:#1d1d1f;white-space:nowrap}
+#tourMap{height:320px}#sightsMap{height:240px}
+.tour-sum{margin:14px 0 10px;font:600 14px var(--sans);color:var(--v-sub)}
+.sight .acc-head{flex-direction:row;align-items:center;gap:14px}
+.sight-ic{flex:0 0 44px;width:44px;height:44px;border-radius:12px;background:#ece4d2;display:grid;place-items:center;font-size:22px}
+.sight-t{display:flex;flex-direction:column;gap:3px;min-width:0}.sight-t b{font:600 17px var(--sans)}.sight-t small{font:13px var(--sans);color:var(--v-sub)}
+.sight-steps{margin:4px 0 12px;padding-left:20px;font:15px/1.6 var(--sans)}.sight-steps li{margin:0 0 6px}
+#screen-tour,#screen-sights{width:min(760px,calc(100% - 40px));margin:0 auto;padding:28px 0 60px}
 </style>
 </head>
 <body>
