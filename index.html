@@ -585,7 +585,9 @@ const CONFIG = {
   /* ---------- 동네 안내 ---------- */
   /* 지도 가운데와 숙소 핀 위치입니다. 비워 두면(null) 숙소 핀만 사라집니다 */
   homeLat: 37.493688,                        // 숙소 위도. 지도에 숙소 핀이 찍히는 자리이자, 우버 출발지 핀 위치입니다
-  homeLng: 126.996188,                        // 숙소 경도
+  homeLng: 126.996188,
+  naverMapKey: "5kz64w0gej",                 // 네이버 지도 열쇠(Client ID). 비워 두면 동네 안내 화면에 지도가 나오지 않고 목록만 보입니다
+                        // 숙소 경도
 
   /* ---------- 대중교통으로 오시는 길 (유용한 정보 화면 카드) ---------- */
   /* 설명 문장과, 승차 정류장·하차 정류장·지하철역의 위도·경도입니다. 지도에 경로로 표시됩니다 */
@@ -607,6 +609,7 @@ const CONFIG = {
 
   /* 갈래 단추입니다. key는 아래 가게의 type과 짝이 맞아야 합니다. all은 전체 보기입니다 */
   placeTypes: [
+    { key: "all",  label: { kr: "전체", en: "All", cn: "全部" } },
     { key: "food", label: { kr: "식사", en: "Food", cn: "餐厅" } },
     { key: "cafe", label: { kr: "카페", en: "Cafés", cn: "咖啡厅" } },
     { key: "bar",  label: { kr: "바", en: "Bars", cn: "酒吧" } },
@@ -1893,21 +1896,49 @@ const MAP_ICONS = {
   see: '<path d="M3 7h4l2-3h6l2 3h4v13H3V7Zm9 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/>',
   shop: '<path d="m3 9 3 12h12l3-12H3Zm5 0 4-6 4 6M8 13v4m4-4v4m4-4v4"/>'
 };
-/* 숙소 표시: 다른 색(테라코타)의 집 아이콘 */
-function homeMapIcon() {
-  return L.divIcon({
-    className: "home-map-icon",
-    html: '<span class="home-map-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></svg></span>',
-    iconSize: [44, 44], iconAnchor: [22, 22]
-  });
+/* 숙소·가게 핀 모양 (네이버 지도 위에 올라가는 글자 조각) */
+function homeIconHtml() {
+  return '<div class="home-map-wrap"><span class="home-map-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></svg></span><span class="home-map-label">' + esc(t(CONFIG.text.homePin)) + '</span></div>';
 }
-function placeMapIcon(type) {
+function placeIconHtml(type) {
   const drawing = MAP_ICONS[type] || MAP_ICONS.see;
-  return L.divIcon({
-    className: "place-map-icon",
-    html: '<span class="place-map-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + drawing + '</svg></span>',
-    iconSize: [38, 38], iconAnchor: [19, 19], popupAnchor: [0, -20]
-  });
+  return '<span class="place-map-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + drawing + '</svg></span>';
+}
+
+/* ---------- 네이버 지도 불러오기: 페이지가 열릴 때 한 번 붙입니다 ---------- */
+let naverState = { st: "idle", q: [] };
+function naverDone(ok) {
+  if (naverState.st === "ok" || naverState.st === "fail") return;
+  naverState.st = ok ? "ok" : "fail";
+  const q = naverState.q; naverState.q = [];
+  q.forEach(f => { try { f(ok); } catch (e) {} });
+}
+// 열쇠가 틀렸거나 주소가 등록되지 않았을 때 네이버가 부르는 함수입니다. 지도 자리만 조용히 숨깁니다
+window.navermap_authFailure = function () {
+  naverState.st = "fail";
+  mapState.failed = true;
+  const wrap = document.getElementById("mapWrap");
+  if (wrap) wrap.hidden = true;
+};
+function loadNaverMap() {
+  const key = String(CONFIG.naverMapKey || "").trim();
+  if (!key || naverState.st !== "idle") return;
+  naverState.st = "loading";
+  try {
+    const js = document.createElement("script");
+    js.src = "https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=" + encodeURIComponent(key);
+    js.async = true;
+    js.onload = () => naverDone(!!(window.naver && window.naver.maps));
+    js.onerror = () => naverDone(false);
+    setTimeout(() => naverDone(!!(window.naver && window.naver.maps)), 10000);
+    document.head.appendChild(js);
+  } catch (e) { naverDone(false); }
+}
+function whenNaverReady(cb) {
+  if (naverState.st === "ok") { cb(true); return; }
+  if (naverState.st === "fail") { cb(false); return; }
+  naverState.q.push(cb);
+  if (naverState.st === "idle") loadNaverMap();
 }
 
 function loadScript(src, done) {
@@ -1978,33 +2009,36 @@ function loadLeaflet(done) {
 
 function initMap() {
   if (mapState.tried) {
-    if (mapState.map) setTimeout(() => mapState.map.invalidateSize(), 50);
+    if (mapState.map && !mapState.failed) setTimeout(() => { try { naver.maps.Event.trigger(mapState.map, "resize"); } catch (e) {} }, 50);
     return;
   }
   mapState.tried = true;
+  if (!String(CONFIG.naverMapKey || "").trim()) return;            // 열쇠가 없으면 지도를 보여 주지 않습니다
   const withCoord = (CONFIG.places || []).map((p, i) => ({ p: p, i: i })).filter(o => hasCoord(o.p));
-  if (withCoord.length === 0) return;
-  loadLeaflet(function (ok) {
-    if (!ok) return;
+  if (withCoord.length === 0) return;                              // 좌표가 하나도 없으면 지도를 보여 주지 않습니다
+  whenNaverReady(function (ok) {
+    if (!ok || mapState.failed) return;
     try {
       const wrap = document.getElementById("mapWrap");
       wrap.hidden = false;
-      const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#1B3D29";
-      const map = L.map("map", { scrollWheelZoom: false, attributionControl: true });
-      addBaseMap(map);
+      const hasHome = typeof CONFIG.homeLat === "number" && typeof CONFIG.homeLng === "number";
+      const c0 = hasHome ? [CONFIG.homeLat, CONFIG.homeLng] : [withCoord[0].p.lat, withCoord[0].p.lng];
+      const map = new naver.maps.Map("map", { center: new naver.maps.LatLng(c0[0], c0[1]), zoom: 15, scrollWheel: false, mapDataControl: false });
       const pts = [];
       const startKey = mapState.filter || defaultFilter();
       withCoord.forEach(o => {
-        const m = L.marker([o.p.lat, o.p.lng], { icon: placeMapIcon(o.p.type) });
-        if (placeMatchKey(o.p, startKey)) m.addTo(map);
-        m.bindTooltip(t(o.p.name), { direction: "top", offset: [0, -6] });
-        m.on("click", () => goToPlace(o.i));
+        const show = placeMatchKey(o.p, startKey);
+        const m = new naver.maps.Marker({
+          position: new naver.maps.LatLng(o.p.lat, o.p.lng), map: show ? map : null, title: t(o.p.name),
+          icon: { content: placeIconHtml(o.p.type), anchor: new naver.maps.Point(19, 19) }
+        });
+        naver.maps.Event.addListener(m, "click", () => goToPlace(o.i));
         mapState.markers.push({ marker: m, type: o.p.type, i: o.i });
-        if (placeMatchKey(o.p, startKey)) pts.push([o.p.lat, o.p.lng]);
+        if (show) pts.push([o.p.lat, o.p.lng]);
       });
-      if (typeof CONFIG.homeLat === "number" && typeof CONFIG.homeLng === "number") {
-        L.marker([CONFIG.homeLat, CONFIG.homeLng], { icon: homeMapIcon(), zIndexOffset: 1000 })
-          .addTo(map).bindTooltip(t(CONFIG.text.homePin), { permanent: true, direction: "right", offset: [18, 0], className: "home-tip" });
+      if (hasHome) {
+        new naver.maps.Marker({ position: new naver.maps.LatLng(CONFIG.homeLat, CONFIG.homeLng), map: map, zIndex: 1000,
+          icon: { content: homeIconHtml(), anchor: new naver.maps.Point(22, 22) } });
         pts.push([CONFIG.homeLat, CONFIG.homeLng]);
       }
       mapState.map = map;
@@ -2026,8 +2060,13 @@ function fitMap(pts) {
   const map = mapState.map;
   if (!map || !pts.length) return;
   pts = nearHome(pts);
-  if (pts.length === 1) { map.setView(pts[0], 16); return; }
-  map.fitBounds(pts, { padding: [24, 24], maxZoom: 16 });
+  try {
+    if (pts.length === 1) { map.setCenter(new naver.maps.LatLng(pts[0][0], pts[0][1])); map.setZoom(16); return; }
+    const lats = pts.map(x => x[0]), lngs = pts.map(x => x[1]);
+    const b = new naver.maps.LatLngBounds(new naver.maps.LatLng(Math.min.apply(null, lats), Math.min.apply(null, lngs)), new naver.maps.LatLng(Math.max.apply(null, lats), Math.max.apply(null, lngs)));
+    map.fitBounds(b, { top: 30, right: 30, bottom: 30, left: 30 });
+    if (map.getZoom() > 16) map.setZoom(16);
+  } catch (e) {}
 }
 
 function goToPlace(i) {
@@ -2041,7 +2080,8 @@ function goToPlace(i) {
 }
 
 function defaultFilter() {
-  return ((CONFIG.placeTypes || [])[0] || {}).key || "food";
+  const first = (CONFIG.placeTypes || []).filter(x => x.key !== "all")[0];
+  return (first || {}).key || "food";
 }
 function setFilter(key) {
   mapState.filter = key;
@@ -2061,12 +2101,13 @@ function setFilter(key) {
   updatePlaceExtras(key);
   const empty = document.getElementById("placesEmpty");
   if (empty) empty.hidden = shown > 0;
-  if (mapState.map) {
+  if (mapState.map && !mapState.failed) {
     const pts = [];
     mapState.markers.forEach(o => {
-      const show = placeMatchKey((CONFIG.places || [])[o.i], key);
-      if (show) { o.marker.addTo(mapState.map); const ll = o.marker.getLatLng(); pts.push([ll.lat, ll.lng]); }
-      else { o.marker.remove(); }
+      const pl = (CONFIG.places || [])[o.i];
+      const show = placeMatchKey(pl, key);
+      try { o.marker.setMap(show ? mapState.map : null); } catch (e) {}
+      if (show) pts.push([pl.lat, pl.lng]);
     });
     if (typeof CONFIG.homeLat === "number") pts.push([CONFIG.homeLat, CONFIG.homeLng]);
     if (pts.length) fitMap(pts);
@@ -2647,6 +2688,7 @@ function openState(p, now) {
 function placeOpensEarly(p) { const H = parseHours(p.hours && (p.hours.kr || p.hours)); return !H.bad && !H.always && ((H.base || H.wk || H.we || [99])[0] <= 9); }
 function placeOpenLate(p) { const H = parseHours(p.hours && (p.hours.kr || p.hours)); return !H.bad && ((H.base && H.base[1] >= 24) || (H.we && H.we[1] >= 24) || (H.wk && H.wk[1] >= 24)); }
 function placeMatchKey(p, key) {
+  if (key === "all") return true;
   if (key.indexOf("s:") !== 0) return p.type === key;
   const k = key.slice(2);
   if (k === "now") return openState(p, kstDate()) === "open";
@@ -2748,6 +2790,7 @@ document.addEventListener("DOMContentLoaded", start);
 document.addEventListener("DOMContentLoaded", function () { if (TR) setTimeout(function () { startTr(TR); }, 0); });
 document.addEventListener("DOMContentLoaded", setupInstall);
 document.addEventListener("DOMContentLoaded", loadWeather);
+document.addEventListener("DOMContentLoaded", loadNaverMap);
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3101,6 +3144,7 @@ html body{top:0!important}
 .co-bar i{display:block;height:100%;width:0;background:var(--v-green);border-radius:99px;transition:width .25s}
 .co-link{margin-left:8px;border:0;background:none;padding:0;font:600 13px var(--sans);color:var(--v-green);text-decoration:underline;cursor:pointer}
 .co-notify{margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,0,0,.08)}
+.home-map-wrap{position:relative;width:44px;height:44px}.home-map-label{position:absolute;left:48px;top:11px;padding:2px 8px;background:#fff;border-radius:999px;font-weight:700;font-size:13px;color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.25);white-space:nowrap}
 </style>
 </head>
 <body>
