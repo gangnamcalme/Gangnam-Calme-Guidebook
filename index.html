@@ -787,7 +787,7 @@ const CONFIG = {
 
     menuCheckin: { kr: "체크인", en: "Check-in", cn: "入住" },                              // 메뉴 버튼 이름: 체크인 화면
     menuCheckinSub: { kr: "주소와 들어오는 법", en: "Address and how to get in", cn: "地址和进门方法" }, // 메뉴 버튼 아래 작은 설명
-    menuWifi: { kr: "와이파이", en: "Wi-Fi", cn: "Wi-Fi" },                                  // 메뉴 버튼 이름: 와이파이 화면
+    menuWifi: { kr: "와이파이", en: "WiFi", cn: "WiFi" },                                  // 메뉴 버튼 이름: 와이파이 화면
     menuWifiSub: { kr: "이름과 비밀번호", en: "Network and password", cn: "网络名称和密码" },           // 메뉴 버튼 아래 작은 설명
     menuHouse: { kr: "집 안에서", en: "In the house", cn: "室内指南" },                          // 메뉴 버튼 이름: 집 안에서 화면
     menuHouseSub: { kr: "시설 사용법과 쓰레기", en: "How things work, and trash", cn: "设施使用方法和垃圾处理" }, // 메뉴 버튼 아래 작은 설명
@@ -821,7 +821,7 @@ const CONFIG = {
     callTaxi: { kr: "우버로 택시 호출하기", en: "Call a Taxi (Uber)", cn: "叫Uber出租车" },        // 택시 호출 버튼. 누르면 숙소 주소(mapQuery)가 출발지로 입력된 채 우버 앱(없으면 우버 웹)이 열립니다
     callTaxiHint: { kr: "출발지는 숙소 주소로 자동 입력됩니다. 도착지 입력과 요금 확인은 우버 앱에서 해주세요.", en: "Pickup is set to the house automatically. Enter your destination and check the fare in the Uber app.", cn: "出发地已自动设为住所地址。请在Uber应用中输入目的地并确认费用。" }, // 택시 호출 버튼 아래 작은 안내
 
-    wifiNameLabel: { kr: "와이파이 이름", en: "Network", cn: "Wi-Fi名称" },                        // 와이파이 화면: 이름 제목
+    wifiNameLabel: { kr: "와이파이 이름", en: "Network", cn: "WiFi名称" },                        // 와이파이 화면: 이름 제목
     wifiName2Label: { kr: "2.4G 이름", en: "2.4G network", cn: "2.4G名称" },                     // 와이파이 화면: 두 번째 이름 제목
     wifiPasswordLabel: { kr: "비밀번호", en: "Password", cn: "密码" },                        // 와이파이 화면: 비밀번호 제목
     wifiTip: { kr: "집 안에서는 5G가 더 빠릅니다.", en: "5G is faster inside the house.", cn: "在屋内使用5G网络更快。" }, // 와이파이 화면: 아래 작은 안내
@@ -1497,7 +1497,7 @@ function renderWalk() {
 /* 와이파이 바로 보기 (이용 가이드 위쪽) */
 function wifiStrip() {
   if (!CONFIG.wifiPassword) return "";
-  return '<div class="wifi-strip"><span class="ws-l">' + v2i("wifi") + '<span><small>Wi-Fi · ' + esc(CONFIG.wifiName || "") + '</small><b translate="no">' + esc(CONFIG.wifiPassword) + '</b></span></span>' +
+  return '<div class="wifi-strip"><span class="ws-l">' + v2i("wifi") + '<span><small>WiFi · ' + esc(CONFIG.wifiName || "") + '</small><b translate="no">' + esc(CONFIG.wifiPassword) + '</b></span></span>' +
     '<button type="button" data-copy="wifi">' + t({ kr: "복사", en: "Copy", cn: "复制" }) + '</button></div>';
 }
 
@@ -1696,7 +1696,7 @@ function renderContact() {
       '<p class="value">' + t(T.contactIntro) + '</p>' +
       '<div class="btns stack">' + btns + '</div>' +
     '</div>' +
-    '<div class="ci-list" style="margin-bottom:12px">' + ciRow("trouble", "sos", { kr: "무슨 문제인지 모르겠다면: 상황별 해결 방법", en: "Not sure what's wrong? Quick fixes by situation", cn: "不确定问题？按情况查看解决方法" }, { kr: "온수 · 에어컨 · 인터넷 …", en: "Hot water · AC · Wi-Fi …", cn: "热水 · 空调 · 网络 …" }) + '</div>' +
+    '<div class="ci-list" style="margin-bottom:12px">' + ciRow("trouble", "sos", { kr: "무슨 문제인지 모르겠다면: 상황별 해결 방법", en: "Not sure what's wrong? Quick fixes by situation", cn: "不确定问题？按情况查看解决方法" }, { kr: "온수 · 에어컨 · 인터넷 …", en: "Hot water · AC · WiFi …", cn: "热水 · 空调 · 网络 …" }) + '</div>' +
     ((CONFIG.emergency || []).length ?
       '<div class="card emergency"><p class="label">' + t(T.emergencyTitle) + '</p>' +
       CONFIG.emergency.map(e => '<a class="em-row" href="tel:' + esc(e.tel) + '"><b>' + esc(e.number) + '</b><span>' + t(e.label) + '</span><i aria-hidden="true">›</i></a>').join("") +
@@ -2763,8 +2763,8 @@ const TROUBLES = [
     msg: { kr: "온수 또는 난방이 안 나와요", en: "There is no hot water or heating" }, fix: { go: "house", acc: "acc-boiler", label: { kr: "보일러 사용법 보기", en: "See how the boiler works", cn: "查看锅炉使用方法" } } },
   { id: "aircon", ic: "❄️", t: { kr: "에어컨이 안 켜져요", en: "The AC won't work", cn: "空调打不开" },
     msg: { kr: "에어컨이 작동하지 않아요", en: "The AC is not working" }, fix: { go: "house", acc: "acc-aircon", label: { kr: "에어컨 리모컨 안내 보기", en: "See the AC remote guide", cn: "查看空调遥控器说明" } } },
-  { id: "wifi", ic: "📶", t: { kr: "인터넷(Wi-Fi)이 안 돼요", en: "Wi-Fi isn't working", cn: "Wi-Fi 连不上" },
-    msg: { kr: "Wi-Fi가 연결되지 않아요", en: "The Wi-Fi is not connecting" }, fix: { go: "wifi", label: { kr: "Wi-Fi 이름·비밀번호 보기", en: "See Wi-Fi name & password", cn: "查看 Wi-Fi 名称和密码" } } },
+  { id: "wifi", ic: "📶", t: { kr: "인터넷(WiFi)이 안 돼요", en: "WiFi isn't working", cn: "WiFi 连不上" },
+    msg: { kr: "WiFi가 연결되지 않아요", en: "The WiFi is not connecting" }, fix: { go: "wifi", label: { kr: "WiFi 이름·비밀번호 보기", en: "See WiFi name & password", cn: "查看 WiFi 名称和密码" } } },
   { id: "intercom", ic: "🔔", t: { kr: "1층 공동현관 문을 못 열어요", en: "Can't open the street-level door", cn: "打不开一楼大门" },
     msg: { kr: "1층 공동현관 문을 열지 못하고 있어요", en: "We cannot open the street-level entrance door" }, fix: { go: "house", acc: "acc-intercom", label: { kr: "인터폰 사용법 보기", en: "See the intercom guide", cn: "查看对讲机使用方法" } } },
   { id: "door", ic: "🚪", t: { kr: "현관문이 안 열려요", en: "Can't open the front door", cn: "打不开房门" },
