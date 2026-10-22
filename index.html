@@ -119,6 +119,7 @@ const CONFIG = {
   phone: "010-5777-0876",                     // 전화번호. 전화 걸기 버튼을 누르면 이 번호로 전화가 걸립니다
   kakaoId: "mihoya86",                        // 카카오톡 아이디. 버튼을 누르면 아이디가 복사되고 카카오톡이 열립니다
   whatsapp: "821057770876",                   // WhatsApp 번호. 82로 시작하고 맨 앞 0과 하이픈은 뺍니다
+  instagram: "gangnam_calme",                // 인스타그램 아이디(@ 없이). 연락하기 화면에 인스타그램 버튼이 생깁니다
   line: "https://line.me/ti/p/fWpK6Xm7tx",    // LINE 친구 추가 링크. 버튼을 눌러 Amy님 프로필이 열리는지 꼭 확인해 주세요
 
   /* ---------- 익명 의견함 ---------- */
@@ -837,6 +838,7 @@ const CONFIG = {
     kakaoButton: { kr: "카카오톡으로 연락하기", en: "Message on KakaoTalk", cn: "用KakaoTalk联系" },       // 연락하기 화면: 카카오톡 버튼
     kakaoCopied: { kr: "카카오톡 아이디가 복사되었습니다. 친구 추가에서 붙여넣어 주세요.", en: "KakaoTalk ID copied. Paste it in Add Friend.", cn: "已复制KakaoTalk ID。请在添加好友处粘贴。" }, // 카카오톡 버튼을 눌렀을 때 나오는 알림
     whatsappButton: { kr: "WhatsApp으로 연락하기", en: "Message on WhatsApp", cn: "用WhatsApp联系" },    // 연락하기 화면: WhatsApp 버튼
+    instagramButton: { kr: "인스타그램 @gangnam_calme", en: "Instagram @gangnam_calme", cn: "Instagram @gangnam_calme" }, // 연락하기 화면: 인스타그램 버튼
     lineButton: { kr: "LINE으로 연락하기", en: "Message on LINE", cn: "用LINE联系" },                // 연락하기 화면: LINE 버튼
     feedbackTitle: { kr: "익명 의견함", en: "Anonymous suggestion box", cn: "匿名意见箱" },          // 연락하기 화면: 익명 의견함 카드 제목
     feedbackDesc: { kr: "머무시는 동안 느끼신 점이 있다면 편하게 남겨주세요. 더 나은 숙소를 만드는 데 큰 도움이 됩니다. 작성자 정보는 남지 않습니다.", en: "If there's anything on your mind during your stay, feel free to share it here. It really helps us make this place better. No identifying information is collected.", cn: "入住期间如有任何想法，欢迎随时留言。这对我们改进住所很有帮助。不会留下任何身份信息。" }, // 연락하기 화면: 익명 의견함 설명
@@ -1681,6 +1683,9 @@ function renderContact() {
   }
   if (CONFIG.line) {
     btns += '<a class="btn" href="' + esc(CONFIG.line) + '" target="_blank" rel="noopener">' + t(T.lineButton) + '</a>';
+  }
+  if (CONFIG.instagram) {
+    btns += '<a class="btn" href="https://www.instagram.com/' + esc(CONFIG.instagram.replace(/[^A-Za-z0-9._]/g, "")) + '/" target="_blank" rel="noopener" data-track="contact_instagram">' + t(T.instagramButton) + '</a>';
   }
   return backButton() +
     '<h2>' + t(T.menuContact) + '</h2>' +
