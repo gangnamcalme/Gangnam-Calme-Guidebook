@@ -2089,7 +2089,7 @@ const MAP_ICONS = {
 };
 /* 숙소·가게 핀 모양 (네이버 지도 위에 올라가는 글자 조각) */
 function homeIconHtml() {
-  return '<div class="home-map-wrap"><span class="home-map-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></svg></span><span class="home-map-label">' + esc(t(CONFIG.text.homePin)) + '</span></div>';
+  return '<div class="home-map-wrap"><span class="home-map-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></svg></span></div>';
 }
 function placeIconHtml(type) {
   const drawing = MAP_ICONS[type] || MAP_ICONS.see;
